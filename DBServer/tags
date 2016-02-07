@@ -1,0 +1,280 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ANALOG	Db.sql	/^CREATE TABLE ANALOG ($/;"	t
+ANALOG	Db1.sql	/^CREATE TABLE ANALOG ($/;"	t
+ANALOG.ANALOG_NAMES	Db.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+ANALOG.ANALOG_NAMES	Db1.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+ANALOG.ANALOG_TYPE	Db.sql	/^	ANALOG_NAMES VARCHAR(32) NOT NULL,$/;"	F
+ANALOG.ANALOG_TYPE	Db1.sql	/^	ANALOG_NAMES VARCHAR(32) NOT NULL,$/;"	F
+ANALOG.ANUNITS	Db.sql	/^	ANALOG_TYPE VARCHAR(6) NOT NULL,$/;"	F
+ANALOG.ANUNITS	Db1.sql	/^	ANALOG_TYPE VARCHAR(6) NOT NULL,$/;"	F
+ANALOG.PDC_ID	Db.sql	/^CREATE TABLE ANALOG ($/;"	F
+ANALOG.PDC_ID	Db1.sql	/^CREATE TABLE ANALOG ($/;"	F
+ANALOG.PMU_ID	Db.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+ANALOG.PMU_ID	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+ANALOG_MEASUREMENTS	Db.sql	/^CREATE TABLE ANALOG_MEASUREMENTS ($/;"	t
+ANALOG_MEASUREMENTS	Db1.sql	/^CREATE TABLE ANALOG_MEASUREMENTS ($/;"	t
+ANALOG_MEASUREMENTS.ANALOG_NAME	Db.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+ANALOG_MEASUREMENTS.ANALOG_NAME	Db1.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+ANALOG_MEASUREMENTS.ANALOG_VALUE	Db.sql	/^	ANALOG_NAME VARCHAR(32) NOT NULL,$/;"	F
+ANALOG_MEASUREMENTS.ANALOG_VALUE	Db1.sql	/^	ANALOG_NAME VARCHAR(32) NOT NULL,$/;"	F
+ANALOG_MEASUREMENTS.FRACSEC	Db.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+ANALOG_MEASUREMENTS.FRACSEC	Db1.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+ANALOG_MEASUREMENTS.PDC_ID	Db.sql	/^CREATE TABLE ANALOG_MEASUREMENTS ($/;"	F
+ANALOG_MEASUREMENTS.PDC_ID	Db1.sql	/^CREATE TABLE ANALOG_MEASUREMENTS ($/;"	F
+ANALOG_MEASUREMENTS.PMU_ID	Db.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+ANALOG_MEASUREMENTS.PMU_ID	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+ANALOG_MEASUREMENTS.SOC	Db.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+ANALOG_MEASUREMENTS.SOC	Db1.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+BUFFER	global.h	/^struct BUFFER {$/;"	s
+BUFF_LEN	global.h	/^int BUFF_LEN;$/;"	v
+CC	Makefile	/^CC = \/usr\/bin\/gcc$/;"	m
+CFLAGS	Makefile	/^CFLAGS=-Wall -g -O$/;"	m
+CLEAN_OBJECTS	Makefile	/^CLEAN_OBJECTS =  recreate.o connections.o new_pmu_or_pdc.o parser.o dallocate.o cfg.bin$/;"	m
+COMPILE	Makefile	/^COMPILE = $(CC) $/;"	m
+DBPORT	connections.h	37;"	d
+DB_addr_len	connections.h	/^int DB_addr_len,numbytes;$/;"	v
+DB_process_UDP	connections.c	/^void DB_process_UDP(unsigned char* udp_BUF){$/;"	f
+DB_server_addr	connections.h	/^struct sockaddr_in DB_server_addr,their_addr; $/;"	v	typeref:struct:sockaddr_in
+DB_sockfd	connections.h	/^int DB_sockfd; \/\/socket descriptor$/;"	v
+DB_udp	connections.c	/^void DB_udp(){$/;"	f
+DB_udphandler	connections.c	/^void* DB_udphandler(void * udp_BUF) {$/;"	f
+DIGITAL	Db.sql	/^CREATE TABLE DIGITAL ($/;"	t
+DIGITAL	Db1.sql	/^CREATE TABLE DIGITAL ($/;"	t
+DIGITAL.DIGITAL_NAMES	Db.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+DIGITAL.DIGITAL_NAMES	Db1.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+DIGITAL.DIGITAL_WORD	Db.sql	/^	DIGITAL_NAMES VARCHAR(32) NOT NULL,$/;"	F
+DIGITAL.DIGITAL_WORD	Db1.sql	/^	DIGITAL_NAMES VARCHAR(32) NOT NULL,$/;"	F
+DIGITAL.PDC_ID	Db.sql	/^CREATE TABLE DIGITAL ($/;"	F
+DIGITAL.PDC_ID	Db1.sql	/^CREATE TABLE DIGITAL ($/;"	F
+DIGITAL.PMU_ID	Db.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+DIGITAL.PMU_ID	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+DIGITAL_MEASUREMENTS	Db.sql	/^CREATE TABLE DIGITAL_MEASUREMENTS ($/;"	t
+DIGITAL_MEASUREMENTS	Db1.sql	/^CREATE TABLE DIGITAL_MEASUREMENTS ($/;"	t
+DIGITAL_MEASUREMENTS.DIGITAL_WORD	Db.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+DIGITAL_MEASUREMENTS.DIGITAL_WORD	Db1.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+DIGITAL_MEASUREMENTS.FRACSEC	Db.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+DIGITAL_MEASUREMENTS.FRACSEC	Db1.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+DIGITAL_MEASUREMENTS.PDC_ID	Db.sql	/^CREATE TABLE DIGITAL_MEASUREMENTS ($/;"	F
+DIGITAL_MEASUREMENTS.PDC_ID	Db1.sql	/^CREATE TABLE DIGITAL_MEASUREMENTS ($/;"	F
+DIGITAL_MEASUREMENTS.PMU_ID	Db.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+DIGITAL_MEASUREMENTS.PMU_ID	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+DIGITAL_MEASUREMENTS.SOC	Db.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+DIGITAL_MEASUREMENTS.SOC	Db1.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+DataBuff	parser.h	/^struct DataBuff{$/;"	s
+FREQUENCY_MEASUREMENTS	Db.sql	/^CREATE TABLE FREQUENCY_MEASUREMENTS ($/;"	t
+FREQUENCY_MEASUREMENTS	Db1.sql	/^CREATE TABLE FREQUENCY_MEASUREMENTS ($/;"	t
+FREQUENCY_MEASUREMENTS.DFREQ	Db.sql	/^	FREQ FLOAT (10, 8) NOT NULL,$/;"	F
+FREQUENCY_MEASUREMENTS.DFREQ	Db1.sql	/^	FREQ FLOAT (10, 8) NOT NULL,$/;"	F
+FREQUENCY_MEASUREMENTS.FRACSEC	Db.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+FREQUENCY_MEASUREMENTS.FRACSEC	Db1.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+FREQUENCY_MEASUREMENTS.FREQ	Db.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+FREQUENCY_MEASUREMENTS.FREQ	Db1.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+FREQUENCY_MEASUREMENTS.PDC_ID	Db.sql	/^CREATE TABLE FREQUENCY_MEASUREMENTS ($/;"	F
+FREQUENCY_MEASUREMENTS.PDC_ID	Db1.sql	/^CREATE TABLE FREQUENCY_MEASUREMENTS ($/;"	F
+FREQUENCY_MEASUREMENTS.PMU_ID	Db.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+FREQUENCY_MEASUREMENTS.PMU_ID	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+FREQUENCY_MEASUREMENTS.SOC	Db.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+FREQUENCY_MEASUREMENTS.SOC	Db1.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+INSTALL	Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
+INSTALL_PREFIX	Makefile	/^INSTALL_PREFIX = $(prefix)$/;"	m
+LDLIBS	Makefile	/^LDLIBS=-g -O$/;"	m
+LIBS	Makefile	/^LIBS = -lpthread -lm$/;"	m
+MAIN_CFG_TABLE	Db.sql	/^CREATE TABLE MAIN_CFG_TABLE($/;"	t
+MAIN_CFG_TABLE	Db1.sql	/^CREATE TABLE MAIN_CFG_TABLE($/;"	t
+MAIN_CFG_TABLE.DATA_RATE	Db.sql	/^	NUM_OF_PMU INT NOT NULL,$/;"	F
+MAIN_CFG_TABLE.DATA_RATE	Db1.sql	/^	NUM_OF_PMU INT NOT NULL,$/;"	F
+MAIN_CFG_TABLE.FRACSEC	Db.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+MAIN_CFG_TABLE.FRACSEC	Db1.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+MAIN_CFG_TABLE.NUM_OF_PMU	Db.sql	/^	TIMEBASE DECIMAL(10) NOT NULL,$/;"	F
+MAIN_CFG_TABLE.NUM_OF_PMU	Db1.sql	/^	TIMEBASE DECIMAL(10) NOT NULL,$/;"	F
+MAIN_CFG_TABLE.PDC_ID	Db.sql	/^CREATE TABLE MAIN_CFG_TABLE($/;"	F
+MAIN_CFG_TABLE.PDC_ID	Db1.sql	/^CREATE TABLE MAIN_CFG_TABLE($/;"	F
+MAIN_CFG_TABLE.SOC	Db.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+MAIN_CFG_TABLE.SOC	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+MAIN_CFG_TABLE.TIMEBASE	Db.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+MAIN_CFG_TABLE.TIMEBASE	Db1.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+MAXBUFLEN	connections.h	38;"	d
+OBJECTS	Makefile	/^OBJECTS =  dbserver.c recreate.o connections.o parser.o dallocate.o $/;"	m
+PHASOR	Db.sql	/^CREATE TABLE PHASOR ($/;"	t
+PHASOR	Db1.sql	/^CREATE TABLE PHASOR ($/;"	t
+PHASOR.PDC_ID	Db.sql	/^CREATE TABLE PHASOR ($/;"	F
+PHASOR.PDC_ID	Db1.sql	/^CREATE TABLE PHASOR ($/;"	F
+PHASOR.PHASOR_NAMES	Db.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+PHASOR.PHASOR_NAMES	Db1.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+PHASOR.PHASOR_TYPE	Db.sql	/^	PHASOR_NAMES VARCHAR(32) NOT NULL,$/;"	F
+PHASOR.PHASOR_TYPE	Db1.sql	/^	PHASOR_NAMES VARCHAR(32) NOT NULL,$/;"	F
+PHASOR.PHUNITS	Db.sql	/^	PHASOR_TYPE VARCHAR(3) NOT NULL,$/;"	F
+PHASOR.PHUNITS	Db1.sql	/^	PHASOR_TYPE VARCHAR(3) NOT NULL,$/;"	F
+PHASOR.PMU_ID	Db.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+PHASOR.PMU_ID	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS	Db.sql	/^CREATE TABLE PHASOR_MEASUREMENTS ($/;"	t
+PHASOR_MEASUREMENTS	Db1.sql	/^CREATE TABLE PHASOR_MEASUREMENTS ($/;"	t
+PHASOR_MEASUREMENTS.FRACSEC	Db.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.FRACSEC	Db1.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.PDC_ID	Db.sql	/^CREATE TABLE PHASOR_MEASUREMENTS ($/;"	F
+PHASOR_MEASUREMENTS.PDC_ID	Db1.sql	/^CREATE TABLE PHASOR_MEASUREMENTS ($/;"	F
+PHASOR_MEASUREMENTS.PHASOR_AMPLITUDE	Db.sql	/^	PHASOR_NAME VARCHAR(32) NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.PHASOR_AMPLITUDE	Db1.sql	/^	PHASOR_NAME VARCHAR(32) NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.PHASOR_ANGLE	Db.sql	/^	PHASOR_AMPLITUDE REAL NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.PHASOR_ANGLE	Db1.sql	/^	PHASOR_AMPLITUDE REAL NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.PHASOR_NAME	Db.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.PHASOR_NAME	Db1.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.PMU_ID	Db.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.PMU_ID	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.SOC	Db.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+PHASOR_MEASUREMENTS.SOC	Db1.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+PROGRAM	Makefile	/^PROGRAM = DBServer$/;"	m
+RECEIVED_FRAME_TIME	Db.sql	/^CREATE TABLE RECEIVED_FRAME_TIME ($/;"	t
+RECEIVED_FRAME_TIME	Db1.sql	/^CREATE TABLE RECEIVED_FRAME_TIME ($/;"	t
+RECEIVED_FRAME_TIME.FRAME_FRACSEC	Db.sql	/^	FRAME_SOC DECIMAL(10) NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.FRAME_FRACSEC	Db1.sql	/^	FRAME_SOC DECIMAL(10) NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.FRAME_SOC	Db.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.FRAME_SOC	Db1.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.PDC_ID	Db.sql	/^CREATE TABLE RECEIVED_FRAME_TIME ($/;"	F
+RECEIVED_FRAME_TIME.PDC_ID	Db1.sql	/^CREATE TABLE RECEIVED_FRAME_TIME ($/;"	F
+RECEIVED_FRAME_TIME.PMU_ID	Db.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.PMU_ID	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.RECEIVE_FRACSEC	Db.sql	/^	RECEIVE_SOC DECIMAL(10) NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.RECEIVE_FRACSEC	Db1.sql	/^	RECEIVE_SOC DECIMAL(10) NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.RECEIVE_SOC	Db.sql	/^	FRAME_FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.RECEIVE_SOC	Db1.sql	/^	FRAME_FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.TIME_DIFF	Db.sql	/^	RECEIVE_FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+RECEIVED_FRAME_TIME.TIME_DIFF	Db1.sql	/^	RECEIVE_FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+SHELL	Makefile	/^SHELL = \/bin\/sh$/;"	m
+SOURCES	Makefile	/^SOURCES = \\$/;"	m
+STATUS_MEASUREMENTS	Db1.sql	/^CREATE TABLE STATUS_MEASUREMENTS ($/;"	t
+STATUS_MEASUREMENTS.FRACSEC	Db1.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+STATUS_MEASUREMENTS.PDC_ID	Db1.sql	/^CREATE TABLE STATUS_MEASUREMENTS ($/;"	F
+STATUS_MEASUREMENTS.PMU_ID	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+STATUS_MEASUREMENTS.SOC	Db1.sql	/^	STN VARCHAR(40) NOT NULL,$/;"	F
+STATUS_MEASUREMENTS.STATUS_WORD	Db1.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+STATUS_MEASUREMENTS.STN	Db1.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+SUB_CFG_TABLE	Db.sql	/^CREATE TABLE SUB_CFG_TABLE($/;"	t
+SUB_CFG_TABLE	Db1.sql	/^CREATE TABLE SUB_CFG_TABLE($/;"	t
+SUB_CFG_TABLE.ANNMR	Db.sql	/^	PHNMR INT DEFAULT 0,$/;"	F
+SUB_CFG_TABLE.ANNMR	Db1.sql	/^	PHNMR INT DEFAULT 0,$/;"	F
+SUB_CFG_TABLE.DGNMR	Db.sql	/^	ANNMR INT DEFAULT 0,$/;"	F
+SUB_CFG_TABLE.DGNMR	Db1.sql	/^	ANNMR INT DEFAULT 0,$/;"	F
+SUB_CFG_TABLE.FNOM	Db.sql	/^	DGNMR INT DEFAULT 0,$/;"	F
+SUB_CFG_TABLE.FNOM	Db1.sql	/^	DGNMR INT DEFAULT 0,$/;"	F
+SUB_CFG_TABLE.FRACSEC	Db.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+SUB_CFG_TABLE.FRACSEC	Db1.sql	/^	SOC DECIMAL(10) NOT NULL,$/;"	F
+SUB_CFG_TABLE.PDC_ID	Db.sql	/^CREATE TABLE SUB_CFG_TABLE($/;"	F
+SUB_CFG_TABLE.PDC_ID	Db1.sql	/^CREATE TABLE SUB_CFG_TABLE($/;"	F
+SUB_CFG_TABLE.PHNMR	Db.sql	/^	STN VARCHAR(40) NOT NULL,$/;"	F
+SUB_CFG_TABLE.PHNMR	Db1.sql	/^	STN VARCHAR(40) NOT NULL,$/;"	F
+SUB_CFG_TABLE.PMU_ID	Db.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+SUB_CFG_TABLE.PMU_ID	Db1.sql	/^	PDC_ID INT NOT NULL,$/;"	F
+SUB_CFG_TABLE.SOC	Db.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+SUB_CFG_TABLE.SOC	Db1.sql	/^	PMU_ID INT NOT NULL,$/;"	F
+SUB_CFG_TABLE.STN	Db.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+SUB_CFG_TABLE.STN	Db1.sql	/^	FRACSEC DECIMAL(10) NOT NULL,$/;"	F
+TAKE_N_BITS_FROM	parser.h	151;"	d
+analog	parser.h	/^	unsigned int analog;$/;"	m	struct:format
+analogBuff	global.h	/^}phasorBuff,frequencyBuff,digitalBuff,analogBuff,delayBuff,statBuff;$/;"	v	typeref:struct:BUFFER
+analogBuffBakupCopy	global.h	/^char *analogBuffBakupCopy;$/;"	v
+angnames	parser.h	/^	unsigned char **angnames;$/;"	m	struct:channel_names
+annmr	parser.h	/^	unsigned int annmr;$/;"	m	struct:for_each_pmu
+antypes	parser.h	/^    	unsigned char **antypes;$/;"	m	struct:channel_names
+anunit	parser.h	/^	float **anunit;$/;"	m	struct:for_each_pmu
+binData	global.h	/^FILE **binData; \/\/, *binData1;$/;"	v
+buffer	connections.h	/^unsigned char buffer[MAXBUFLEN];$/;"	v
+buffer	global.h	/^	char buffer[10000000];$/;"	m	struct:BUFFER
+cfgFileName	global.h	/^char **cfgFileName;$/;"	v
+cfgInProcess	global.h	/^unsigned int cfgInProcess; \/\/ A flag to capture that DB is engaged in prosessing the CFG data.$/;"	v
+cfg_cnt	parser.h	/^	unsigned int cfg_cnt;$/;"	m	struct:for_each_pmu
+cfg_frame	parser.h	/^struct  cfg_frame {$/;"	s
+cfgfirst	parser.h	/^}*cfgfirst;$/;"	v	typeref:struct:cfg_frame
+cfgnext	parser.h	/^	struct  cfg_frame *cfgnext;$/;"	m	struct:cfg_frame	typeref:struct:cfg_frame::cfg_frame
+cfgparser	parser.c	/^void cfgparser(unsigned char st[]){ $/;"	f
+channel_names	parser.h	/^struct channel_names {$/;"	s
+check_statword	parser.c	/^int check_statword(unsigned char stat[]) { $/;"	f
+closefilestreams	parser.c	/^void closefilestreams()$/;"	f
+cnext	parser.h	/^	struct channel_names *cnext;$/;"	m	struct:for_each_pmu	typeref:struct:for_each_pmu::channel_names
+copy_cbyc	parser.c	/^void copy_cbyc(unsigned char dst[],unsigned char *s,int size) {$/;"	f
+curPos	global.h	/^	size_t curPos;$/;"	m	struct:BUFFER
+data	parser.h	/^        unsigned char *data;$/;"	m	struct:DataBuff
+dataCollectInBuffer	parser.c	/^void dataCollectInBuffer(char *cmd, struct BUFFER *buffer)$/;"	f
+dataWriteInFile	parser.c	/^void* dataWriteInFile() {$/;"	f
+data_format	parser.h	/^	char data_format[3];$/;"	m	struct:for_each_pmu
+data_rate	parser.h	/^	unsigned int data_rate;$/;"	m	struct:cfg_frame
+database	global.h	/^char *database ;$/;"	v
+dataparser	parser.c	/^int dataparser(unsigned char data[]) { $/;"	f
+decode_ieee_single	parser.c	/^float decode_ieee_single(const void *v) {$/;"	f
+delayBuff	global.h	/^}phasorBuff,frequencyBuff,digitalBuff,analogBuff,delayBuff,statBuff;$/;"	v	typeref:struct:BUFFER
+delayBuffBakupCopy	global.h	/^char *delayBuffBakupCopy;$/;"	v
+dg_next	parser.h	/^	struct dgnames *dg_next;$/;"	m	struct:dgnames	typeref:struct:dgnames::dgnames
+dgn	parser.h	/^	unsigned char **dgn; \/\/ Stores 16 digital names for each word$/;"	m	struct:dgnames
+dgnames	parser.h	/^struct dgnames {$/;"	s
+dgnmr	parser.h	/^	unsigned int dgnmr;$/;"	m	struct:for_each_pmu
+dgunit	parser.h	/^	unsigned char **dgunit;$/;"	m	struct:for_each_pmu
+digitalBuff	global.h	/^}phasorBuff,frequencyBuff,digitalBuff,analogBuff,delayBuff,statBuff;$/;"	v	typeref:struct:BUFFER
+digitalBuffBakupCopy	global.h	/^char *digitalBuffBakupCopy;$/;"	v
+endSampPosition	global.h	/^unsigned int *endSampPosition;$/;"	v
+first	parser.h	/^	struct dgnames *first;$/;"	m	struct:channel_names	typeref:struct:channel_names::dgnames
+fmt	parser.h	/^	struct format *fmt;$/;"	m	struct:for_each_pmu	typeref:struct:for_each_pmu::format
+fnom	parser.h	/^	unsigned int fnom;$/;"	m	struct:for_each_pmu
+for_each_pmu	parser.h	/^struct for_each_pmu{$/;"	s
+format	parser.h	/^struct format{$/;"	s
+fracsec	parser.h	/^	unsigned long int fracsec;$/;"	m	struct:cfg_frame
+framesize	parser.h	/^	unsigned int framesize;$/;"	m	struct:cfg_frame
+free_2darray	dallocate.c	/^void free_2darray(unsigned char **array, int x){ $/;"	f
+free_2darray_l	dallocate.c	/^void free_2darray_l(long int **array, int x){ $/;"	f
+free_cfgframe_object	dallocate.c	/^void free_cfgframe_object(struct cfg_frame *cfg) { $/;"	f
+freq	parser.h	/^	unsigned int freq;$/;"	m	struct:format
+frequencyBuff	global.h	/^}phasorBuff,frequencyBuff,digitalBuff,analogBuff,delayBuff,statBuff;$/;"	v	typeref:struct:BUFFER
+frequencyBuffBakupCopy	global.h	/^char *frequencyBuffBakupCopy;$/;"	v
+idcode	parser.h	/^	unsigned int idcode;$/;"	m	struct:cfg_frame
+idcode	parser.h	/^	unsigned int idcode;$/;"	m	struct:for_each_pmu
+includedir	Makefile	/^includedir = \/usr\/src\/include$/;"	m
+init_cfgparser	recreate.c	/^void init_cfgparser(unsigned char st[]){ $/;"	f
+initfilestreams	parser.c	/^void initfilestreams(unsigned long l_soc, unsigned long l_fracsec) $/;"	f
+main	Sample DBConnect.c	/^main() {	\/* Simple C program that connects to MySQL Database server*\/$/;"	f
+main	dbserver.c	/^int main(void) {$/;"	f
+makecomtradecfg	parser.c	/^void makecomtradecfg(char *fileName, char *stn, int j, unsigned long l_soc, unsigned long l_fracsec)$/;"	f
+mutex_MYSQL_CONN_ON_CFG	global.h	/^pthread_mutex_t mutex_MYSQL_CONN_ON_CFG;   \/\/ To lock 'conn_cfg' connection for CFG insertion$/;"	v
+mutex_MYSQL_CONN_ON_DATA	global.h	/^pthread_mutex_t mutex_MYSQL_CONN_ON_DATA;  \/\/ To lock 'conn_data' connection for DATA insertion$/;"	v
+mutex_cfg	global.h	/^pthread_mutex_t mutex_cfg;  \/\/ To lock cfg objects$/;"	v
+mutex_file	global.h	/^pthread_mutex_t mutex_file;  \/\/ To lock cfg.txt$/;"	v
+mutex_on_buffer	connections.c	/^pthread_mutex_t  mutex_on_buffer;$/;"	v
+mutex_phasor_buffer	global.h	/^pthread_mutex_t mutex_phasor_buffer;$/;"	v
+ncmp_cbyc	parser.c	/^int ncmp_cbyc(unsigned char dst[],unsigned char src[],int size) {$/;"	f
+num_pmu	parser.h	/^	unsigned int num_pmu;$/;"	m	struct:cfg_frame
+numbytes	connections.h	/^int DB_addr_len,numbytes;$/;"	v
+password	global.h	/^char *password ;$/;"	v
+phasor	parser.h	/^	unsigned char phasor;$/;"	m	struct:format
+phasorBuff	global.h	/^}phasorBuff,frequencyBuff,digitalBuff,analogBuff,delayBuff,statBuff;$/;"	v	typeref:struct:BUFFER
+phasorBuffBakupCopy	global.h	/^char *phasorBuffBakupCopy;$/;"	v
+phnames	parser.h	/^	unsigned char **phnames;$/;"	m	struct:channel_names
+phnmr	parser.h	/^	unsigned int phnmr;$/;"	m	struct:for_each_pmu
+phtypes	parser.h	/^    	unsigned char **phtypes;$/;"	m	struct:channel_names
+phunit	parser.h	/^	float **phunit;$/;"	m	struct:for_each_pmu
+pmu	parser.h	/^	struct for_each_pmu **pmu;$/;"	m	struct:cfg_frame	typeref:struct:cfg_frame::for_each_pmu
+polar	parser.h	/^	unsigned char polar;$/;"	m	struct:format
+prefix	Makefile	/^prefix = ${HOME}\/iPDC$/;"	m
+recreate_cfg_objects	recreate.c	/^void recreate_cfg_objects(){ $/;"	f
+remove_old_cfg	parser.c	/^void remove_old_cfg(int idcode,unsigned char frame[]) { \/\/ Begins$/;"	f
+server	global.h	/^char *server;$/;"	v
+setup	connections.c	/^void setup(){$/;"	f
+soc	parser.h	/^	unsigned long int soc;$/;"	m	struct:cfg_frame
+srNo	global.h	/^unsigned long int *srNo;$/;"	v
+statBuff	global.h	/^}phasorBuff,frequencyBuff,digitalBuff,analogBuff,delayBuff,statBuff;$/;"	v	typeref:struct:BUFFER
+statBuffBakupCopy	global.h	/^char *statBuffBakupCopy;$/;"	v
+stn	parser.h	/^	unsigned char stn[17];$/;"	m	struct:for_each_pmu
+tStartArchive	global.h	/^unsigned long tStartArchive;$/;"	v
+their_addr	connections.h	/^struct sockaddr_in DB_server_addr,their_addr; $/;"	v	typeref:struct:
+time_base	parser.h	/^	unsigned long int time_base;$/;"	m	struct:cfg_frame
+to_intconvertor	parser.c	/^unsigned int to_intconvertor(unsigned char array[]) {$/;"	f
+to_intconvertor1	parser.c	/^unsigned int to_intconvertor1(unsigned char array[]) {$/;"	f
+to_long_int_convertor	parser.c	/^unsigned long int to_long_int_convertor(unsigned char array[]) {$/;"	f
+to_long_int_convertor1	parser.c	/^unsigned long int to_long_int_convertor1(unsigned char array[]) {$/;"	f
+to_shortintconvertor	parser.c	/^unsigned short int to_shortintconvertor(unsigned char array[]) {$/;"	f
+trimSpaces	parser.c	/^void trimSpaces(char *TO, char *FROM){$/;"	f
+type	parser.h	/^        unsigned int type;$/;"	m	struct:DataBuff
+updatecomtradecfg	parser.c	/^void updatecomtradecfg(int j)$/;"	f
+user	global.h	/^char *user;$/;"	v
