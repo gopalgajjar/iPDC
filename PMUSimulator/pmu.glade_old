@@ -56,10 +56,10 @@
     <property name="icon-size">1</property>
   </object>
   <object class="GtkWindow" id="Pmu_Simulator">
-    <property name="title" translatable="yes">PMU SIMULATOR - v2.0</property>
+    <property name="title" translatable="yes">PMU SIMULATOR - v1.3</property>
     <property name="window_position">center-always</property>
     <property name="default_width">710</property>
-    <property name="default_height">290</property>
+    <property name="default_height">590</property>
     <property name="icon_name">calibrate</property>
     <property name="focus_on_map">False</property>
     <property name="gravity">center</property>
@@ -228,8 +228,8 @@ the PMU, the data sources, scaling, algorithms, filtering, or other related info
         <child>
           <object class="GtkButton" id="create_cfg_button">
             <property name="label" translatable="yes">Setup Configuration</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
+            <property name="width_request">240</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -239,14 +239,14 @@ with variable parameters.</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">65</property>
+            <property name="y">225</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="header_frm_button">
             <property name="label" translatable="yes">Header Frame Setup</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
+            <property name="width_request">240</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -255,15 +255,15 @@ the PMU, the data sources, scaling, algorithms, filtering, or other related info
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="x">245</property>
-            <property name="y">65</property>
+            <property name="x">20</property>
+            <property name="y">425</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="stat_modification_button">
             <property name="label" translatable="yes">STAT Word Modification</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
+            <property name="width_request">240</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -271,15 +271,15 @@ the PMU, the data sources, scaling, algorithms, filtering, or other related info
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="x">470</property>
-            <property name="y">65</property>
+            <property name="x">20</property>
+            <property name="y">375</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="pmu_details_button">
             <property name="label" translatable="yes">PMU Properties</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
+            <property name="width_request">240</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -289,14 +289,14 @@ and PMU Server informations.</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">100</property>
+            <property name="y">475</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="cfg_modification_button">
             <property name="label" translatable="yes">Configuration Modification</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
+            <property name="width_request">240</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -304,15 +304,15 @@ and PMU Server informations.</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="x">245</property>
-            <property name="y">100</property>
+            <property name="x">20</property>
+            <property name="y">325</property>
           </packing>
         </child>
         <child>
           <object class="GtkLinkButton" id="linkbutton1">
             <property name="label" translatable="yes">Go online</property>
             <property name="width_request">110</property>
-            <property name="height_request">30</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -324,14 +324,14 @@ and PMU Server informations.</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">255</property>
+            <property name="y">550</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="E_button">
             <property name="label" translatable="yes">EXIT</property>
             <property name="width_request">100</property>
-            <property name="height_request">30</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -339,15 +339,15 @@ and PMU Server informations.</property>
             <property name="tooltip_text" translatable="yes">Click to exit the PMU Simulator Software.</property>
           </object>
           <packing>
-            <property name="x">600</property>
-            <property name="y">255</property>
+            <property name="x">603</property>
+            <property name="y">550</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="manage_data_source">
             <property name="label" translatable="yes">Manage Data Source</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
+            <property name="width_request">240</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -355,87 +355,69 @@ and PMU Server informations.</property>
             <property name="xalign">0</property>
           </object>
           <packing>
-            <property name="x">470</property>
-            <property name="y">100</property>
+            <property name="x">20</property>
+            <property name="y">275</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="rights_lable">
             <property name="width_request">150</property>
-            <property name="height_request">30</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
           </object>
           <packing>
-            <property name="x">240</property>
-            <property name="y">262</property>
+            <property name="x">289</property>
+            <property name="y">552</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="admin_label">
-            <property name="width_request">100</property>
-            <property name="height_request">20</property>
+            <property name="width_request">235</property>
+            <property name="height_request">40</property>
             <property name="visible">True</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">40</property>
+            <property name="y">187</property>
           </packing>
         </child>
         <child>
           <object class="GtkHSeparator" id="footer_label">
-            <property name="width_request">720</property>
-            <property name="height_request">1 </property>
+            <property name="width_request">800</property>
+            <property name="height_request">20</property>
             <property name="visible">True</property>
           </object>
           <packing>
             <property name="x">-1</property>
-            <property name="y">250</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHSeparator" id="footer_label1">
-            <property name="width_request">720</property>
-            <property name="height_request">1 </property>
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="x">-1</property>
-            <property name="y">60</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHSeparator" id="footer_label2">
-            <property name="width_request">720</property>
-            <property name="height_request">1 </property>
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="x">-1</property>
-            <property name="y">137</property>
+            <property name="y">525</property>
           </packing>
         </child>
         <child>
           <object class="GtkTextView" id="text_view1">
-            <property name="width_request">320</property>
-            <property name="height_request">30</property>
-            <property name="visible">False</property>
+            <property name="width_request">720</property>
+            <property name="height_request">105</property>
+            <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="editable">False</property>
             <property name="justification">fill</property>
             <property name="cursor_visible">False</property>
           </object>
           <packing>
-            <property name="y">5</property>
-            <property name="x">205</property>
+            <property name="y">39</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="text_view">
+          <object class="GtkTextView" id="text_view">
             <property name="width_request">410</property>
             <property name="height_request">287</property>
             <property name="visible">True</property>
+            <property name="sensitive">False</property>
             <property name="tooltip_text" translatable="yes">Simulation of Phasor Measurement Unit.
 Supportive IEEE C37.118 Synchrophasor std.</property>
+            <property name="editable">False</property>
+            <property name="justification">fill</property>
+            <property name="cursor_visible">False</property>
+            <property name="accepts_tab">False</property>
           </object>
           <packing>
             <property name="x">290</property>

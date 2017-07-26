@@ -124,7 +124,7 @@ GdkPixbuf *create_pixbuf(const gchar * filename);
 
 void about_pmu (GtkButton *widget, gpointer udata);
 
-void Pmu_Help (GtkButton *but, gpointer udata);
+void Pmu_Help (GtkWidget *but, gpointer udata);
 
 void validation_result (char *msg);
 
@@ -132,7 +132,7 @@ void pmu_colors();
 
 void pmu_server ();
 
-int  validation_pmu_server (GtkButton *button, gpointer udata);
+int  validation_pmu_server (GtkWidget *button, gpointer udata);
 
 void manage_data_sources();
 

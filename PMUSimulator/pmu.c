@@ -49,7 +49,7 @@
 #include  "ShearedMemoryStructure.h"
 
 /* Common fixed path for storage of few common files */
-#define UI_fILE "/usr/local/share/PMU/pmu.xml"
+/*#define UI_FILE "/usr/local/share/PMU/pmu.xml"*/
 
 
 /* ---------------------------------------------------------------- */
@@ -93,8 +93,13 @@ int main(int argc, char **argv)
 		/* Create new GtkBuilder object */
 		builder = gtk_builder_new();
 
+        char* UI_FILE_DIR = getenv("iPDC_UI_DIR");
+        char UI_FILE[50];
+        strcpy(UI_FILE, UI_FILE_DIR);
+        strcat(UI_FILE,"/pmu.xml"); 
+
 		/* Add glade file to GtkBuilder */
-		if(!gtk_builder_add_from_file(builder, UI_fILE, &error))
+		if(!gtk_builder_add_from_file(builder, UI_FILE, &error))
 		{
 			g_free(error);
 			return(1);
@@ -112,7 +117,7 @@ int main(int argc, char **argv)
 		     GW(stat_modification_button);
 		     GW(cfg_modification_button);
 		     GW(pmu_menubar);
-			GW(menuitem2);
+             GW(menuitem2);
 		     GW(rights_lable);
 		     GW(admin_label);
 		     GW(about_menuitem);
@@ -120,16 +125,16 @@ int main(int argc, char **argv)
 		     GW(E_button);
 		     GW(manage_data_source);
 		     GW(pmu_properties);
-		     GW(start_server);
-               GW(menu_setup_cfg);
-               GW(menu_data_source);
-               GW(menu_cfg_modify);
-               GW(menu_stat_modify);
-               GW(menu_header_frm);
-			GW(text_view);
-			GW(text_view1);
-			GW(open_cfg);
-               GW(time_lable);
+             GW(start_server);
+             GW(menu_setup_cfg);
+             GW(menu_data_source);
+             GW(menu_cfg_modify);
+             GW(menu_stat_modify);
+             GW(menu_header_frm);
+             GW(text_view);
+             GW(text_view1);
+             GW(open_cfg);
+             GW(time_lable);
 		#undef GW 
 
 		/* Connect signal to builder */
@@ -137,9 +142,11 @@ int main(int argc, char **argv)
 		gtk_builder_connect_signals(builder, NULL);
 
           // Changes how a toplevel window deals with its size request and user resize attempts. 
-          gtk_window_set_resizable (GTK_WINDOW (pmu_data->Pmu_Simulator), TRUE);
+          gtk_window_set_resizable (GTK_WINDOW (pmu_data->Pmu_Simulator), FALSE);
           gtk_window_set_position(GTK_WINDOW(pmu_data->Pmu_Simulator), GTK_WIN_POS_CENTER);
-          gtk_window_set_icon(GTK_WINDOW(pmu_data->Pmu_Simulator), create_pixbuf("/usr/local/share/PMU/logo.png"));
+          strcpy(UI_FILE, UI_FILE_DIR);
+          strcat(UI_FILE,"/logo.png"); 
+          gtk_window_set_icon(GTK_WINDOW(pmu_data->Pmu_Simulator), create_pixbuf(UI_FILE));
 
 		/* Set the Title of Main Window */
 		gtk_window_set_title (GTK_WINDOW (pmu_data->Pmu_Simulator), "PMU SIMULATOR");
@@ -274,7 +281,7 @@ int main(int argc, char **argv)
 
 		g_signal_connect (pmu_data->pmu_details_button, "clicked", G_CALLBACK(show_pmu_details), NULL); 
 		g_signal_connect (pmu_data->start_server, "activate", G_CALLBACK(pmu_server), NULL);
-		g_signal_connect (pmu_data->open_cfg, "activate", G_CALLBACK(pmu_setup_file_selection), NULL);
+		g_signal_connect (pmu_data->open_cfg, "activate", G_CALLBACK(pmu_setup_file_selection), GTK_WINDOW(pmu_data->Pmu_Simulator));
 		g_signal_connect (pmu_data->pmu_properties, "activate", G_CALLBACK(show_pmu_details), NULL);
 		g_signal_connect (pmu_data->about_menuitem, "activate", G_CALLBACK(about_pmu), NULL);
 		g_signal_connect (pmu_data->exit_menuitem, "activate", G_CALLBACK(destroy), NULL);

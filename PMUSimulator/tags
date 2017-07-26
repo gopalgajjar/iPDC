@@ -12,17 +12,17 @@ CC	Makefile	/^CC = gcc$/;"	m
 CCOptionWin	CfgGuiFunctions.h	/^GtkWidget *CCOptionWin;$/;"	v
 CCWin	CfgGuiFunctions.h	/^GtkWidget *CCWin;$/;"	v
 CCWin	PmuGui.h	/^GtkWidget *CCWin, *setup_display_window;	$/;"	v
-CFLAGS	Makefile	/^CFLAGS=`pkg-config --cflags --cflags gtk+-2.0`$/;"	m
+CFLAGS	Makefile	/^CFLAGS=`pkg-config --cflags --cflags gtk+-3.0` -DGTK_DISABLE_SINGLE_INCLUDES -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGSEAL_ENABLE$/;"	m
 CH_GET_OBJECT	PmuGui.h	36;"	d
 CH_GET_WIDGET	PmuGui.h	38;"	d
 CLEAN_OBJECTS	Makefile	/^CLEAN_OBJECTS = PmuGui.o function.o ServerFunction.o CfgFunction.o CfgGuiFunctions.o pmu.xml$/;"	m
 COMPILE	Makefile	/^COMPILE = $(CC) $/;"	m
-CREATE_DIR	Makefile	/^CREATE_DIR = \/usr\/local\/share\/$/;"	m
+CREATE_DIR	Makefile	/^CREATE_DIR = $(INSTALL_PREFIX)\/share\/$/;"	m
 Change_pmu_configuration	CfgGuiFunctions.c	/^void Change_pmu_configuration(GtkWidget *widget, gpointer udata)$/;"	f
 ConfigurationChange	CfgFunction.h	/^struct ConfigurationChange $/;"	s
 ConfigurationFrame	CfgFunction.h	/^struct ConfigurationFrame $/;"	s
 DATA_thread	ServerFunction.h	/^pthread_t UDP_thread,TCP_thread,MUL_thread,DATA_thread;$/;"	v
-DESKTOP_DIR	Makefile	/^DESKTOP_DIR = \/usr\/share\/applications$/;"	m
+DESKTOP_DIR	Makefile	/^DESKTOP_DIR = $(INSTALL_PREFIX)\/desktop$/;"	m
 E_button	PmuGui.h	/^	GtkWidget *E_button;$/;"	m	struct:_pmuStruct
 FILE1	Makefile	/^FILE1 = pmu.xml$/;"	m
 FILE2	Makefile	/^FILE2 = PmuLogo.png$/;"	m
@@ -30,18 +30,19 @@ FILE3	Makefile	/^FILE3 = PSLab.PNG$/;"	m
 FILE4	Makefile	/^FILE4 = PmuLogo1.png$/;"	m
 FILE5	Makefile	/^FILE5 = logo.png$/;"	m
 FILE6	Makefile	/^FILE6 = PMU.desktop$/;"	m
-GW	pmu.c	105;"	d	file:
-GW	pmu.c	131;"	d	file:
+GW	pmu.c	112;"	d	file:
+GW	pmu.c	138;"	d	file:
 H2S	function.c	/^void H2S(char a[], unsigned char temp_6[])$/;"	f
 HdrFrm	CfgGuiFunctions.h	/^GtkWidget *phtext, *angtext, *HdrFrm;$/;"	v
 INSTALL	Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
-INSTALL_PREFIX	Makefile	/^INSTALL_PREFIX = \/usr\/local\/$/;"	m
-LDLIBS	Makefile	/^LDLIBS=`pkg-config --cflags --libs gtk+-2.0`$/;"	m
+INSTALL_PREFIX	Makefile	/^INSTALL_PREFIX = ${HOME}\/iPDC$/;"	m
+LDLIBS	Makefile	/^LDLIBS=`pkg-config --cflags --libs gtk+-3.0`$/;"	m
 LIBS	Makefile	/^LIBS = -lpthread -lm -lrt$/;"	m
 MAX_STRING_SIZE	CfgFunction.c	45;"	d	file:
-MAX_STRING_SIZE	PmuGui.c	49;"	d	file:
+MAX_STRING_SIZE	PmuGui.c	50;"	d	file:
 MAX_STRING_SIZE	ServerFunction.h	35;"	d
 MUL_PMU	ServerFunction.c	/^void* MUL_PMU()$/;"	f
+MUL_sockfd	ServerFunction.h	/^int UDP_sockfd,TCP_sockfd,MUL_sockfd; \/* socket descriptors *\/$/;"	v
 MUL_thread	ServerFunction.h	/^pthread_t UDP_thread,TCP_thread,MUL_thread,DATA_thread;$/;"	v
 MulPort	ShearedMemoryStructure.h	/^    int MulPort;                \/* User given port for Multicasting *\/$/;"	m	struct:P_id
 Mulip	ShearedMemoryStructure.h	/^    char Mulip[20];             \/* Useg given Group IP for Multicasting *\/$/;"	m	struct:P_id
@@ -79,7 +80,7 @@ TCP_my_addr	ServerFunction.h	/^struct sockaddr_in UDP_my_addr,TCP_my_addr; \/* m
 TCP_sin_size	ServerFunction.c	/^int UDP_sockfd, TCP_sockfd, TCP_sin_size, UDP_addr_len, PhasorType[50];$/;"	v
 TCP_sin_size	ServerFunction.h	/^int UDP_addr_len,TCP_sin_size, numbytes;$/;"	v
 TCP_sockfd	ServerFunction.c	/^int UDP_sockfd, TCP_sockfd, TCP_sin_size, UDP_addr_len, PhasorType[50];$/;"	v
-TCP_sockfd	ServerFunction.h	/^int UDP_sockfd,TCP_sockfd; \/* socket descriptors *\/$/;"	v
+TCP_sockfd	ServerFunction.h	/^int UDP_sockfd,TCP_sockfd,MUL_sockfd; \/* socket descriptors *\/$/;"	v
 TCP_thread	ServerFunction.h	/^pthread_t UDP_thread,TCP_thread,MUL_thread,DATA_thread;$/;"	v
 TcpPort	ShearedMemoryStructure.h	/^	int TcpPort;			\/* User given TCP port number for server *\/$/;"	m	struct:P_id
 UDP_PMU	ServerFunction.c	/^void* UDP_PMU()$/;"	f
@@ -88,9 +89,8 @@ UDP_addr_len	ServerFunction.c	/^int UDP_sockfd, TCP_sockfd, TCP_sin_size, UDP_ad
 UDP_addr_len	ServerFunction.h	/^int UDP_addr_len,TCP_sin_size, numbytes;$/;"	v
 UDP_my_addr	ServerFunction.h	/^struct sockaddr_in UDP_my_addr,TCP_my_addr; \/* my address information *\/$/;"	v	typeref:struct:sockaddr_in
 UDP_sockfd	ServerFunction.c	/^int UDP_sockfd, TCP_sockfd, TCP_sin_size, UDP_addr_len, PhasorType[50];$/;"	v
-UDP_sockfd	ServerFunction.h	/^int UDP_sockfd,TCP_sockfd; \/* socket descriptors *\/$/;"	v
+UDP_sockfd	ServerFunction.h	/^int UDP_sockfd,TCP_sockfd,MUL_sockfd; \/* socket descriptors *\/$/;"	v
 UDP_thread	ServerFunction.h	/^pthread_t UDP_thread,TCP_thread,MUL_thread,DATA_thread;$/;"	v
-UI_fILE	pmu.c	52;"	d	file:
 UdpPort	ShearedMemoryStructure.h	/^	int UdpPort;			\/* User given UDP port number for server *\/$/;"	m	struct:P_id
 __SUPPORT_H__	PmuGui.h	31;"	d
 _pmuStruct	PmuGui.h	/^struct _pmuStruct$/;"	s
@@ -188,7 +188,7 @@ exit_menuitem	PmuGui.h	/^	GtkWidget *exit_menuitem;$/;"	m	struct:_pmuStruct
 f2c	function.c	/^void f2c (float f, unsigned char temp_1[])$/;"	f
 fdf	CfgFunction.c	/^int frmt, fdf, af, pf, pn, phnmr, annmr, dgnmr, num_pmu = 1; $/;"	v
 filePath	ShearedMemoryStructure.h	/^	char filePath[400];		\/* File path of user selected measurement file *\/$/;"	m	struct:P_id
-file_ok_sel	PmuGui.c	/^void file_ok_sel(GtkWidget *w, GtkFileSelection *fs)$/;"	f
+file_ok_sel	PmuGui.c	/^void file_ok_sel(GtkWidget *w, GtkFileChooser *fs)$/;"	f
 final_cfg_create	CfgGuiFunctions.c	/^void final_cfg_create ()$/;"	f
 final_cfg_update_call	CfgGuiFunctions.c	/^int final_cfg_update_call (GtkButton *but, gpointer udata)$/;"	f
 fp_DataFile	ServerFunction.h	/^FILE *fp_DataFile;$/;"	v
@@ -368,5 +368,5 @@ validation_pmu_server	PmuGui.c	/^int validation_pmu_server (GtkButton *button, g
 validation_remove_ph_an_num	CfgGuiFunctions.c	/^int validation_remove_ph_an_num (GtkButton *but, gpointer udata)$/;"	f
 validation_result	PmuGui.c	/^void validation_result (char *msg)$/;"	f
 validation_setup_file_name	CfgGuiFunctions.c	/^int validation_setup_file_name (GtkWidget *widget, gpointer udata)$/;"	f
-view_setup_file	PmuGui.c	/^void view_setup_file (GtkWidget *w, GtkFileSelection *fs)$/;"	f
+view_setup_file	PmuGui.c	/^void view_setup_file (GtkWidget *w, GtkFileChooser *fs)$/;"	f
 yes	ServerFunction.c	/^int yes = 1; 	\/* argument to setsockopt *\/$/;"	v

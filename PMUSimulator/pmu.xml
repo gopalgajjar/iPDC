@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<glade-interface>
+<interface>
   <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkAccelGroup" id="accelgroup1"/>
@@ -335,7 +335,7 @@ and PMU Server informations.</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="events"></property>
+            <property name="events"/>
             <property name="tooltip_text" translatable="yes">Click to exit the PMU Simulator Software.</property>
           </object>
           <packing>
@@ -468,4 +468,4 @@ Supportive IEEE C37.118 Synchrophasor std.</property>
       </object>
     </child>
   </object>
-</glade-interface>
+</interface>

@@ -32,9 +32,13 @@ prefix = /usr/local
 includedir = /usr/src/include
 
 INSTALL = /usr/bin/install -c
-INSTALL_PREFIX = /usr/local/
-CREATE_DIR = /usr/local/share/
-DESKTOP_DIR = /usr/share/applications
+#INSTALL_PREFIX = /usr/local/
+INSTALL_PREFIX = ${HOME}/iPDC
+#CREATE_DIR = /usr/local/share/
+CREATE_DIR = $(INSTALL_PREFIX)/share/
+#DESKTOP_DIR = /usr/share/applications
+#DESKTOP_DIR = /usr/share/applications
+DESKTOP_DIR = $(INSTALL_PREFIX)/desktop
 
 FILE1 = pmu.xml
 FILE2 = PmuLogo.png
@@ -46,6 +50,8 @@ FILE6 = PMU.desktop
 
 CC = gcc
 LIBS = -lpthread -lm -lrt
+#LDLIBS=`pkg-config --cflags --libs gtk+-3.0`
+#CFLAGS=`pkg-config --cflags --cflags gtk+-3.0`
 LDLIBS=`pkg-config --cflags --libs gtk+-3.0`
 CFLAGS=`pkg-config --cflags --cflags gtk+-3.0` -DGTK_DISABLE_SINGLE_INCLUDES -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGSEAL_ENABLE
 
@@ -65,7 +71,7 @@ PROGRAM = PMU
 COMPILE = $(CC) 
 
 $(PROGRAM): $(OBJECTS)
-	$(CC) $(OBJECTS) $(LDLIBS) $(LIBS) -o $@
+	$(CC) $(OBJECTS) $(LDLIBS) $(LIBS) -g -o $@
 
 %.o: %.c
 	$(COMPILE) $(CFLAGS) -c -g $<
@@ -79,7 +85,7 @@ install: $(PROGRAM)
 	cp -f images/$(FILE4) $(CREATE_DIR)PMU/$(FILE4)
 	cp -f images/$(FILE5) $(CREATE_DIR)PMU/$(FILE5)
 	cp -f images/$(FILE6) $(DESKTOP_DIR)/$(FILE6)
-	cp $(PROGRAM) $(INSTALL_PREFIX)bin/$(PROGRAM)
+	cp $(PROGRAM) $(INSTALL_PREFIX)/bin/$(PROGRAM)
 	mkdir -p $(HOME)/iPDC/DataDir
 	mkdir -p $(HOME)/iPDC/DataDir/50Hz_measurement_files
 	mkdir -p $(HOME)/iPDC/DataDir/60Hz_measurement_files
