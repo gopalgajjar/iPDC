@@ -142,7 +142,7 @@ int main(int argc, char **argv)
 		gtk_builder_connect_signals(builder, NULL);
 
           // Changes how a toplevel window deals with its size request and user resize attempts. 
-          gtk_window_set_resizable (GTK_WINDOW (pmu_data->Pmu_Simulator), FALSE);
+          gtk_window_set_resizable (GTK_WINDOW (pmu_data->Pmu_Simulator), TRUE);
           gtk_window_set_position(GTK_WINDOW(pmu_data->Pmu_Simulator), GTK_WIN_POS_CENTER);
           strcpy(UI_FILE, UI_FILE_DIR);
           strcat(UI_FILE,"/logo.png"); 

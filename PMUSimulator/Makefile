@@ -37,8 +37,9 @@ INSTALL_PREFIX = ${HOME}/iPDC
 #CREATE_DIR = /usr/local/share/
 CREATE_DIR = $(INSTALL_PREFIX)/share/
 #DESKTOP_DIR = /usr/share/applications
-#DESKTOP_DIR = /usr/share/applications
-DESKTOP_DIR = $(INSTALL_PREFIX)/desktop
+DESKTOP_DIR = ${HOME}/.local/share/applications
+#DESKTOP_DIR = $(INSTALL_PREFIX)/desktop
+ICON_DIR = ${HOME}/.local/share/icons
 
 FILE1 = pmu.xml
 FILE2 = PmuLogo.png
@@ -46,7 +47,7 @@ FILE3 = PSLab.PNG
 FILE4 = PmuLogo1.png
 FILE5 = logo.png
 FILE6 = PMU.desktop
-#FILE7 = DataDir
+FILE7 = runPMU
 
 CC = gcc
 LIBS = -lpthread -lm -lrt
@@ -84,8 +85,10 @@ install: $(PROGRAM)
 	cp -f images/$(FILE3) $(CREATE_DIR)PMU/$(FILE3)
 	cp -f images/$(FILE4) $(CREATE_DIR)PMU/$(FILE4)
 	cp -f images/$(FILE5) $(CREATE_DIR)PMU/$(FILE5)
+	cp -f images/$(FILE5) $(ICON_DIR)/$(FILE5)
 	cp -f images/$(FILE6) $(DESKTOP_DIR)/$(FILE6)
 	cp $(PROGRAM) $(INSTALL_PREFIX)/bin/$(PROGRAM)
+	cp $(FILE7) $(INSTALL_PREFIX)/bin/$(FILE7)
 	mkdir -p $(HOME)/iPDC/DataDir
 	mkdir -p $(HOME)/iPDC/DataDir/50Hz_measurement_files
 	mkdir -p $(HOME)/iPDC/DataDir/60Hz_measurement_files
@@ -96,7 +99,9 @@ install: $(PROGRAM)
 
 uninstall:
 	rm -f $(INSTALL_PREFIX)bin/$(PROGRAM)
+	rm -f $(INSTALL_PREFIX)bin/$(FILE7)
 	rm -rf $(CREATE_DIR)PMU$
+	rm -rf $(ICON_DIR)/$(FILE5)
 	rm -rf $(DESKTOP_DIR)/$(FILE6)
 	rm -f $(CLEAN_OBJECTS) $(PROGRAM)
 

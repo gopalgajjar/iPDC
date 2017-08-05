@@ -1,0 +1,5 @@
+#! /bin/bash
+
+export iPDC_UI_DIR=$HOME/iPDC/share/PMU
+
+$HOME/iPDC/bin/PMU
