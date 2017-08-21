@@ -55,6 +55,7 @@ CLEAN_OBJECTS =  recreate.o connections.o new_pmu_or_pdc.o parser.o dallocate.o 
 PROGRAM = DBServer
 
 DIRSTRUCT = creatDirStructure.sh
+CONVERTFLOAT = convertComtrade.m 
 
 COMPILE = $(CC) 
 
@@ -69,12 +70,15 @@ clean:
 
 install: $(PROGRAM)
 	mkdir -p $(INSTALL_PREFIX)/bin/$
+	mkdir -p $(INSTALL_PREFIX)/historianData/$
 	cp -f $(PROGRAM) $(INSTALL_PREFIX)/bin/$(PROGRAM)
 	cp -f $(DIRSTRUCT) $(INSTALL_PREFIX)/bin/$(DIRSTRUCT)
+	cp -f $(CONVERTFLOAT) $(INSTALL_PREFIX)/bin/$(CONVERTFLOAT)
+	chmod +x $(INSTALL_PREFIX)/bin/$(DIRSTRUCT)
 
 uninstall:
 	rm -f $(INSTALL_PREFIX)/bin/$(PROGRAM)
-	rm -f $(DIRSTRUCT) $(INSTALL_PREFIX)/bin/$(DIRSTRUCT)
+	rm -f $(INSTALL_PREFIX)/bin/$(DIRSTRUCT)
 connections.o: connections.c connections.h parser.h global.h
 dallocate.o: dallocate.c parser.h dallocate.h global.h
 dbserver.o: dbserver.c connections.h parser.h recreate.h
