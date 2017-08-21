@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=DBServer
+Comment=Historian for iPDC
+Exec=bash -c '$HOME/iPDC/bin/runDBServer;$SHELL'
+#Exec=xfce4-terminal -e "bash -c '$HOME/iPDC/bin/runDBServer;$SHELL'"
+#Exec=/home/gopal/iPDC/bin/runDBServer
+Icon=ipdcLogo.png
+Terminal=true
+Categories=Education

@@ -34,6 +34,11 @@ includedir = /usr/src/include
 INSTALL = /usr/bin/install -c
 INSTALL_PREFIX = $(prefix)
 
+DESKTOP_DIR = ${HOME}/.local/share/applications
+
+FILE1 = DBServer.desktop
+FILE2 = runDBServer
+
 CC = /usr/bin/gcc
 LIBS = -lpthread -lm
 # LDLIBS=-g `mysql_config --cflags --libs` -O
@@ -75,10 +80,14 @@ install: $(PROGRAM)
 	cp -f $(DIRSTRUCT) $(INSTALL_PREFIX)/bin/$(DIRSTRUCT)
 	cp -f $(CONVERTFLOAT) $(INSTALL_PREFIX)/bin/$(CONVERTFLOAT)
 	chmod +x $(INSTALL_PREFIX)/bin/$(DIRSTRUCT)
+	cp -f $(FILE2) $(INSTALL_PREFIX)/bin/$(FILE2)
+	chmod +x $(INSTALL_PREFIX)/bin/$(FILE2)
+	cp -f $(FILE1) $(DESKTOP_DIR)/$(FILE1)
 
 uninstall:
 	rm -f $(INSTALL_PREFIX)/bin/$(PROGRAM)
 	rm -f $(INSTALL_PREFIX)/bin/$(DIRSTRUCT)
+	rm -rf $(DESKTOP_DIR)/$(FILE1)
 connections.o: connections.c connections.h parser.h global.h
 dallocate.o: dallocate.c parser.h dallocate.h global.h
 dbserver.o: dbserver.c connections.h parser.h recreate.h
