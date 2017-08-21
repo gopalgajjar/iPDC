@@ -173,7 +173,7 @@ void frame_size()
 		tempi = 1;
 
           /* Read all the unnecessary lines - PMUServer only */
-		while(tempi < 4)
+		while(tempi < 6)
 		{
 			read = getline(&rline, &len, fp1);
 
@@ -1104,7 +1104,7 @@ void* UDP_PMU()
     /* Apply 1 ms delay if required to allow the other thread to complete its
      * work
      */
-	while(strlen(pmuFilePath) == 0) usleep(1000);
+	while(strlen(pmuFilePath) == 0) usleep(5000);
 	
     strcpy(filename1, pmuFilePath);
 
@@ -1113,7 +1113,7 @@ void* UDP_PMU()
 	{
 		ind = 2;
 		memset(udp_command,'\0',18);
-
+        
           /* UDP data Received */
 		if ((numbytes = recvfrom(UDP_sockfd, udp_command, 18, 0, (struct sockaddr *)&UDP_addr, (socklen_t *)&UDP_addr_len)) == -1)
 		{ 
@@ -1122,7 +1122,7 @@ void* UDP_PMU()
 		}
 		else		/* New datagram has been received */
 		{
-               PDC_MATCH(0, 0);
+            PDC_MATCH(0, 0);
 
 			c = udp_command[1];
 			c <<= 1;
@@ -1910,7 +1910,11 @@ void start_server()
 		perror(strerror(err));
 		exit(1);	
 	}
-
+/*    else
+    {
+        printf("UDP Thread created successfully\n");
+    };
+*/
 	if((err = pthread_create(&TCP_thread,NULL,TCP_PMU,NULL))) {
 
 		perror(strerror(err));
@@ -1945,6 +1949,7 @@ void  SIGUSR1_handler(int sig)
 {
 	signal(sig, SIG_IGN);
 	printf("PMU Server SIGUSR-1 Received.\n");
+//    printf("ShmPTR datafile = %i\n",ShmPTR->dataFileVar);
 
 	if(ShmPTR->dataFileVar == 1)
 	{
