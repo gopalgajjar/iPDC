@@ -1,0 +1,4 @@
+export iPDC_UI_DIR=$HOME/iPDC/share/iPDC
+
+$HOME/iPDC/bin/iPDC $1 1>iPDC_log 2>&1 
+#$HOME/iPDC/bin/iPDC $1 1>iPDC_log  
