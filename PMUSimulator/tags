@@ -22,7 +22,7 @@ Change_pmu_configuration	CfgGuiFunctions.c	/^void Change_pmu_configuration(GtkWi
 ConfigurationChange	CfgFunction.h	/^struct ConfigurationChange $/;"	s
 ConfigurationFrame	CfgFunction.h	/^struct ConfigurationFrame $/;"	s
 DATA_thread	ServerFunction.h	/^pthread_t UDP_thread,TCP_thread,MUL_thread,DATA_thread;$/;"	v
-DESKTOP_DIR	Makefile	/^DESKTOP_DIR = $(INSTALL_PREFIX)\/desktop$/;"	m
+DESKTOP_DIR	Makefile	/^DESKTOP_DIR = ${HOME}\/.local\/share\/applications$/;"	m
 E_button	PmuGui.h	/^	GtkWidget *E_button;$/;"	m	struct:_pmuStruct
 FILE1	Makefile	/^FILE1 = pmu.xml$/;"	m
 FILE2	Makefile	/^FILE2 = PmuLogo.png$/;"	m
@@ -30,10 +30,12 @@ FILE3	Makefile	/^FILE3 = PSLab.PNG$/;"	m
 FILE4	Makefile	/^FILE4 = PmuLogo1.png$/;"	m
 FILE5	Makefile	/^FILE5 = logo.png$/;"	m
 FILE6	Makefile	/^FILE6 = PMU.desktop$/;"	m
+FILE7	Makefile	/^FILE7 = runPMU$/;"	m
 GW	pmu.c	112;"	d	file:
 GW	pmu.c	138;"	d	file:
 H2S	function.c	/^void H2S(char a[], unsigned char temp_6[])$/;"	f
 HdrFrm	CfgGuiFunctions.h	/^GtkWidget *phtext, *angtext, *HdrFrm;$/;"	v
+ICON_DIR	Makefile	/^ICON_DIR = ${HOME}\/.local\/share\/icons$/;"	m
 INSTALL	Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
 INSTALL_PREFIX	Makefile	/^INSTALL_PREFIX = ${HOME}\/iPDC$/;"	m
 LDLIBS	Makefile	/^LDLIBS=`pkg-config --cflags --libs gtk+-3.0`$/;"	m
@@ -62,7 +64,7 @@ P_id	ShearedMemoryStructure.h	/^struct P_id {$/;"	s
 PhasorChWin	CfgGuiFunctions.h	/^GtkWidget *PhasorChWin;$/;"	v
 PhasorType	ServerFunction.c	/^int UDP_sockfd, TCP_sockfd, TCP_sin_size, UDP_addr_len, PhasorType[50];$/;"	v
 PhasorType	ServerFunction.c	/^int fsecNum = 0, PhasorType[50];$/;"	v
-Pmu_Help	PmuGui.c	/^void Pmu_Help (GtkButton *but, gpointer udata)$/;"	f
+Pmu_Help	PmuGui.c	/^void Pmu_Help (GtkWidget *but, gpointer udata)$/;"	f
 Pmu_Simulator	PmuGui.h	/^	GtkWidget *Pmu_Simulator;  $/;"	m	struct:_pmuStruct
 SEND_DATA	ServerFunction.c	/^void* SEND_DATA()$/;"	f
 SHELL	Makefile	/^SHELL = \/bin\/sh$/;"	m
@@ -364,7 +366,7 @@ validation_new_data_rate	CfgGuiFunctions.c	/^int validation_new_data_rate (GtkBu
 validation_new_phasor_names	CfgGuiFunctions.c	/^int validation_new_phasor_names()$/;"	f
 validation_ph_an_num	CfgGuiFunctions.c	/^int validation_ph_an_num (GtkButton *but, gpointer udata)$/;"	f
 validation_phasor_names	CfgGuiFunctions.c	/^int validation_phasor_names(GtkWidget *widget, gpointer udata)$/;"	f
-validation_pmu_server	PmuGui.c	/^int validation_pmu_server (GtkButton *button, gpointer udata)$/;"	f
+validation_pmu_server	PmuGui.c	/^int validation_pmu_server (GtkWidget *button, gpointer udata)$/;"	f
 validation_remove_ph_an_num	CfgGuiFunctions.c	/^int validation_remove_ph_an_num (GtkButton *but, gpointer udata)$/;"	f
 validation_result	PmuGui.c	/^void validation_result (char *msg)$/;"	f
 validation_setup_file_name	CfgGuiFunctions.c	/^int validation_setup_file_name (GtkWidget *widget, gpointer udata)$/;"	f

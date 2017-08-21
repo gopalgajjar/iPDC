@@ -1273,8 +1273,8 @@ void apply_pmu_setup (GtkWidget *w, gpointer udata)
             strcpy(ShmPTR->Mulip,tmudp_mulip);
 
 
-			//PMU_uport = tmudp_port;
-			//PMU_tport = tmudp_port1;
+			PMU_uport = tmudp_port;
+			PMU_tport = tmudp_port1;
 
 			p1.pid = ShmPTR->pid;
 
