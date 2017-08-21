@@ -91,11 +91,12 @@ install: $(PROGRAM)
 	cp -f images/$(FILE6) $(DESKTOP_DIR)/$(FILE6)
 	cp $(PROGRAM) $(INSTALL_PREFIX)/bin/$(PROGRAM)
 	cp $(FILE7) $(INSTALL_PREFIX)/bin/$(FILE7)
+	chmod +x $(INSTALL_PREFIX)/bin/$(FILE7)
 #	rm -f $(CLEAN_OBJECTS) $(PROGRAM)
 
 uninstall:
-	rm -f $(INSTALL_PREFIX)bin/$(PROGRAM)
-	rm -f $(INSTALL_PREFIX)bin/$(FILE7)
+	rm -f $(INSTALL_PREFIX)/bin/$(PROGRAM)
+	rm -f $(INSTALL_PREFIX)/bin/$(FILE7)
 	rm -rf $(CREATE_DIR)iPDC$
 	rm -rf $(ICON_DIR)/$(FILE2)
 	rm -rf $(DESKTOP_DIR)/$(FILE6)
