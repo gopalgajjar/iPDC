@@ -37,8 +37,9 @@ INSTALL_PREFIX = ${HOME}/iPDC
 #CREATE_DIR = /usr/local/share/
 CREATE_DIR = $(INSTALL_PREFIX)/share/
 #DESKTOP_DIR = /usr/share/applications
-#DESKTOP_DIR = /usr/share/applications
-DESKTOP_DIR = $(INSTALL_PREFIX)/desktop
+#DESKTOP_DIR = $(INSTALL_PREFIX)/desktop
+DESKTOP_DIR = ${HOME}/.local/share/applications
+ICON_DIR = ${HOME}/.local/share/icons
 
 FILE1 = iPDC.xml
 FILE2 = ipdcLogo.png
@@ -46,6 +47,7 @@ FILE3 = PSLab.PNG
 FILE4 = ipdcLogo1.png
 FILE5 = logo.png
 FILE6 = iPDC.desktop
+FILE7 = runiPDC
 
 CC = gcc
 LIBS = -lpthread
@@ -61,7 +63,7 @@ SOURCES = \
 	parser.c parser.h \
 	dallocate.c dallocate.h \
 	ipdcGui.c ipdcGui.h \
-        global.h 
+	global.h 
 
 OBJECTS =  ipdc.c recreate.o connections.o new_pmu_or_pdc.o parser.o dallocate.o align_sort.o ipdcGui.o 
 
@@ -85,13 +87,17 @@ install: $(PROGRAM)
 	cp -f images/$(FILE3) $(CREATE_DIR)iPDC/$(FILE3)
 	cp -f images/$(FILE4) $(CREATE_DIR)iPDC/$(FILE4)
 	cp -f images/$(FILE5) $(CREATE_DIR)iPDC/$(FILE5)
+	cp -f images/$(FILE5) $(ICON_DIR)/$(FILE2)
 	cp -f images/$(FILE6) $(DESKTOP_DIR)/$(FILE6)
 	cp $(PROGRAM) $(INSTALL_PREFIX)/bin/$(PROGRAM)
+	cp $(FILE7) $(INSTALL_PREFIX)/bin/$(FILE7)
 #	rm -f $(CLEAN_OBJECTS) $(PROGRAM)
 
 uninstall:
 	rm -f $(INSTALL_PREFIX)bin/$(PROGRAM)
+	rm -f $(INSTALL_PREFIX)bin/$(FILE7)
 	rm -rf $(CREATE_DIR)iPDC$
+	rm -rf $(ICON_DIR)/$(FILE2)
 	rm -rf $(DESKTOP_DIR)/$(FILE6)
 	rm -f $(CLEAN_OBJECTS) $(PROGRAM)
 
