@@ -78,7 +78,8 @@
 int df_pmu_id, df_fdf, df_af, df_pf, df_pn, df_phnmr, df_annmr, df_dgnmr;
 int df_data_frm_size = 0, old_data_rate = 0, cfg_size, hdr_size=0;
 int count = 0, pmuse=0, sc1 = 0, tcp_port, udp_port, mul_port, tmp_wait = 1, df_fnom;
-int UDP_sockfd, TCP_sockfd, TCP_sin_size, UDP_addr_len, PhasorType[50];
+int UDP_sockfd, TCP_sockfd, TCP_sin_size,  PhasorType[50];
+socklen_t UDP_addr_len;
 int udp_cfg_flag = 0, tcp_cfg_flag = 0, tcp_data_flag = 0, udp_data_flag = 0;
 int err, errno, udp_data_trans_off = 1, tcp_data_trans_off = 1, stat_flag = 0;
 char mul_ip[20];
@@ -991,95 +992,96 @@ void* SEND_DATA()
 
 void PDC_MATCH(int proto, int newfd)
 {
-     int flag = 1;
-     struct PDC_Details *temp_pdc;
+    int flag = 1;
+    struct PDC_Details *temp_pdc;
 
-	pthread_mutex_lock(&mutex_pdc_object);
+    pthread_mutex_lock(&mutex_pdc_object);
 
 	if(PDCfirst != NULL)
-	{
-		temp_pdc = PDCfirst;
+    {
+        temp_pdc = PDCfirst;
 
-		while(temp_pdc != NULL ) {
+        while(temp_pdc != NULL ) {
 
-		     if(!strncasecmp(temp_pdc->protocol,"UDP",3))
-		    	{
-				if(!strcmp(temp_pdc->ip,inet_ntoa(UDP_addr.sin_addr)))
-                    {
-					/* Only replace the new conn details with old? */
-				     strcpy(temp_pdc->ip, inet_ntoa(UDP_addr.sin_addr));     // ip
-				     strncpy(temp_pdc->protocol,"UDP",3); // protocol
-				     temp_pdc->protocol[3] = '\0';
-				     temp_pdc->port = ntohs(UDP_addr.sin_port);   //UDP_addr.sin_port
+            if(!strncasecmp(temp_pdc->protocol,"UDP",3))
+            {
+                if(!strcmp(temp_pdc->ip,inet_ntoa(UDP_addr.sin_addr)))
+                {
+                    /* Only replace the new conn details with old? */
+                    strcpy(temp_pdc->ip, inet_ntoa(UDP_addr.sin_addr));     // ip
+                    strncpy(temp_pdc->protocol,"UDP",3); // protocol
+                    temp_pdc->protocol[3] = '\0';
+                    temp_pdc->port = ntohs(UDP_addr.sin_port);   //UDP_addr.sin_port
 
-				     bzero(&temp_pdc->pdc_addr,sizeof(temp_pdc->pdc_addr));
-				     temp_pdc->pdc_addr.sin_family = AF_INET;
-				     temp_pdc->pdc_addr.sin_addr.s_addr =  inet_addr(temp_pdc->ip);
-				     temp_pdc->pdc_addr.sin_port = htons(temp_pdc->port);
-				     memset(&(temp_pdc->pdc_addr.sin_zero), '\0', 8);   // zero the rest of the struct
-				     temp_pdc->sockfd = UDP_sockfd;
-		               temp_pdc->cmd_received = 1;
+                    bzero(&temp_pdc->pdc_addr,sizeof(temp_pdc->pdc_addr));
+                    temp_pdc->pdc_addr.sin_family = AF_INET;
+                    temp_pdc->pdc_addr.sin_addr.s_addr =  inet_addr(temp_pdc->ip);
+                    temp_pdc->pdc_addr.sin_port = htons(temp_pdc->port);
+                    memset(&(temp_pdc->pdc_addr.sin_zero), '\0', 8);   // zero the rest of the struct
+                    temp_pdc->sockfd = UDP_sockfd;
+                    temp_pdc->cmd_received = 1;
 
-		               flag = 0;
-					break;
-		     	}
-			}
-			temp_pdc = temp_pdc->next;
-		}//while ends
-	}//end of if
+                    flag = 0;
+                    break;
+                }
+            }
+            temp_pdc = temp_pdc->next;
+        }//while ends
+    }//end of if
 
-     if(flag)
-     {
-		temp_pdc = malloc(sizeof(struct PDC_Details));
-		if(!temp_pdc) {
+    if(flag)
+    {
+        temp_pdc = malloc(sizeof(struct PDC_Details));
+        if(!temp_pdc) {
 
-			printf("Not enough memory temp_pdc\n");
-			exit(1);
-		}
+            printf("Not enough memory temp_pdc\n");
+            exit(1);
+        }
 
-		if(proto == 0)
-		{
-		     strcpy(temp_pdc->ip, inet_ntoa(UDP_addr.sin_addr));     // ip
-		     strncpy(temp_pdc->protocol,"UDP",3); // protocol
-		     temp_pdc->protocol[3] = '\0';
-		     temp_pdc->port = ntohs(UDP_addr.sin_port);   //UDP_addr.sin_port
-               temp_pdc->sockfd = UDP_sockfd;
-               temp_pdc->cmd_received = 1;   //received a cmd frame from pdc? only for UDP
-		}
-		else
-		{
-			printf("TCP new?\n");
-		     strcpy(temp_pdc->ip, inet_ntoa(TCP_addr.sin_addr));     // ip
-		     strncpy(temp_pdc->protocol,"TCP",3); // protocol
-		     temp_pdc->protocol[3] = '\0';
-		     temp_pdc->port = ntohs(TCP_addr.sin_port);   //UDP_addr.sin_port
-               temp_pdc->sockfd = newfd; //new_sockfd
-		     temp_pdc->tcpup = 0;
-		}
-               bzero(&temp_pdc->pdc_addr,sizeof(temp_pdc->pdc_addr));
-               temp_pdc->pdc_addr.sin_family = AF_INET;
-               temp_pdc->pdc_addr.sin_addr.s_addr =  inet_addr(temp_pdc->ip);
-               temp_pdc->pdc_addr.sin_port = htons(temp_pdc->port);
-               memset(&(temp_pdc->pdc_addr.sin_zero), '\0', 8);   // zero the rest of the struct
-               temp_pdc->STAT_change = 0;  //no change
-               temp_pdc->pmu_cfgsent = 0;     //not sent
-               temp_pdc->data_transmission = 1;   //off
-               temp_pdc->address_set = 0;
-          
-               if(PDCfirst == NULL) {
+        if(proto == 0)
+        {
+            printf("UDP new.\n");
+            strcpy(temp_pdc->ip, inet_ntoa(UDP_addr.sin_addr));     // ip
+            strncpy(temp_pdc->protocol,"UDP",3); // protocol
+            temp_pdc->protocol[3] = '\0';
+            temp_pdc->port = ntohs(UDP_addr.sin_port);   //UDP_addr.sin_port
+            temp_pdc->sockfd = UDP_sockfd;
+            temp_pdc->cmd_received = 1;   //received a cmd frame from pdc? only for UDP
+        }
+        else
+        {
+            printf("TCP new.\n");
+            strcpy(temp_pdc->ip, inet_ntoa(TCP_addr.sin_addr));     // ip
+            strncpy(temp_pdc->protocol,"TCP",3); // protocol
+            temp_pdc->protocol[3] = '\0';
+            temp_pdc->port = ntohs(TCP_addr.sin_port);   //UDP_addr.sin_port
+            temp_pdc->sockfd = newfd; //new_sockfd
+            temp_pdc->tcpup = 0;
+        }
+        bzero(&temp_pdc->pdc_addr,sizeof(temp_pdc->pdc_addr));
+        temp_pdc->pdc_addr.sin_family = AF_INET;
+        temp_pdc->pdc_addr.sin_addr.s_addr =  inet_addr(temp_pdc->ip);
+        temp_pdc->pdc_addr.sin_port = htons(temp_pdc->port);
+        memset(&(temp_pdc->pdc_addr.sin_zero), '\0', 8);   // zero the rest of the struct
+        temp_pdc->STAT_change = 0;  //no change
+        temp_pdc->pmu_cfgsent = 0;     //not sent
+        temp_pdc->data_transmission = 1;   //off
+        temp_pdc->address_set = 0;
 
-                    PDCfirst = temp_pdc;
-                    temp_pdc->prev = NULL;
+        if(PDCfirst == NULL) {
 
-               } else {
+            PDCfirst = temp_pdc;
+            temp_pdc->prev = NULL;
 
-                    PDClast->next = temp_pdc;
-                    temp_pdc->prev = PDClast;
-               }
+        } else {
 
-               PDClast = temp_pdc;
-               temp_pdc->next = NULL;
-     }	
+            PDClast->next = temp_pdc;
+            temp_pdc->prev = PDClast;
+        }
+
+        PDClast = temp_pdc;
+        temp_pdc->next = NULL;
+    }	
 
 	pthread_mutex_unlock(&mutex_pdc_object);
 }
@@ -1095,27 +1097,31 @@ void PDC_MATCH(int proto, int newfd)
 void* UDP_PMU()
 {
 	/* local variables */
-	unsigned char c;
-	int n, ind;
-	char udp_command[18],filename1[200];
-	FILE *fp1;
-     struct PDC_Details *temp_pdc;
+    unsigned char c;
+    int n, ind;
+    char udp_command[18],filename1[200];
+    FILE *fp1;
+    struct PDC_Details *temp_pdc;
 
     /* Apply 1 ms delay if required to allow the other thread to complete its
      * work
      */
-	while(strlen(pmuFilePath) == 0) usleep(5000);
+	while(strlen(pmuFilePath) == 0) usleep(1000);
 	
     strcpy(filename1, pmuFilePath);
-
+    UDP_addr_len = sizeof(UDP_addr);
      /* This while is always in listening mode to receiving frames from PDC and their respective reply */
 	while(1)	
 	{
 		ind = 2;
 		memset(udp_command,'\0',18);
         
-          /* UDP data Received */
-		if ((numbytes = recvfrom(UDP_sockfd, udp_command, 18, 0, (struct sockaddr *)&UDP_addr, (socklen_t *)&UDP_addr_len)) == -1)
+        /* UDP data Received */
+        printf("\n Waiting for Cmd Frame from a PDC\n"); 
+		numbytes = recvfrom(UDP_sockfd, udp_command, 18, 0, (struct sockaddr *)&UDP_addr, (socklen_t *)&UDP_addr_len);
+
+        printf("\n 2 PMU server: got connection from %s, & on Port = %d.\n",inet_ntoa(UDP_addr.sin_addr), ntohs(UDP_addr.sin_port)); 
+		if (numbytes == -1)
 		{ 
 			perror("recvfrom");
 			exit(1);
@@ -1123,6 +1129,7 @@ void* UDP_PMU()
 		else		/* New datagram has been received */
 		{
             PDC_MATCH(0, 0);
+        printf("\n 3 PMU server: got connection from %s, & on Port = %d.\n",inet_ntoa(UDP_addr.sin_addr), ntohs(UDP_addr.sin_port)); 
 
 			c = udp_command[1];
 			c <<= 1;
@@ -1134,7 +1141,7 @@ void* UDP_PMU()
 
 				if((c & 0x05) == 0x05)		/* Command frame for Configuration Frame from PDC */
 				{ 				
-					printf("\nCommand Frame for Configuration Frame-2 is received fron PDC.\n"); 
+					printf("\nCommand Frame for Configuration Frame-2 is received from PDC.\n"); 
 					fp1 = fopen (filename1,"rb");
 
 					if (fp1 == NULL)
