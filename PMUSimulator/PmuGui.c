@@ -805,18 +805,10 @@ void pmu_setup_file_selection(GtkWidget *widget, gpointer udata)
 void view_setup_file (GtkWidget *w, GtkFileChooser *fs)
 {
 	/* local variables */
-	GtkWidget *table, *label, *list;
-	GtkWidget *apply_button, *cancel_button;
+	GtkWidget *view, *main_box;
     gint event;
-
-	int tempi, i;
-	char stn[17], *s,*rline = NULL;
-	char *d1, buff[15], *markup;
-	unsigned int framesize;
-	unsigned char *line, tempC[2];
-	size_t len = 0;
-	ssize_t read;
-	FILE *fp1;
+	char *s;
+    FILE *fp1;
 
 	s = (char *)gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (fs));
 	strcpy(fptr, s);
@@ -831,353 +823,19 @@ void view_setup_file (GtkWidget *w, GtkFileChooser *fs)
 	}
 	else 
 	{
-		/* If its available, then create a new dialog window for displaying the iPDC details. */
-        setup_display_window = gtk_dialog_new_with_buttons ("PMU Simulator Setup",
+        /* If its available, then create a new dialog window for displaying the iPDC details. */
+
+       setup_display_window = gtk_dialog_new_with_buttons ("PMU Simulator Setup",
                 GTK_WINDOW(w),
                 GTK_DIALOG_MODAL,
                 "_Apply", GTK_RESPONSE_ACCEPT,
                 "_Cancel", GTK_RESPONSE_CANCEL, NULL);
         gtk_dialog_set_default_response (GTK_DIALOG(setup_display_window), GTK_RESPONSE_ACCEPT);
 
-
-		/* Create a table of ? by 2 squares */
-/*		table = gtk_grid_new ();
-        gtk_grid_set_row_homogeneous (GTK_GRID(table), 10);
-*/        
-        list = gtk_list_box_new();
-        
-		gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG(setup_display_window))), list, TRUE, TRUE, 0);
-/*		gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG(setup_display_window))), table, TRUE, TRUE, 0);
-		gtk_widget_show (table);
-*/
-        gtk_widget_show (list);
-		
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("<span foreground=\"#7D2252\" font='12'><b>PMU Setup File Details</b></span>");
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-		//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 2, 0, 1);
-        //gtk_grid_attach (GTK_GRID (table), label, 0,0,2,1);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("<span foreground=\"#0000FF\" font='12'>Server Info</span>");
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-		//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 2, 2, 3);
-        //gtk_grid_attach (GTK_GRID (table), label, 0,2,2,1);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-		label = gtk_label_new (" ");
-        read = getline(&rline, &len, fp1);
-        strtok(rline,"\n");
-		markup = g_markup_printf_escaped ("UDP Port\t\t\t\t:\t%s",rline);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-		label = gtk_label_new (" ");
-        read = getline(&rline, &len, fp1);
-        strtok(rline,"\n");
-		markup = g_markup_printf_escaped ("TCP Port\t\t\t\t:\t%s",rline);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-		label = gtk_label_new (" ");
-        read = getline(&rline, &len, fp1);
-        strtok(rline,"\n");
-		markup = g_markup_printf_escaped ("Multicast Port\t\t\t:\t%s",rline);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-		
-        label = gtk_label_new (" ");
-        read = getline(&rline, &len, fp1);
-        strtok(rline,"\n");
-		markup = g_markup_printf_escaped ("Multicast IP\t\t\t:\t%s",rline);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("<span foreground=\"#0000FF\" font='12'>Configuration Info</span>");
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-    
-        read = getline(&rline, &len, fp1);
-        d1 = strtok (rline," ");
-        d1 = strtok (NULL," ");
-        d1 = strtok (NULL,"\n");
-        framesize = atoi(d1);
-        line = malloc(framesize*sizeof(unsigned char));
-        fread(line, sizeof(unsigned char), framesize, fp1);
-        fseek(fp1, SEEK_SET, 0);
-
-        tempC[0] = line[4];
-        tempC[1] = line[5];
-
-        tempi = tempC[0];
-        tempi<<=8;
-        tempi |=tempC[1];
-
-        sprintf(buff, "%d", tempi);
-
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("PMU ID\t\t\t\t:\t%d",tempi);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-        g_free (line);
-
-        for(i=0; i<16; i++)
-        {
-            stn[i] = line[20+i];
-        }
-        stn[16] = '\0';
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("Station Name\t\t\t:\t%s",stn);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-        tempC[0] = line[38];
-        tempC[1] = line[39];
-        tempi = c2i(tempC);
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("Format word\t\t\t:\t%d",tempi);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-        tempC[0] = line[40];
-        tempC[1] = line[41];
-        tempi = c2i(tempC);
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("Number of Phasors\t\t:\t%d",tempi);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-        tempC[0] = line[42];
-        tempC[1] = line[43];
-        tempi = c2i(tempC);
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("Number of Analogs\t\t:\t%d",tempi);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-        tempC[0] = line[44];
-        tempC[1] = line[45];
-        tempi = c2i(tempC);
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("Number of Digital words\t:\t%d",tempi);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-        tempC[0] = line[framesize-6];
-        tempC[1] = line[framesize-5];
-        tempi = c2i(tempC);
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("CFG Count\t\t\t:\t%d",tempi);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-        tempC[0] = line[framesize-4];
-        tempC[1] = line[framesize-3];
-        tempi = c2i(tempC);
-		label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("Data Rate\t\t\t:\t%d",tempi);
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-		gtk_widget_show (label);
-		g_free (markup);
-
-/*      label = gtk_label_new (" ");
-		markup = g_markup_printf_escaped ("<span foreground=\"#333333\" font='8'><b>Note : Configuration information of selected PMU Setup file.</b></span>");
-		gtk_label_set_markup (GTK_LABEL (label), markup);
-        gtk_label_set_xalign (GTK_LABEL (label),0);
-        gtk_label_set_yalign (GTK_LABEL (label),0);
-        //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-		//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 2, 16, 17);
-        gtk_grid_attach (GTK_GRID (table), label, 0,15,2,1);
-		gtk_widget_show (label);
-		g_free (markup);
-*/
-/*		tempi = 1;
-		while(tempi < 6)
-		{
-			read = getline(&rline, &len, fp1);
-
-			if(read == 0)
-				break;
-
-			if(tempi == 1)
-			{
-				label = gtk_label_new (rline);
-				//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 3, 4);
-                gtk_grid_attach (GTK_GRID (table), label, 1,3,1,1);
-				gtk_widget_show (label);
-			}
-			else if(tempi == 2)
-			{
-				label = gtk_label_new (rline);
-				//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 4, 5);
-                gtk_grid_attach (GTK_GRID (table), label, 1,4,1,1);
-				gtk_widget_show (label);
-			}
-			tempi++;
-		}
-
-		if(read > 0)
-		{
-			d1 = strtok (rline," ");
-			d1 = strtok (NULL," ");
-			tempi = atoi(d1);
-
-			if (tempi == 1)
-			{
-				d1 = strtok (NULL,"\n");
-				framesize = atoi(d1);
-
-				line = malloc(framesize*sizeof(unsigned char));
-				fread(line, sizeof(unsigned char), framesize, fp1);
-
-				tempC[0] = line[4];
-				tempC[1] = line[5];
-
-                tempi = tempC[0];
-                tempi<<=8;
-                tempi |=tempC[1];
-
-				sprintf(buff, "%d", tempi);
-				label = gtk_label_new (buff);
-				//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 7, 8);
-                gtk_grid_attach (GTK_GRID (table), label, 1,6,1,1);
-				gtk_widget_show (label);
-
-				for(i=0; i<16; i++)
-				{
-					stn[i] = line[20+i];
-				}
-				stn[16] = '\0';
-
-				label = gtk_label_new (stn);
-				//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 8, 9);
-                gtk_grid_attach (GTK_GRID (table), label, 1,7,1,1);
-				gtk_widget_show (label);
-
-				tempC[0] = line[38];
-				tempC[1] = line[39];
-				tempi = c2i(tempC);
-
-				memset(buff, '\0', 15);
-				sprintf(buff, "%d", tempi);
-				label = gtk_label_new (buff);
-				//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 12, 13);
-                gtk_grid_attach (GTK_GRID (table), label, 1,11,1,1);
-				gtk_widget_show (label);
-
-				tempC[0] = line[40];
-				tempC[1] = line[41];
-				tempi = c2i(tempC);
-
-				memset(buff, '\0', 15);
-				sprintf(buff, "%d", tempi);
-				label = gtk_label_new (buff);
-				//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 9, 10);
-                gtk_grid_attach (GTK_GRID (table), label, 1,8,1,1);
-				gtk_widget_show (label);
-
-				tempC[0] = line[42];
-				tempC[1] = line[43];
-				tempi = c2i(tempC);
-
-				memset(buff, '\0', 15);
-				sprintf(buff, "%d", tempi);
-				label = gtk_label_new (buff);
-				//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 10, 11);
-                gtk_grid_attach (GTK_GRID (table), label, 1,9,1,1);
-				gtk_widget_show (label);
-
-				tempC[0] = line[44];
-				tempC[1] = line[45];
-				tempi = c2i(tempC);
-
-				memset(buff, '\0', 15);
-				sprintf(buff, "%d", tempi);
-				label = gtk_label_new (buff);
-				//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 11, 12);
-                gtk_grid_attach (GTK_GRID (table), label, 1,10,1,1);
-				gtk_widget_show (label);
-
-				tempC[0] = line[framesize-6];
-				tempC[1] = line[framesize-5];
-				tempi = c2i(tempC);
-
-				memset(buff, '\0', 15);
-				sprintf(buff, "%d", tempi);
-				label = gtk_label_new (buff);
-				//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 13, 14);
-                gtk_grid_attach (GTK_GRID (table), label, 1,12,1,1);
-				gtk_widget_show (label);
-
-				tempC[0] = line[framesize-4];
-				tempC[1] = line[framesize-3];
-				tempi = c2i(tempC);
-
-				memset(buff, '\0', 15);
-				sprintf(buff, "%d", tempi);
-				label = gtk_label_new (buff);
-				//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 14, 15);
-                gtk_grid_attach (GTK_GRID (table), label, 1,13,1,1);
-				gtk_widget_show (label);
-			}
-		}
-		fclose(fp1);
-*/
+        main_box = gtk_dialog_get_content_area (GTK_DIALOG (setup_display_window));
+        view = create_pmu_view (fp1);
+        fclose(fp1);
+        gtk_box_pack_start (GTK_BOX (main_box),view, FALSE, FALSE, 0);
 		/* Finally show the setup_display_window. */
 		gtk_widget_show_all (setup_display_window);
         event = gtk_dialog_run(GTK_DIALOG(setup_display_window));
@@ -1189,6 +847,7 @@ void view_setup_file (GtkWidget *w, GtkFileChooser *fs)
         {
             gtk_widget_destroy(GTK_WIDGET (setup_display_window));
         }
+
 	}
 }
 
@@ -1330,6 +989,149 @@ void* display_time()
 
      /* Exit the display time thread at the time of PMU Closing */
      pthread_exit(NULL);
-}
+};
+
+static GtkTreeModel* create_pmu_model (FILE *fp1)
+{
+    GtkTreeStore *store;
+    GtkTreeIter   iter, child;
+    size_t len = 0;
+    ssize_t read;
+    char *rline = NULL;
+    int tempi, i;
+	unsigned int framesize;
+    char *d1, buff[200];
+    unsigned char *line, tempC[2];
+
+    store = gtk_tree_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_STRING);
+    
+    gtk_tree_store_append (store, &iter, NULL);
+    gtk_tree_store_set (store, &iter, COL_PROP, "Server Settings", -1);
+
+    read = getline(&rline, &len, fp1);
+    strtok(rline,"\n");
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "UDP Port", COL_VAL, rline,-1);
+    
+    read = getline(&rline, &len, fp1);
+    strtok(rline,"\n");
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "TCP Port", COL_VAL, rline,-1);
+
+    read = getline(&rline, &len, fp1);
+    strtok(rline,"\n");
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Multicast Port", COL_VAL, rline,-1);
+
+    read = getline(&rline, &len, fp1);
+    strtok(rline,"\n");
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Multicast IP", COL_VAL, rline,-1);
+
+    gtk_tree_store_append (store, &iter, NULL);
+    gtk_tree_store_set (store, &iter, COL_PROP, "PMU Properties", -1);
+    
+    read = getline(&rline, &len, fp1);
+    d1 = strtok (rline," ");
+    d1 = strtok (NULL," ");
+    d1 = strtok (NULL,"\n");
+    framesize = atoi(d1);
+    line = malloc(framesize*sizeof(unsigned char));
+    fread(line, sizeof(unsigned char), framesize, fp1);
+    fseek(fp1, SEEK_SET, 0);
+
+    tempC[0] = line[4];
+    tempC[1] = line[5];
+
+    tempi = c2i(tempC);
+    sprintf(buff, "%d", tempi);
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "PMU ID", COL_VAL, buff,-1);
+
+    for(i=0; i<16; i++)
+    {
+        buff[i] = line[20+i];
+    }
+    buff[16] = '\0';
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Station Name", COL_VAL, buff,-1);
+
+    tempC[0] = line[38];
+    tempC[1] = line[39];
+    tempi = c2i(tempC);
+    sprintf(buff, "%d", tempi);
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Format word", COL_VAL, buff,-1);
+
+    tempC[0] = line[40];
+    tempC[1] = line[41];
+    tempi = c2i(tempC);
+    sprintf(buff, "%d", tempi);
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Number of Phasors", COL_VAL, buff,-1);
+
+    tempC[0] = line[42];
+    tempC[1] = line[43];
+    tempi = c2i(tempC);
+    sprintf(buff, "%d", tempi);
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Number of Analogs", COL_VAL, buff,-1);
+
+    tempC[0] = line[44];
+    tempC[1] = line[45];
+    tempi = c2i(tempC);
+    sprintf(buff, "%d", tempi);
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Number of Digital words", COL_VAL, buff,-1);
+
+    tempC[0] = line[framesize-6];
+    tempC[1] = line[framesize-5];
+    tempi = c2i(tempC);
+    sprintf(buff, "%d", tempi);
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "CFG Count", COL_VAL, buff,-1);
+
+    tempC[0] = line[framesize-4];
+    tempC[1] = line[framesize-3];
+    tempi = c2i(tempC);
+    sprintf(buff, "%d", tempi);
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Data Rate", COL_VAL, buff,-1);
+
+    return GTK_TREE_MODEL (store);
+};
+
+static GtkWidget* create_pmu_view (FILE *fp1)
+{
+    GtkCellRenderer *renderer;
+    GtkTreeModel    *model;
+    GtkWidget       *view;
+
+    view = gtk_tree_view_new ();
+
+    /* --- Column #1 --- */
+    renderer = gtk_cell_renderer_text_new ();
+    gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view),
+            -1, "PMU Property", renderer, "text", COL_PROP, NULL);
+
+    /* --- Column #2 --- */
+    renderer = gtk_cell_renderer_text_new ();
+    gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view),
+            -1, "Value", renderer, "text", COL_VAL, NULL);
+
+    model = create_pmu_model (fp1);
+
+    gtk_tree_view_set_model (GTK_TREE_VIEW (view), model);
+
+    /* The tree view has acquired its own reference to the
+     *  model, so we can drop ours. That way the model will
+     *  be freed automatically when the tree view is destroyed */
+
+    g_object_unref (model);
+    gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), TRUE);
+    gtk_tree_view_expand_all (GTK_TREE_VIEW (view));
+
+    return view;
+};
 
 /**************************************** End of File *******************************************************/

@@ -83,6 +83,12 @@ struct _pmuStruct
 	GtkWidget *time_lable;
 };
 
+enum
+{
+  COL_PROP = 0,
+  COL_VAL,
+  NUM_COLS
+} ;
 
 /* ---------------------------------------------------------------- */
 /*                         global variables                         */
@@ -147,6 +153,10 @@ void view_setup_file (GtkWidget *w, GtkFileChooser *fs);
 void apply_pmu_setup (GtkWidget *w, gpointer udata);
 
 void* display_time();
+
+static GtkTreeModel* create_pmu_model (FILE *fp1);
+
+static GtkWidget* create_pmu_view (FILE *fp1);
 
 #endif 
 
