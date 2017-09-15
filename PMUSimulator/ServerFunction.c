@@ -1120,7 +1120,7 @@ void* UDP_PMU()
         printf("\n Waiting for Cmd Frame from a PDC\n"); 
 		numbytes = recvfrom(UDP_sockfd, udp_command, 18, 0, (struct sockaddr *)&UDP_addr, (socklen_t *)&UDP_addr_len);
 
-        printf("\n 2 PMU server: got connection from %s, & on Port = %d.\n",inet_ntoa(UDP_addr.sin_addr), ntohs(UDP_addr.sin_port)); 
+        //printf("\n 2 PMU server: got connection from %s, & on Port = %d.\n",inet_ntoa(UDP_addr.sin_addr), ntohs(UDP_addr.sin_port)); 
 		if (numbytes == -1)
 		{ 
 			perror("recvfrom");
@@ -1129,8 +1129,6 @@ void* UDP_PMU()
 		else		/* New datagram has been received */
 		{
             PDC_MATCH(0, 0);
-        printf("\n 3 PMU server: got connection from %s, & on Port = %d.\n",inet_ntoa(UDP_addr.sin_addr), ntohs(UDP_addr.sin_port)); 
-
 			c = udp_command[1];
 			c <<= 1;
 			c >>= 5;

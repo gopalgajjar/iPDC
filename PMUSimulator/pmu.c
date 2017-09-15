@@ -220,7 +220,9 @@ int main(int argc, char **argv)
 					strcat(pmuFolderPath, ptr1);
 
 					/* Setup files is not present in the system, so start with building new PMU Setup file */
-					pmu_server ();
+					//pmu_server (); /* Commented out on 20170830 */
+                    /* Commented out by Gopal, to suppress
+                    annoying dialog at the begning */
 				}
 			}
 

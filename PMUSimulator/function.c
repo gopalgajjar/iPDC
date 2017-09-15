@@ -237,4 +237,13 @@ void sigchld_handler(int s)
 	while(wait(NULL) > 0);
 }
 
+/* ----------------------------------------------------------------------------	*/
+/* FUNCTION isNthBitSit(unsigned char c, int n):	                            */
+/* Function to check if nth bit is set in char c                                */
+/* ----------------------------------------------------------------------------	*/
+int isNthBitSet (unsigned char c, int n) {
+    static unsigned char mask[] = {1, 2, 4, 8, 16, 32, 63, 128};
+    return ((c & mask[n]) != 0);
+}
+
 /**************************************** End of File *******************************************************/

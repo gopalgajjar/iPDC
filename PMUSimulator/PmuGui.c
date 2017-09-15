@@ -805,7 +805,7 @@ void pmu_setup_file_selection(GtkWidget *widget, gpointer udata)
 void view_setup_file (GtkWidget *w, GtkFileChooser *fs)
 {
 	/* local variables */
-	GtkWidget *view, *main_box;
+	GtkWidget *view, *main_box, *scrolled_window;
     gint event;
 	char *s;
     FILE *fp1;
@@ -831,11 +831,23 @@ void view_setup_file (GtkWidget *w, GtkFileChooser *fs)
                 "_Apply", GTK_RESPONSE_ACCEPT,
                 "_Cancel", GTK_RESPONSE_CANCEL, NULL);
         gtk_dialog_set_default_response (GTK_DIALOG(setup_display_window), GTK_RESPONSE_ACCEPT);
+        g_signal_connect (setup_display_window, "destroy", G_CALLBACK (gtk_widget_destroy), setup_display_window);
+        gtk_window_set_default_size (GTK_WINDOW (setup_display_window), -1, 400);
+        gtk_window_set_resizable (GTK_WINDOW (setup_display_window), FALSE);
+
+        /* Create a new scrolled window */
+        scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+        gtk_widget_set_size_request (scrolled_window, -1, 400);
+
+        /* The policy is one of GTK_POLICY AUTOMATIC, or GTK_POLICY_ALWAYS. */
+        gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
         main_box = gtk_dialog_get_content_area (GTK_DIALOG (setup_display_window));
+        gtk_box_pack_start (GTK_BOX (main_box), scrolled_window, TRUE, FALSE, 0);
+
         view = create_pmu_view (fp1);
         fclose(fp1);
-        gtk_box_pack_start (GTK_BOX (main_box),view, FALSE, FALSE, 0);
+        gtk_container_add (GTK_CONTAINER (scrolled_window), view);
 		/* Finally show the setup_display_window. */
 		gtk_widget_show_all (setup_display_window);
         event = gtk_dialog_run(GTK_DIALOG(setup_display_window));
@@ -994,13 +1006,14 @@ void* display_time()
 static GtkTreeModel* create_pmu_model (FILE *fp1)
 {
     GtkTreeStore *store;
-    GtkTreeIter   iter, child;
+    GtkTreeIter   iter, child, subchild;
     size_t len = 0;
     ssize_t read;
     char *rline = NULL;
     int tempi, i;
 	unsigned int framesize;
-    char *d1, buff[200];
+    char *d1,  buff[200];
+    char *buff1;
     unsigned char *line, tempC[2];
 
     store = gtk_tree_store_new (NUM_COLS, G_TYPE_STRING, G_TYPE_STRING);
@@ -1048,13 +1061,15 @@ static GtkTreeModel* create_pmu_model (FILE *fp1)
     gtk_tree_store_append (store, &child, &iter);
     gtk_tree_store_set (store, &child, COL_PROP, "PMU ID", COL_VAL, buff,-1);
 
-    for(i=0; i<16; i++)
+   /* for(i=0; i<16; i++)
     {
         buff[i] = line[20+i];
     }
-    buff[16] = '\0';
+    buff[16] = '\0';*/
+    //strncpy(buff1, (const char*)&line[20],16);
+    buff1 = strndup((const char*)&line[20],16);
     gtk_tree_store_append (store, &child, &iter);
-    gtk_tree_store_set (store, &child, COL_PROP, "Station Name", COL_VAL, buff,-1);
+    gtk_tree_store_set (store, &child, COL_PROP, "Station Name", COL_VAL, buff1,-1);
 
     tempC[0] = line[38];
     tempC[1] = line[39];
@@ -1063,9 +1078,47 @@ static GtkTreeModel* create_pmu_model (FILE *fp1)
     gtk_tree_store_append (store, &child, &iter);
     gtk_tree_store_set (store, &child, COL_PROP, "Format word", COL_VAL, buff,-1);
 
+    gtk_tree_store_append (store, &subchild, &child);
+    if (isNthBitSet(tempC[1], 3))
+    {
+        gtk_tree_store_set (store, &subchild, COL_PROP, "FREQ/DFREQ", COL_VAL, "Floating Point",-1);
+    }
+    else
+    { 
+        gtk_tree_store_set (store, &subchild, COL_PROP, "FREQ/DFREQ", COL_VAL, "16 bit Integer",-1);
+    }
+    gtk_tree_store_append (store, &subchild, &child);
+    if (isNthBitSet(tempC[1], 2))
+    {
+        gtk_tree_store_set (store, &subchild, COL_PROP, "Analogs", COL_VAL, "Floating Point",-1);
+    }
+    else
+    { 
+        gtk_tree_store_set (store, &subchild, COL_PROP, "Analogs", COL_VAL, "16 bit Integer",-1);
+    }
+    gtk_tree_store_append (store, &subchild, &child);
+    if (isNthBitSet(tempC[1], 1))
+    {
+        gtk_tree_store_set (store, &subchild, COL_PROP, "Phasors", COL_VAL, "Floating Point",-1);
+    }
+    else
+    { 
+        gtk_tree_store_set (store, &subchild, COL_PROP, "Phasors", COL_VAL, "16 bit Integer",-1);
+    }
+    gtk_tree_store_append (store, &subchild, &child);
+    if (isNthBitSet(tempC[1], 0))
+    {
+        gtk_tree_store_set (store, &subchild, COL_PROP, "Phasor format", COL_VAL, "Polar",-1);
+    }
+    else
+    { 
+        gtk_tree_store_set (store, &subchild, COL_PROP, "Phasor format", COL_VAL, "Rectangular",-1);
+    }
+
     tempC[0] = line[40];
     tempC[1] = line[41];
     tempi = c2i(tempC);
+    int phnmr = tempi;
     sprintf(buff, "%d", tempi);
     gtk_tree_store_append (store, &child, &iter);
     gtk_tree_store_set (store, &child, COL_PROP, "Number of Phasors", COL_VAL, buff,-1);
@@ -1073,6 +1126,7 @@ static GtkTreeModel* create_pmu_model (FILE *fp1)
     tempC[0] = line[42];
     tempC[1] = line[43];
     tempi = c2i(tempC);
+    int annmr = tempi;
     sprintf(buff, "%d", tempi);
     gtk_tree_store_append (store, &child, &iter);
     gtk_tree_store_set (store, &child, COL_PROP, "Number of Analogs", COL_VAL, buff,-1);
@@ -1080,9 +1134,40 @@ static GtkTreeModel* create_pmu_model (FILE *fp1)
     tempC[0] = line[44];
     tempC[1] = line[45];
     tempi = c2i(tempC);
+    int dignmr = tempi*16;
     sprintf(buff, "%d", tempi);
     gtk_tree_store_append (store, &child, &iter);
     gtk_tree_store_set (store, &child, COL_PROP, "Number of Digital words", COL_VAL, buff,-1);
+
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Phasor Channel Names",-1);
+    for(i=0; i<phnmr; i++)
+    {
+        buff1 = strndup((const char*)&line[46 + (16*i)],16);
+        sprintf(buff, "Phasor Channel %d", i+1);
+        gtk_tree_store_append (store, &subchild, &child);
+        gtk_tree_store_set (store, &subchild, COL_PROP, buff,COL_VAL,buff1,-1);
+    }
+
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Analog Channel Names",-1);
+    for(i=0; i<annmr; i++)
+    {
+        buff1 = strndup((const char*)&line[46 + (16*phnmr) + (16*i)],16);
+        sprintf(buff, "Analog Channel %d", i+1);
+        gtk_tree_store_append (store, &subchild, &child);
+        gtk_tree_store_set (store, &subchild, COL_PROP, buff,COL_VAL,buff1,-1);
+    }
+
+    gtk_tree_store_append (store, &child, &iter);
+    gtk_tree_store_set (store, &child, COL_PROP, "Digital Channel Names",-1);
+    for(i=0; i<dignmr; i++)
+    {
+        buff1 = strndup((const char*)&line[46 + (16*(phnmr+annmr)) + (16*i)],16);
+        sprintf(buff, "Digital Channel %d", i+1);
+        gtk_tree_store_append (store, &subchild, &child);
+        gtk_tree_store_set (store, &subchild, COL_PROP, buff,COL_VAL,buff1,-1);
+    }
 
     tempC[0] = line[framesize-6];
     tempC[1] = line[framesize-5];
