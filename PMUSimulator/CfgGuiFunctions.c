@@ -2006,6 +2006,7 @@ void cfg_create_call()
 {
 	/* local variables */
 	int ret_val;
+    char buff[100];
 
 	/* To create CFG call 'create_cfg()' */
 	ret_val = create_cfg();
@@ -2030,6 +2031,9 @@ void cfg_create_call()
 		/* Disable create CFG buttons on PMU Simulator Window */
 		gtk_widget_set_sensitive(GTK_WIDGET(pmu_data->create_cfg_button), FALSE);
 		gtk_widget_set_visible(GTK_WIDGET(pmu_data->menu_setup_cfg), FALSE);
+        sprintf(buff,"PMU Simulator:- PMU Id: %d, Station: %s", cfg_info->cfg_pmuID, cfg_info->cfg_STNname);
+        printf("%s\n",buff);
+        gtk_window_set_title (GTK_WINDOW (pmu_data->Pmu_Simulator), buff);
 	}
 	else
 	{

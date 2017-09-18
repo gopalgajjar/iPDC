@@ -1003,7 +1003,7 @@ void* display_time()
      pthread_exit(NULL);
 };
 
-static GtkTreeModel* create_pmu_model (FILE *fp1)
+GtkTreeModel* create_pmu_model (FILE *fp1)
 {
     GtkTreeStore *store;
     GtkTreeIter   iter, child, subchild;
@@ -1186,7 +1186,7 @@ static GtkTreeModel* create_pmu_model (FILE *fp1)
     return GTK_TREE_MODEL (store);
 };
 
-static GtkWidget* create_pmu_view (FILE *fp1)
+GtkWidget* create_pmu_view (FILE *fp1)
 {
     GtkCellRenderer *renderer;
     GtkTreeModel    *model;

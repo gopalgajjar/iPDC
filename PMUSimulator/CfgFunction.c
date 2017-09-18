@@ -36,9 +36,9 @@
 #include <netinet/in.h>
 #include <sys/time.h>
 #include <gtk/gtk.h>
+#include "PmuGui.h"
 #include "CfgFunction.h"
 #include "function.h"
-#include "PmuGui.h"
 #include "ShearedMemoryStructure.h"
 
 #define max_data_rate 200
@@ -1049,416 +1049,39 @@ int create_cfg()
 void show_pmu_details (GtkWidget *widget, gpointer udata)
 {
 	/* local variables */
-	char tmpBuffer[30];
-	GtkWidget *label,*list;
+	GtkWidget *main_box, *view, *scrolled_window, *new_window;
     gint event;
+    FILE *fp1;
 
-	/* Create a new dialog window for the scrolled window to be packed into */  				
-/*	new_window = gtk_dialog_new ();
-	g_signal_connect (new_window, "destroy", G_CALLBACK (gtk_widget_destroy), new_window);
-	gtk_window_set_title (GTK_WINDOW (new_window), "PMU Properties");
-	gtk_container_set_border_width (GTK_CONTAINER (new_window), 10);
-*/
+	/* Open the saved PMU Setup File and read the informations */
+	fp1 = fopen (fptr,"rb");
     new_window = gtk_dialog_new_with_buttons ("PMU Properties",
-            GTK_WINDOW(widget),
+            GTK_WINDOW (pmu_data->Pmu_Simulator),
             GTK_DIALOG_MODAL,
             "_Close", GTK_RESPONSE_CANCEL, NULL);
-    gtk_dialog_set_default_response (GTK_DIALOG(new_window), GTK_RESPONSE_ACCEPT);
-	/* Create a table of 14 by 2 squares. */
-	//table = gtk_grid_new ();
+    gtk_dialog_set_default_response (GTK_DIALOG(new_window), GTK_RESPONSE_CANCEL);
+    g_signal_connect (new_window, "destroy", G_CALLBACK (gtk_widget_destroy), new_window);
+    gtk_window_set_default_size (GTK_WINDOW (new_window), -1, 400);
+    gtk_window_set_resizable (GTK_WINDOW (new_window), FALSE);
+    /* Create a new scrolled window */
+    scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+    gtk_widget_set_size_request (scrolled_window, -1, 400);
 
-    list = gtk_list_box_new();
-	/* Set the spacing to 35 on x and 25 on y */
-	/*gtk_table_set_row_spacings (GTK_TABLE (table), 8);
-	gtk_table_set_col_spacings (GTK_TABLE (table), 5); */
+    /* The policy is one of GTK_POLICY AUTOMATIC, or GTK_POLICY_ALWAYS. */
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
-	/* Pack the table into the scrolled window */
-    gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG(new_window))), list, TRUE, TRUE, 0);
-/*	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG(new_window))), table, TRUE, TRUE, 0);
-	gtk_widget_show (table);
-*/
-    gtk_widget_show (list);
-	/* Add a "OK" button to the bottom of the dialog */
-	//close_but = gtk_button_new_with_label ("OK");
-
-	/* This simply creates a grid of toggle buttons on the table to demonstrate the scrolled window */
-	label = gtk_label_new (" ");
-	markup1 = g_markup_printf_escaped ("<span foreground=\"#7D2252\" font='12'><b>PMU Server Details</b></span>");
-	gtk_label_set_markup (GTK_LABEL (label), markup1);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 2, 0, 1);
-    //gtk_grid_attach (GTK_GRID (table), label, 0,0,2,1);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-	gtk_widget_show (label);
-	g_free (markup1);
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("UDP Port\t\t\t\t:\t%d",PMU_uport);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-/*
-	label = gtk_label_new ("UDP Port");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 1, 2);
-    gtk_grid_attach (GTK_GRID (table), label, 0,1,2,1);
-	gtk_widget_show (label);
-*/
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("TCP Port\t\t\t\t:\t%d",PMU_tport);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("Multicast Port\t\t\t:\t%d",PMU_mulport);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("Multicast IP\t\t\t:\t%s",PMU_mulip);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-/*
-	label = gtk_label_new ("TCP Port");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 2, 3);
-    gtk_grid_attach (GTK_GRID (table), label, 0,2,2,1);
-	gtk_widget_show (label);
-*/
-	/* We have the global variables to hold the port & protocol values */
-/*	memset(tmpBuffer,'\0',30);
-	sprintf(tmpBuffer,"%d",PMU_uport);
-	label = gtk_label_new (tmpBuffer);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 1, 2);
-    gtk_grid_attach (GTK_GRID (table), label, 1,1,2,1);
-	gtk_widget_show (label);
-
-	memset(tmpBuffer,'\0',30);
-	sprintf(tmpBuffer,"%d",PMU_tport);
-	label = gtk_label_new (tmpBuffer);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 2, 3);
-    gtk_grid_attach (GTK_GRID (table), label, 1,2,2,1);
-	gtk_widget_show (label);
-*/
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("<span foreground=\"#7D2252\" font='12'><b>PMU Configuration Details</b></span>");
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-/*    
-    label = gtk_label_new (" ");
-	markup1 = g_markup_printf_escaped ("<span foreground=\"#0000FF\" font='10'><b>PMU Configuration Details</b></span>");
-	gtk_label_set_markup (GTK_LABEL (label), markup1);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 2, 4, 5);
-    gtk_grid_attach (GTK_GRID (table), label, 0,4,2,1);
-	gtk_widget_show (label);
-	g_free (markup1);
-*/
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("PMU ID\t\t\t\t:\t%d",cfg_info->cfg_pmuID);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("Station Name\t\t\t:\t%s",cfg_info->cfg_STNname);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("Number of Phasors\t\t:\t%d",cfg_info->cfg_phnmr_val);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("Number of Analogs\t\t:\t%d",cfg_info->cfg_annmr_val);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("Number of Digital words\t:\t%d",cfg_info->cfg_dgnmr_val);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("Format word\t\t\t:\t%d",frmt);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("CFG Count\t\t\t:\t%d",cfgcnt);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("Data Rate\t\t\t:\t%d",cfg_info->cfg_dataRate);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-
-    label = gtk_label_new (" ");
-    markup = g_markup_printf_escaped ("Configuration Frame Size:\t%d",cfg2_frm_size);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    gtk_list_box_insert( GTK_LIST_BOX (list), label, -1);
-    gtk_widget_show (label);
-    g_free (markup);
-/*
-	label = gtk_label_new ("PMU ID");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 5, 6);
-    gtk_grid_attach (GTK_GRID (table), label, 0,5,2,1);
-	gtk_widget_show (label);
-*/
-
-/*  label = gtk_label_new ("Station Name");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 6, 7);
-    gtk_grid_attach (GTK_GRID (table), label, 0,6,2,1);
-	gtk_widget_show (label);
-*/
-/*	label = gtk_label_new ("Number of Phasors");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 7, 8);
-    gtk_grid_attach (GTK_GRID (table), label, 0,7,2,1);
-	gtk_widget_show (label);
-
-	label = gtk_label_new ("Number of Analog ");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 8, 9);
-    gtk_grid_attach (GTK_GRID (table), label, 0,8,2,1);
-	gtk_widget_show (label);
-
-	label = gtk_label_new ("Digital Status Word");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 9, 10);
-    gtk_grid_attach (GTK_GRID (table), label, 0,9,2,1);
-	gtk_widget_show (label);
-
-	label = gtk_label_new ("Data Rate");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 10, 11);
-    gtk_grid_attach (GTK_GRID (table), label, 0,10,2,1);
-	gtk_widget_show (label);
-
-	label = gtk_label_new ("Format Word");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 11, 12);
-    gtk_grid_attach (GTK_GRID (table), label, 0,11,2,1);
-	gtk_widget_show (label);
-
-	label = gtk_label_new ("Configuration Count ");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 12, 13);
-    gtk_grid_attach (GTK_GRID (table), label, 0,12,2,1);
-	gtk_widget_show (label);
-
-	label = gtk_label_new ("CFG Frame Size");
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 13, 14);
-    gtk_grid_attach (GTK_GRID (table), label, 0,13,2,1);
-	gtk_widget_show (label);
-*/
-     /* Printing the appropriate values from CFG objects */
-/*	memset(tmpBuffer,'\0',30);
-	sprintf(tmpBuffer,"%d",cfg_info->cfg_pmuID);
-	label = gtk_label_new (tmpBuffer);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 5, 6);
-    gtk_grid_attach (GTK_GRID (table), label, 1,5,2,1);
-	gtk_widget_show (label);
-
-	memset(tmpBuffer,'\0',30);
-	label = gtk_label_new (cfg_info->cfg_STNname);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 6, 7);
-    gtk_grid_attach (GTK_GRID (table), label, 1,6,2,1);
-	gtk_widget_show (label);
-
-	memset(tmpBuffer,'\0',30);
-	sprintf(tmpBuffer,"%d",cfg_info->cfg_phnmr_val);
-	label = gtk_label_new (tmpBuffer);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 7, 8);
-    gtk_grid_attach (GTK_GRID (table), label, 1,7,2,1);
-	gtk_widget_show (label);
-
-	memset(tmpBuffer,'\0',30);
-	sprintf(tmpBuffer,"%d",cfg_info->cfg_annmr_val);
-	label = gtk_label_new (tmpBuffer);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 8, 9);
-    gtk_grid_attach (GTK_GRID (table), label, 1,8,2,1);
-	gtk_widget_show (label);
-
-	memset(tmpBuffer,'\0',30);
-	sprintf(tmpBuffer,"%d",cfg_info->cfg_dgnmr_val);
-	label = gtk_label_new (tmpBuffer);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 9, 10);
-    gtk_grid_attach (GTK_GRID (table), label, 1,9,2,1);
-	gtk_widget_show (label);
-
-	memset(tmpBuffer,'\0',30);
-	sprintf(tmpBuffer,"%d",cfg_info->cfg_dataRate);
-	label = gtk_label_new (tmpBuffer);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 10, 11);
-    gtk_grid_attach (GTK_GRID (table), label, 1,10,2,1);
-	gtk_widget_show (label);
-
-	memset(tmpBuffer,'\0',30);
-	sprintf(tmpBuffer,"%d",frmt);
-	label = gtk_label_new (tmpBuffer);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 11, 12);
-    gtk_grid_attach (GTK_GRID (table), label, 1,11,2,1);
-	gtk_widget_show (label);
-
-	memset(tmpBuffer,'\0',30);
-	sprintf(tmpBuffer,"%d",cfgcnt);
-	label = gtk_label_new (tmpBuffer);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 12, 13);
-    gtk_grid_attach (GTK_GRID (table), label, 1,12,2,1);
-	gtk_widget_show (label);
-
-	memset(tmpBuffer,'\0',30);
-	sprintf(tmpBuffer,"%d",cfg2_frm_size);
-	label = gtk_label_new (tmpBuffer);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 13, 14);
-    gtk_grid_attach (GTK_GRID (table), label, 1,13,2,1);
-	gtk_widget_show (label);
-*/
-/*	label = gtk_label_new (" ");
-	markup = g_markup_printf_escaped ("<span foreground=\"#333333\" font='8'><b>Note : Configuration and Server info of running PMU.</b></span>");
-	gtk_label_set_markup (GTK_LABEL (label), markup);
-    gtk_label_set_xalign (GTK_LABEL (label),0);
-    gtk_label_set_yalign (GTK_LABEL (label),0);
-    //gtk_misc_set_alignment (GTK_MISC(label),0,0);
-	//gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 2, 15, 16);
-    gtk_grid_attach (GTK_GRID (table), label, 0,15,2,1);
-	gtk_widget_show (label);
-	g_free (markup);
-*/
-	/* Signal handling for OK-button on dialog Window */
+    main_box = gtk_dialog_get_content_area (GTK_DIALOG (new_window));
+    gtk_box_pack_start (GTK_BOX (main_box), scrolled_window, TRUE, FALSE, 0);
+    view = create_pmu_view (fp1);
+    fclose(fp1);
+    gtk_container_add (GTK_CONTAINER (scrolled_window), view);
+    /* Finally show the setup_display_window. */
     gtk_widget_show_all (new_window);
     event = gtk_dialog_run(GTK_DIALOG(new_window));
     if (event == GTK_RESPONSE_CANCEL)
     {
         gtk_widget_destroy(GTK_WIDGET (new_window));
     }
-/*	close_but = gtk_button_new_with_label ("Close");
-
-	g_signal_connect_swapped (close_but, "clicked", G_CALLBACK (gtk_widget_destroy), new_window);
-*/
-	/* This makes it so the button is the default */
-/*	gtk_widget_set_can_default (close_but, TRUE);
-	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (new_window))), close_but, TRUE, TRUE, 0);
-*/
-	/* This grabs this button to be the default button. Simply hitting the "Enter" key will cause this button to activate. */
-/*	gtk_widget_grab_default (close_but);
-	gtk_widget_show (close_but);
-*/
-	/* Finally show the PMU Detailed window or new_window */
-	gtk_widget_show (new_window);
 };
 
 /**************************************** End of File *******************************************************/
