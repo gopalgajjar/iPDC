@@ -63,6 +63,7 @@ SOURCES = \
 	ServerFunction.c ServerFunction.h \
 	CfgFunction.c CfgFunction.h \
 	CfgGuiFunctions.c CfgGuiFunctions.h \
+    ShearedMemoryStructure.h \
 
 OBJECTS =  pmu.c PmuGui.o function.o ServerFunction.o CfgFunction.o CfgGuiFunctions.o 
 CLEAN_OBJECTS = PmuGui.o function.o ServerFunction.o CfgFunction.o CfgGuiFunctions.o pmu.xml
@@ -78,7 +79,8 @@ $(PROGRAM): $(OBJECTS)
 	$(COMPILE) $(CFLAGS) -c -g $<
 
 install: $(PROGRAM)
-	gtk-builder-convert pmu.glade pmu.xml$
+	#gtk-builder-convert pmu.glade pmu.xml$
+	cp -f pmu.glade pmu.xml$
 	mkdir -p $(CREATE_DIR)PMU/$
 	cp -f $(FILE1) $(CREATE_DIR)PMU/$(FILE1)
 	cp -f images/$(FILE2) $(CREATE_DIR)PMU/$(FILE2)

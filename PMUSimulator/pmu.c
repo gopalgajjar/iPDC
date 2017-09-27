@@ -42,6 +42,7 @@
 #include  <pthread.h>
 #include  <errno.h>
 #include  <gtk/gtk.h>
+#include  <time.h>
 #include  "PmuGui.h"
 #include  "ServerFunction.h"
 #include  "CfgGuiFunctions.h"
@@ -65,26 +66,38 @@ int main(int argc, char **argv)
 	int  ShmID, err;
 	char *ptr1;
 	struct stat st;
-	key_t MyKey;
-
+	//key_t MyKey;
+    
+    //MyKey = 12346;
+    srand((unsigned)time(NULL));
+    MyKey = rand();
 	system("clear");
 
 	pidLocal = fork();
 
 	if (pidLocal == 0) 
 	{
-    //printf("process ID -- Server -- %ld\n",pidLocal); 
+        //printf("process ID -- Server -- %ld\n",pidLocal); 
 		start_server();
 	}
 	else 
 	{      
-   // printf("process ID -- Main -- %ld\n",pidLocal); 
+        //printf("process ID -- Main -- %ld\n",pidLocal); 
 		/* Main process for PMU Configuration Setup */
 		usleep(5000);
 		
-        MyKey   = 12346;                     /* obtain the shared memory */
+        if (signal(SIGUSR1, SIGUSR1_handler) == SIG_ERR) 
+        {
+            printf("SIGUSR-1 install error\n");
+            exit(1);
+        }
+        //MyKey   = 12346;                     /* obtain the shared memory */
+        //p1.pid = getpid();
+        //printf("Main PID %ld, key %d\n",p1.pid,MyKey);
 		ShmID   = shmget(MyKey, sizeof(char), 0666);
 		ShmPTR  = (struct P_id *) shmat(ShmID, NULL, 0);
+        ShmPTR->pidMain = getpid();
+        ShmPTR->statusMsgSet = 0;
 		p1      = *ShmPTR;                 /* get process-a's ID       */
 
 		/* Init GTK+ */
@@ -109,32 +122,59 @@ int main(int argc, char **argv)
 		pmu_data = g_slice_new(pmuStruct);
 
 		/* Get objects from UI */
-		#define GW(name) CH_GET_WIDGET(builder, name, pmu_data)
-		     GW(Pmu_Simulator);
-		     GW(create_cfg_button);
-		     GW(header_frm_button);
-		     GW(pmu_details_button);
-		     GW(stat_modification_button);
-		     GW(cfg_modification_button);
-		     GW(pmu_menubar);
-             GW(menuitem2);
-		     GW(rights_lable);
-		     GW(admin_label);
-		     GW(about_menuitem);
-		     GW(exit_menuitem);
-		     GW(E_button);
-		     GW(manage_data_source);
-		     GW(pmu_properties);
-             GW(start_server);
-             GW(menu_setup_cfg);
-             GW(menu_data_source);
-             GW(menu_cfg_modify);
-             GW(menu_stat_modify);
-             GW(menu_header_frm);
-             GW(text_view);
-             GW(text_view1);
-             GW(open_cfg);
-             GW(time_lable);
+		/*#define GW(name) CH_GET_WIDGET(builder,name, pmu_data)*/
+		#define GW(dname, bname) CH_GET_WIDGET(builder,bname, pmu_data, dname)
+		     GW(Pmu_Simulator, window);
+		     GW(create_cfg_button, button1);
+		     GW(header_frm_button, button4);
+		     GW(pmu_details_button, button2);
+		     GW(stat_modification_button, button6);
+		     GW(cfg_modification_button, button5);
+		     GW(pmu_menubar, menubar1);
+             GW(menuitem2, menuitem2);
+		     GW(rights_lable, label1);
+		     GW(admin_label, admin_label);
+		     GW(about_menuitem, imagemenuitem10);
+		     GW(exit_menuitem, imagemenuitem5);
+		     GW(E_button, button7);
+		     GW(manage_data_source, button3);
+		     GW(pmu_properties, button2);
+             GW(start_server,imagemenuitem1);
+             GW(menu_setup_cfg, imagemenuitem6);
+             GW(menu_data_source, imagemenuitem7);
+             GW(menu_cfg_modify, imagemenuitem8);
+             GW(menu_stat_modify, imagemenuitem9);
+             GW(menu_header_frm, imagemenuitem11);
+             //GW(text_view);
+             GW(text_view1, image2);
+             GW(open_cfg, imagemenuitem2);
+             GW(time_lable, label2);
+             GW(statusbar, statusbar1);
+		     //GW(Pmu_Simulator);
+		     //GW(create_cfg_button);
+		     //GW(header_frm_button);
+		     //GW(pmu_details_button);
+		     //GW(stat_modification_button);
+		     //GW(cfg_modification_button);
+		     //GW(pmu_menubar);
+             //GW(menuitem2);
+		     //GW(rights_lable);
+		     //GW(admin_label);
+		     //GW(about_menuitem);
+		     //GW(exit_menuitem);
+		     //GW(E_button);
+		     //GW(manage_data_source);
+		     //GW(pmu_properties);
+             //GW(start_server);
+             //GW(menu_setup_cfg);
+             //GW(menu_data_source);
+             //GW(menu_cfg_modify);
+             //GW(menu_stat_modify);
+             //GW(menu_header_frm);
+             //GW(text_view);
+             //GW(text_view1);
+             //GW(open_cfg);
+             //GW(time_lable);
 		#undef GW 
 
 		/* Connect signal to builder */

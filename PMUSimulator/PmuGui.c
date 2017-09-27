@@ -266,16 +266,17 @@ void pmu_colors()
     gtk_widget_show (pmu_data->text_view);
 */
 	/* Set the image (PMU-logo) on a specific textview1 */
-  	buffer1 = gtk_text_view_get_buffer (GTK_TEXT_VIEW (pmu_data->text_view1));
+/*  	buffer1 = gtk_text_view_get_buffer (GTK_TEXT_VIEW (pmu_data->text_view1));
   	cursor1 = gtk_text_buffer_get_insert (buffer1);
   	gtk_text_buffer_get_iter_at_mark (buffer1, &iter1, cursor1);
+*/
     char* UI_FILE_DIR = getenv("iPDC_UI_DIR");
     char UI_FILE[50];
     strcpy(UI_FILE, UI_FILE_DIR);
     strcat(UI_FILE,"/PmuLogo1.png"); 
-  	gtk_text_buffer_insert_pixbuf (buffer1, &iter1, create_pixbuf(UI_FILE));
+  	//gtk_text_buffer_insert_pixbuf (buffer1, &iter1, create_pixbuf(UI_FILE));
+  	gtk_image_set_from_file (GTK_IMAGE (pmu_data->text_view1), UI_FILE);
     gtk_widget_show (pmu_data->text_view1);
-
 };
 
 

@@ -61,4 +61,7 @@ uint16_t compute_CRC(unsigned char *message,int length);
 /* Function for TCP connection signal handling */ 
 void sigchld_handler(int s);
 
+/* Function to check if nth bit is set in input char */
+int isNthBitSet (unsigned char c, int n);
+
 /**************************************** End of File *******************************************************/

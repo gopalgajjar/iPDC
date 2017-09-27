@@ -27,6 +27,7 @@
  * ----------------------------------------------------------------------------- */
 
 
+key_t MyKey;
 /* ------------------------------------------------------------------ */
 /*                  global Data Structure for Shared Memory           */
 /* ------------------------------------------------------------------ */
@@ -34,6 +35,7 @@
 struct P_id {
 
 	pid_t pid;               	/* Single pid */
+    pid_t pidMain;
 
 	int dataFileVar;		/* For data source options : 0-Auto & 1-File Measurements */
 	char filePath[400];		/* File path of user selected measurement file */
@@ -44,7 +46,49 @@ struct P_id {
 	int phasor_type[50];		/* save the phasor type (currently not useful) */
     int MulPort;                /* User given port for Multicasting */
     char Mulip[20];             /* Useg given Group IP for Multicasting */
+    int statusMsgSet;
+    char statusMsg[200];
 
 }p1, *ShmPTR;
 
+typedef struct _pmuStruct pmuStruct;
+
+struct _pmuStruct
+{
+     /* Main application window */
+	GtkWidget *Pmu_Simulator;  
+
+     /* Main window button widgets */
+	GtkWidget *create_cfg_button;
+	GtkWidget *header_frm_button;
+	GtkWidget *pmu_details_button;
+	GtkWidget *stat_modification_button;
+	GtkWidget *cfg_modification_button;
+	GtkWidget *manage_data_source;
+
+     /* Manubar button widgets */
+	GtkWidget *pmu_menubar;
+	GtkWidget *start_server;
+	GtkWidget *open_cfg;
+	GtkWidget *pmu_properties;
+	GtkWidget *exit_menuitem;
+	GtkWidget *about_menuitem;
+
+	GtkWidget * menuitem2;
+	GtkWidget * menu_setup_cfg;
+	GtkWidget * menu_data_source;
+	GtkWidget * menu_cfg_modify;
+	GtkWidget * menu_stat_modify;
+	GtkWidget * menu_header_frm;
+
+     /* Main window extra widgets */
+	GtkWidget *rights_lable;
+	GtkWidget *admin_label;
+	GtkWidget *E_button;
+	GtkWidget *text_view;
+	GtkWidget *text_view1;
+	GtkWidget *time_lable;
+    GtkWidget *statusbar;
+};
+pmuStruct *pmu_data;
 /**************************************** End of File *******************************************************/

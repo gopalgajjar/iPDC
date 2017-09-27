@@ -1,471 +1,439 @@
-<?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 3.0 -->
-  <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkAccelGroup" id="accelgroup1"/>
-  <object class="GtkRadioAction" id="radioaction1">
-    <property name="draw_as_radio">True</property>
-  </object>
-  <object class="GtkRecentAction" id="recentaction1">
-    <property name="limit">10</property>
-  </object>
-  <object class="GtkToggleAction" id="toggleaction1"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-naming-policy project-wide -->
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="stock">gtk-network</property>
-    <property name="icon-size">1</property>
   </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="stock">gtk-execute</property>
-    <property name="icon-size">1</property>
-  </object>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
-    <property name="stock">gtk-new</property>
-    <property name="icon-size">1</property>
-  </object>
-  <object class="GtkImage" id="image4">
-    <property name="visible">True</property>
-    <property name="stock">gtk-open</property>
-    <property name="icon-size">1</property>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="stock">gtk-properties</property>
-    <property name="icon-size">1</property>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="stock">gtk-directory</property>
-    <property name="icon-size">1</property>
-  </object>
-  <object class="GtkImage" id="image7">
-    <property name="visible">True</property>
-    <property name="stock">gtk-dialog-authentication</property>
-    <property name="icon-size">1</property>
-  </object>
-  <object class="GtkImage" id="image8">
-    <property name="visible">True</property>
-    <property name="stock">gtk-dialog-warning</property>
-    <property name="icon-size">1</property>
-  </object>
-  <object class="GtkImage" id="image9">
-    <property name="visible">True</property>
-    <property name="stock">gtk-justify-fill</property>
-    <property name="icon-size">1</property>
-  </object>
-  <object class="GtkWindow" id="Pmu_Simulator">
-    <property name="title" translatable="yes">PMU SIMULATOR - v2.0</property>
-    <property name="window_position">center-always</property>
-    <property name="default_width">710</property>
-    <property name="default_height">290</property>
-    <property name="icon_name">calibrate</property>
-    <property name="focus_on_map">False</property>
-    <property name="gravity">center</property>
+  <object class="GtkWindow" id="window">
+    <property name="can_focus">False</property>
+    <property name="title">PMU Simulator</property>
+    <property name="default_width">700</property>
+    <property name="default_height">250</property>
     <child>
-      <object class="GtkLayout" id="layout1">
+      <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
-          <object class="GtkMenuBar" id="pmu_menubar">
-            <property name="width_request">710</property>
-            <property name="height_request">40</property>
+          <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
-            <property name="can_default">True</property>
-            <property name="has_tooltip">True</property>
-            <property name="resize_mode">immediate</property>
+            <property name="can_focus">False</property>
             <child>
-              <object class="GtkMenuItem" id="menuitem1">
+              <object class="GtkMenuBar" id="menubar1">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_File</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu1">
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkMenuItem" id="menuitem1">
                     <property name="visible">True</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="start_server">
-                        <property name="label">New PMU Setup</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">_File</property>
+                    <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu" id="menu1">
                         <property name="visible">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_KEY_PRESS_MASK | GDK_ENTER_NOTIFY_MASK | GDK_STRUCTURE_MASK</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip_text" translatable="yes">Click to create a new PMU setup file.</property>
-                        <property name="border_width">5</property>
-                        <property name="image">image3</property>
-                        <property name="use_stock">False</property>
-                        <property name="always_show_image">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkImageMenuItem" id="imagemenuitem1">
+                            <property name="label">gtk-new</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem" id="imagemenuitem2">
+                            <property name="label">gtk-open</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem" id="imagemenuitem5">
+                            <property name="label">gtk-quit</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="open_cfg">
-                        <property name="label">Open PMU Setup</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem" id="menuitem2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">_Edit</property>
+                    <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu" id="menu2">
                         <property name="visible">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_KEY_PRESS_MASK | GDK_ENTER_NOTIFY_MASK | GDK_STRUCTURE_MASK</property>
-                        <property name="tooltip_text" translatable="yes">Click to open the saved PMU setup file.</property>
-                        <property name="border_width">5</property>
-                        <property name="image">image4</property>
-                        <property name="use_stock">False</property>
-                        <property name="always_show_image">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkImageMenuItem" id="imagemenuitem6">
+                            <property name="label">Setup Configuration</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_stock">False</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem" id="imagemenuitem7">
+                            <property name="label">Manage Data Source</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_stock">False</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem" id="imagemenuitem8">
+                            <property name="label">Modify Configuration</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_stock">False</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem" id="imagemenuitem9">
+                            <property name="label">Modify STAT Word</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_stock">False</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImageMenuItem" id="imagemenuitem11">
+                            <property name="label">Modify Header Frame</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_stock">False</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="pmu_properties">
-                        <property name="label">PMU Properties</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem" id="menuitem3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">_View</property>
+                    <property name="use_underline">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkMenuItem" id="menuitem4">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">_Help</property>
+                    <property name="use_underline">True</property>
+                    <child type="submenu">
+                      <object class="GtkMenu" id="menu3">
                         <property name="visible">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_KEY_PRESS_MASK | GDK_ENTER_NOTIFY_MASK | GDK_STRUCTURE_MASK</property>
-                        <property name="tooltip_text" translatable="yes">Click to view the PMU setup informations.</property>
-                        <property name="border_width">5</property>
-                        <property name="image">image5</property>
-                        <property name="use_stock">False</property>
-                        <property name="always_show_image">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="exit_menuitem">
-                        <property name="label">gtk-quit</property>
-                        <property name="visible">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_KEY_PRESS_MASK | GDK_ENTER_NOTIFY_MASK | GDK_STRUCTURE_MASK</property>
-                        <property name="tooltip_text" translatable="yes">Click to exit the PMU Simulator Software.</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <property name="always_show_image">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkImageMenuItem" id="imagemenuitem10">
+                            <property name="label">gtk-about</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="use_underline">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
-              <object class="GtkMenuItem" id="menuitem2">
+              <object class="GtkImage" id="image2">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Edit</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu2">
-                    <property name="visible">True</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="menu_setup_cfg">
-                        <property name="label" translatable="yes">Setup Configuration</property>
-                        <property name="visible">True</property>
-                        <property name="tooltip_text" translatable="yes">Create Configuration Frame for PMU Simulator
-with variable parameters.</property>
-                        <property name="image">image2</property>
-                        <property name="use_stock">False</property>
-                        <property name="always_show_image">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="menu_data_source">
-                        <property name="label" translatable="yes">Manage Data Source</property>
-                        <property name="visible">True</property>
-                        <property name="tooltip_text" translatable="yes">Open the measurement data csv file respective with you running configuration. By default it will send auto generated raw measurement data.</property>
-                        <property name="image">image6</property>
-                        <property name="use_stock">False</property>
-                        <property name="always_show_image">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="menu_cfg_modify">
-                        <property name="label" translatable="yes">Configuration Modification</property>
-                        <property name="visible">True</property>
-                        <property name="tooltip_text" translatable="yes">Modify the configuration of running PMU, with the STAT Word's bit change.</property>
-                        <property name="image">image7</property>
-                        <property name="use_stock">False</property>
-                        <property name="always_show_image">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="menu_stat_modify">
-                        <property name="label" translatable="yes">STAT Word Modification</property>
-                        <property name="visible">True</property>
-                        <property name="tooltip_text" translatable="yes">Introduce diffrent STAT bits errors during data frame transmission.</property>
-                        <property name="image">image8</property>
-                        <property name="use_stock">False</property>
-                        <property name="always_show_image">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="menu_header_frm">
-                        <property name="label" translatable="yes">Header Frame Setup</property>
-                        <property name="visible">True</property>
-                        <property name="tooltip_text" translatable="yes">This frame shall be human readable information about
-the PMU, the data sources, scaling, algorithms, filtering, or other related information filled by Admin or PMU vendor.</property>
-                        <property name="image">image9</property>
-                        <property name="use_stock">False</property>
-                        <property name="always_show_image">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-missing-image</property>
               </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
             <child>
-              <object class="GtkMenuItem" id="menuitem4">
+              <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Help</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu3">
-                    <property name="visible">True</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="about_menuitem">
-                        <property name="label">gtk-about</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_KEY_PRESS_MASK | GDK_ENTER_NOTIFY_MASK | GDK_STRUCTURE_MASK</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip_text" translatable="yes">Click to see the publisher, licensing, and version details.</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <property name="always_show_image">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">label</property>
               </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
             </child>
           </object>
-        </child>
-        <child>
-          <object class="GtkButton" id="create_cfg_button">
-            <property name="label" translatable="yes">Setup Configuration</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Create Configuration Frame for PMU Simulator
-with variable parameters.</property>
-            <property name="xalign">0</property>
-          </object>
           <packing>
-            <property name="x">20</property>
-            <property name="y">65</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="header_frm_button">
-            <property name="label" translatable="yes">Header Frame Setup</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">This frame shall be human readable information about
-the PMU, the data sources, scaling, algorithms, filtering, or other related information filled by Admin or PMU vendor.</property>
-            <property name="xalign">0</property>
-          </object>
-          <packing>
-            <property name="x">245</property>
-            <property name="y">65</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="stat_modification_button">
-            <property name="label" translatable="yes">STAT Word Modification</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Introduce diffrent STAT bits errors during data frame transmission.</property>
-            <property name="xalign">0</property>
-          </object>
-          <packing>
-            <property name="x">470</property>
-            <property name="y">65</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="pmu_details_button">
-            <property name="label" translatable="yes">PMU Properties</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">View the details of PMU Configuration,
-and PMU Server informations.</property>
-            <property name="xalign">0</property>
-          </object>
-          <packing>
-            <property name="x">20</property>
-            <property name="y">100</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="cfg_modification_button">
-            <property name="label" translatable="yes">Configuration Modification</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Modify the configuration of running PMU, with the STAT Word's bit change.</property>
-            <property name="xalign">0</property>
-          </object>
-          <packing>
-            <property name="x">245</property>
-            <property name="y">100</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLinkButton" id="linkbutton1">
-            <property name="label" translatable="yes">Go online</property>
-            <property name="width_request">110</property>
-            <property name="height_request">30</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="has_tooltip">True</property>
-            <property name="tooltip_text" translatable="yes">For more information visit the iPDC official web.</property>
-            <property name="image">image1</property>
-            <property name="relief">none</property>
-            <property name="uri">https://github.com/gopalgajjar/iPDC/</property>
-          </object>
-          <packing>
-            <property name="x">20</property>
-            <property name="y">255</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="E_button">
-            <property name="label" translatable="yes">EXIT</property>
-            <property name="width_request">100</property>
-            <property name="height_request">30</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="events"></property>
-            <property name="tooltip_text" translatable="yes">Click to exit the PMU Simulator Software.</property>
-          </object>
-          <packing>
-            <property name="x">600</property>
-            <property name="y">255</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="manage_data_source">
-            <property name="label" translatable="yes">Manage Data Source</property>
-            <property name="width_request">200</property>
-            <property name="height_request">30</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Open the measurement data csv file respective with you running configuration. By default it will send auto generated raw measurement data.</property>
-            <property name="xalign">0</property>
-          </object>
-          <packing>
-            <property name="x">470</property>
-            <property name="y">100</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="rights_lable">
-            <property name="width_request">150</property>
-            <property name="height_request">30</property>
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="x">240</property>
-            <property name="y">262</property>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="admin_label">
-            <property name="width_request">100</property>
-            <property name="height_request">20</property>
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="x">20</property>
-            <property name="y">40</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHSeparator" id="footer_label">
-            <property name="width_request">720</property>
-            <property name="height_request">1 </property>
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="x">-1</property>
-            <property name="y">250</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHSeparator" id="footer_label1">
-            <property name="width_request">720</property>
-            <property name="height_request">1 </property>
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="x">-1</property>
-            <property name="y">60</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHSeparator" id="footer_label2">
-            <property name="width_request">720</property>
-            <property name="height_request">1 </property>
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="x">-1</property>
-            <property name="y">137</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkTextView" id="text_view1">
-            <property name="width_request">320</property>
-            <property name="height_request">30</property>
-            <property name="visible">False</property>
-            <property name="sensitive">False</property>
-            <property name="editable">False</property>
-            <property name="justification">fill</property>
-            <property name="cursor_visible">False</property>
-          </object>
-          <packing>
-            <property name="y">5</property>
-            <property name="x">205</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="text_view">
-            <property name="width_request">410</property>
-            <property name="height_request">287</property>
-            <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Simulation of Phasor Measurement Unit.
-Supportive IEEE C37.118 Synchrophasor std.</property>
-          </object>
-          <packing>
-            <property name="x">290</property>
-            <property name="y">225</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="time_lable">
-            <property name="width_request">162</property>
             <property name="height_request">20</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
-            <property name="tooltip_text" translatable="yes">Local Time of System</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
-            <property name="yalign">0</property>
-            <property name="justify">right</property>
-            <property name="track_visited_links">False</property>
+            <property name="xpad">10</property>
+            <property name="label" translatable="yes">Admin Operations</property>
             <attributes>
               <attribute name="style" value="normal"/>
-              <attribute name="weight" value="heavy"/>
-              <attribute name="gravity" value="west"/>
-              <attribute name="foreground" value="#712204430000"/>
+              <attribute name="weight" value="bold"/>
             </attributes>
           </object>
           <packing>
-            <property name="x">548</property>
-            <property name="y">10</property>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHButtonBox" id="hbuttonbox1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">8</property>
+            <property name="homogeneous">True</property>
+            <property name="layout_style">spread</property>
+            <child>
+              <object class="GtkButton" id="button1">
+                <property name="label" translatable="yes">Setup Config.</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Configure the PMU</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button2">
+                <property name="label" translatable="yes">PMU Prop.</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">View PMU Properties</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button3">
+                <property name="label" translatable="yes">Data Source</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Select the data source for PMU data frame.</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button4">
+                <property name="label" translatable="yes">Add Header</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Create the information in header frame.</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button5">
+                <property name="label" translatable="yes">Modify Config.</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Modify configuration frame.</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button6">
+                <property name="label" translatable="yes">Modify STAT</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Modify STAT word of data frame.</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkLinkButton" id="linkbutton1">
+                <property name="label" translatable="yes">Go Online</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="image">image1</property>
+                <property name="relief">none</property>
+                <property name="uri">https://github.com/gopalgajjar/iPDC/</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">label</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button7">
+                <property name="label">gtk-quit</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStatusbar" id="statusbar1">
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">PMU Status</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">8</property>
           </packing>
         </child>
       </object>
     </child>
   </object>
-</glade-interface>
+</interface>

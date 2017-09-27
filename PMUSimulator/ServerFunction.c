@@ -1118,6 +1118,11 @@ void* UDP_PMU()
         
         /* UDP data Received */
         printf("\n Waiting for Cmd Frame from a PDC\n"); 
+        strcpy(ShmPTR->statusMsg, "Waiting for Cmd Frame from a PDC");
+        ShmPTR->dataFileVar = 3;
+        p1.pidMain = ShmPTR->pidMain;
+        kill(p1.pidMain, SIGUSR1);
+    
 		numbytes = recvfrom(UDP_sockfd, udp_command, 18, 0, (struct sockaddr *)&UDP_addr, (socklen_t *)&UDP_addr_len);
 
         //printf("\n 2 PMU server: got connection from %s, & on Port = %d.\n",inet_ntoa(UDP_addr.sin_addr), ntohs(UDP_addr.sin_port)); 
@@ -1722,15 +1727,14 @@ void start_server()
 {
 	/* Initialy create the shared memory ID */
 	int ShmID, err;
-     char *ptr1;
+    char *ptr1;
 
-     dataFileVar = 0; 
-     cfg_crc_error = 0;
+    dataFileVar = 0; 
+    cfg_crc_error = 0;
 
 	p1.pid = getpid();
 
-
-	key_t MyKey;
+	//key_t MyKey;
 
 	if (signal(SIGUSR1, SIGUSR1_handler) == SIG_ERR) 
 	{
@@ -1744,7 +1748,8 @@ void start_server()
 		exit(1);
 	}
 
-	MyKey   = 12346;                     /* obtain the shared memory */
+	//MyKey   = 12346;                     /* obtain the shared memory */
+    //printf("Server PID %ld, key %d\n",p1.pid,MyKey);
 	ShmID   = shmget(MyKey, sizeof(struct P_id), IPC_CREAT | 0666);
 	ShmPTR  = (struct P_id *) shmat(ShmID, NULL, 0);
 	*ShmPTR = p1;                /* save my pid there             */
@@ -1990,6 +1995,11 @@ void  SIGUSR1_handler(int sig)
 		     exit(1);	
 	     }
 	}
+    else if(ShmPTR->dataFileVar ==3)
+    {
+        //printf("BINGO\n");
+        gtk_statusbar_push (GTK_STATUSBAR (pmu_data->statusbar),1, ShmPTR->statusMsg);
+    }
 
 	signal(sig, SIGUSR1_handler);
 }
@@ -2021,65 +2031,65 @@ void  SIGUSR2_handler(int sig)
 		printf("Invalid CheckSum!\n");
 	}
 	else
-     {
-          struct PDC_Details *temp_pdc = PDCfirst;
+    {
+        struct PDC_Details *temp_pdc = PDCfirst;
 
-	     pthread_mutex_lock(&mutex_pdc_object);
+        pthread_mutex_lock(&mutex_pdc_object);
 
-          while(temp_pdc != NULL ) 
-          {
-               if(ShmPTR->cfg_bit_change_info == 1)	/* for configuration change bit */
-	          {
-                    temp_pdc->STAT_change = 1;
-		          printf("STAT - Configuration changed!\n");
-	          }
+        while(temp_pdc != NULL ) 
+        {
+            if(ShmPTR->cfg_bit_change_info == 1)	/* for configuration change bit */
+            {
+                temp_pdc->STAT_change = 1;
+                printf("STAT - Configuration changed!\n");
+            }
 
-	          else if(ShmPTR->cfg_bit_change_info == 2)	/* for invalid data bit */
-	          {
-                    temp_pdc->STAT_change = 2;
-		          printf("STAT - Invalid data!\n");
+            else if(ShmPTR->cfg_bit_change_info == 2)	/* for invalid data bit */
+            {
+                temp_pdc->STAT_change = 2;
+                printf("STAT - Invalid data!\n");
 
-	          }
-	          else if(ShmPTR->cfg_bit_change_info == 3)	/* for PMU error bit */
-	          {
-                    temp_pdc->STAT_change = 3;
-		          printf("STAT - PMU error!\n");
-	          }
-	          else if(ShmPTR->cfg_bit_change_info == 4)	/* for data sorting bit */
-	          {
-                    temp_pdc->STAT_change = 4;
-		          printf("STAT - Data Sorting!\n");
-	          }
-	          else if(ShmPTR->cfg_bit_change_info == 5)	/* for PMU trigger bit */
-	          {
-                    temp_pdc->STAT_change = 5;
-		          printf("STAT - PMU Trigger!\n");
-	          }
+            }
+            else if(ShmPTR->cfg_bit_change_info == 3)	/* for PMU error bit */
+            {
+                temp_pdc->STAT_change = 3;
+                printf("STAT - PMU error!\n");
+            }
+            else if(ShmPTR->cfg_bit_change_info == 4)	/* for data sorting bit */
+            {
+                temp_pdc->STAT_change = 4;
+                printf("STAT - Data Sorting!\n");
+            }
+            else if(ShmPTR->cfg_bit_change_info == 5)	/* for PMU trigger bit */
+            {
+                temp_pdc->STAT_change = 5;
+                printf("STAT - PMU Trigger!\n");
+            }
 
-			temp_pdc = temp_pdc->next;
-          }
+            temp_pdc = temp_pdc->next;
+        }
 
-          if(ShmPTR->cfg_bit_change_info == 1)
-          {
-               /* As configuration has been changed, fill the global variables with new values for Data and CFG frames */
-               frame_size();
+        if(ShmPTR->cfg_bit_change_info == 1)
+        {
+            /* As configuration has been changed, fill the global variables with new values for Data and CFG frames */
+            frame_size();
 
-               /* Needs to cancle the existing thread for data sending and create new one */
-               int n = pthread_cancel(send_thrd_id);
+            /* Needs to cancle the existing thread for data sending and create new one */
+            int n = pthread_cancel(send_thrd_id);
 
-			if (n == 0)
-			{
-	               if((err = pthread_create(&DATA_thread,NULL,SEND_DATA,NULL))) 
-                    {
-		               perror(strerror(err));
-		               exit(1);	
-	               }
-			     printf("Now PMU sending Data Frames according to new configuration.");
-	               //pthread_join(DATA_thread, NULL);
-			}
-               else
-			     printf("PMU unable to send Data Frames according to new configuration??");
-          }
+            if (n == 0)
+            {
+                if((err = pthread_create(&DATA_thread,NULL,SEND_DATA,NULL))) 
+                {
+                    perror(strerror(err));
+                    exit(1);	
+                }
+                printf("Now PMU sending Data Frames according to new configuration.");
+                //pthread_join(DATA_thread, NULL);
+            }
+            else
+                printf("PMU unable to send Data Frames according to new configuration??");
+        }
 
 	     pthread_mutex_unlock(&mutex_pdc_object);
      }

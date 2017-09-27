@@ -33,55 +33,61 @@
 #include<gtk/gtk.h>
 
 /* Convenience macros for obtaining objects from UI file */
+/*
 #define CH_GET_OBJECT(builder, name, type, data) \
 		data->name = type(gtk_builder_get_object (builder, #name) )
 #define CH_GET_WIDGET(builder, name, data) \
 		CH_GET_OBJECT(builder, name, GTK_WIDGET, data)
-
+*/
+#define CH_GET_OBJECT(builder, bname, type, data, dname) \
+		data->dname = type(gtk_builder_get_object (builder, #bname) )
+#define CH_GET_WIDGET(builder, bname, data, dname) \
+		CH_GET_OBJECT(builder, bname, GTK_WIDGET, data, dname)
 
 /* ---------------------------------------------------------------- */
 /*                         global Data Structure                    */
 /* ---------------------------------------------------------------- */
 
 /* PMU's main data structure definition */
-typedef struct _pmuStruct pmuStruct;
-
-struct _pmuStruct
-{
-     /* Main application window */
-	GtkWidget *Pmu_Simulator;  
-
-     /* Main window button widgets */
-	GtkWidget *create_cfg_button;
-	GtkWidget *header_frm_button;
-	GtkWidget *pmu_details_button;
-	GtkWidget *stat_modification_button;
-	GtkWidget *cfg_modification_button;
-	GtkWidget *manage_data_source;
-
-     /* Manubar button widgets */
-	GtkWidget *pmu_menubar;
-	GtkWidget *start_server;
-	GtkWidget *open_cfg;
-	GtkWidget *pmu_properties;
-	GtkWidget *exit_menuitem;
-	GtkWidget *about_menuitem;
-
-	GtkWidget * menuitem2;
-	GtkWidget * menu_setup_cfg;
-	GtkWidget * menu_data_source;
-	GtkWidget * menu_cfg_modify;
-	GtkWidget * menu_stat_modify;
-	GtkWidget * menu_header_frm;
-
-     /* Main window extra widgets */
-	GtkWidget *rights_lable;
-	GtkWidget *admin_label;
-	GtkWidget *E_button;
-	GtkWidget *text_view;
-	GtkWidget *text_view1;
-	GtkWidget *time_lable;
-};
+//typedef struct _pmuStruct pmuStruct;
+//
+//struct _pmuStruct
+//{
+//     /* Main application window */
+//	GtkWidget *Pmu_Simulator;  
+//
+//     /* Main window button widgets */
+//	GtkWidget *create_cfg_button;
+//	GtkWidget *header_frm_button;
+//	GtkWidget *pmu_details_button;
+//	GtkWidget *stat_modification_button;
+//	GtkWidget *cfg_modification_button;
+//	GtkWidget *manage_data_source;
+//
+//     /* Manubar button widgets */
+//	GtkWidget *pmu_menubar;
+//	GtkWidget *start_server;
+//	GtkWidget *open_cfg;
+//	GtkWidget *pmu_properties;
+//	GtkWidget *exit_menuitem;
+//	GtkWidget *about_menuitem;
+//
+//	GtkWidget * menuitem2;
+//	GtkWidget * menu_setup_cfg;
+//	GtkWidget * menu_data_source;
+//	GtkWidget * menu_cfg_modify;
+//	GtkWidget * menu_stat_modify;
+//	GtkWidget * menu_header_frm;
+//
+//     /* Main window extra widgets */
+//	GtkWidget *rights_lable;
+//	GtkWidget *admin_label;
+//	GtkWidget *E_button;
+//	GtkWidget *text_view;
+//	GtkWidget *text_view1;
+//	GtkWidget *time_lable;
+//    GtkWidget *statusbar;
+//};
 
 enum
 {
@@ -104,7 +110,7 @@ char pmuFilePath[200];
 char fptr[200];
 
 pid_t  pidLocal;
-pmuStruct *pmu_data;
+//pmuStruct *pmu_data;
 GtkWidget *pmu_server_window;
 GtkWidget *p_id, *p_udp, *p_tcp, *p_ip, *mul_ip;
 GtkWidget *udp_port, *tcp_port, *mul_port;
@@ -154,9 +160,9 @@ void apply_pmu_setup (GtkWidget *w, gpointer udata);
 
 void* display_time();
 
-static GtkTreeModel* create_pmu_model (FILE *fp1);
+GtkTreeModel* create_pmu_model (FILE *fp1);
 
-static GtkWidget* create_pmu_view (FILE *fp1);
+GtkWidget* create_pmu_view (FILE *fp1);
 
 #endif 
 
