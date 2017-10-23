@@ -13,13 +13,11 @@ CCOptionWin	CfgGuiFunctions.h	/^GtkWidget *CCOptionWin;$/;"	v
 CCWin	CfgGuiFunctions.h	/^GtkWidget *CCWin;$/;"	v
 CCWin	PmuGui.h	/^GtkWidget *CCWin, *setup_display_window;	$/;"	v
 CFLAGS	Makefile	/^CFLAGS=`pkg-config --cflags --cflags gtk+-3.0` -DGTK_DISABLE_SINGLE_INCLUDES -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGSEAL_ENABLE$/;"	m
-CH_GET_OBJECT	PmuGui.h	36;"	d
-CH_GET_WIDGET	PmuGui.h	38;"	d
+CH_GET_OBJECT	PmuGui.h	42;"	d
+CH_GET_WIDGET	PmuGui.h	44;"	d
 CLEAN_OBJECTS	Makefile	/^CLEAN_OBJECTS = PmuGui.o function.o ServerFunction.o CfgFunction.o CfgGuiFunctions.o pmu.xml$/;"	m
-COL_PROP	PmuGui.h	/^  COL_PROP = 0,$/;"	e	enum:__anon2
-COL_PROP	PmuGui_add.c	/^  COL_PROP = 0,$/;"	e	enum:__anon1	file:
-COL_VAL	PmuGui.h	/^  COL_VAL,$/;"	e	enum:__anon2
-COL_VAL	PmuGui_add.c	/^  COL_VAL,$/;"	e	enum:__anon1	file:
+COL_PROP	PmuGui.h	/^  COL_PROP = 0,$/;"	e	enum:__anon1
+COL_VAL	PmuGui.h	/^  COL_VAL,$/;"	e	enum:__anon1
 COMPILE	Makefile	/^COMPILE = $(CC) $/;"	m
 CREATE_DIR	Makefile	/^CREATE_DIR = $(INSTALL_PREFIX)\/share\/$/;"	m
 Change_pmu_configuration	CfgGuiFunctions.c	/^void Change_pmu_configuration(GtkWidget *widget, gpointer udata)$/;"	f
@@ -27,7 +25,7 @@ ConfigurationChange	CfgFunction.h	/^struct ConfigurationChange $/;"	s
 ConfigurationFrame	CfgFunction.h	/^struct ConfigurationFrame $/;"	s
 DATA_thread	ServerFunction.h	/^pthread_t UDP_thread,TCP_thread,MUL_thread,DATA_thread;$/;"	v
 DESKTOP_DIR	Makefile	/^DESKTOP_DIR = ${HOME}\/.local\/share\/applications$/;"	m
-E_button	PmuGui.h	/^	GtkWidget *E_button;$/;"	m	struct:_pmuStruct
+E_button	ShearedMemoryStructure.h	/^	GtkWidget *E_button;$/;"	m	struct:_pmuStruct
 FILE1	Makefile	/^FILE1 = pmu.xml$/;"	m
 FILE2	Makefile	/^FILE2 = PmuLogo.png$/;"	m
 FILE3	Makefile	/^FILE3 = PSLab.PNG$/;"	m
@@ -35,8 +33,8 @@ FILE4	Makefile	/^FILE4 = PmuLogo1.png$/;"	m
 FILE5	Makefile	/^FILE5 = logo.png$/;"	m
 FILE6	Makefile	/^FILE6 = PMU.desktop$/;"	m
 FILE7	Makefile	/^FILE7 = runPMU$/;"	m
-GW	pmu.c	112;"	d	file:
-GW	pmu.c	138;"	d	file:
+GW	pmu.c	126;"	d	file:
+GW	pmu.c	178;"	d	file:
 H2S	function.c	/^void H2S(char a[], unsigned char temp_6[])$/;"	f
 HdrFrm	CfgGuiFunctions.h	/^GtkWidget *phtext, *angtext, *HdrFrm;$/;"	v
 ICON_DIR	Makefile	/^ICON_DIR = ${HOME}\/.local\/share\/icons$/;"	m
@@ -52,8 +50,8 @@ MUL_sockfd	ServerFunction.h	/^int UDP_sockfd,TCP_sockfd,MUL_sockfd; \/* socket d
 MUL_thread	ServerFunction.h	/^pthread_t UDP_thread,TCP_thread,MUL_thread,DATA_thread;$/;"	v
 MulPort	ShearedMemoryStructure.h	/^    int MulPort;                \/* User given port for Multicasting *\/$/;"	m	struct:P_id
 Mulip	ShearedMemoryStructure.h	/^    char Mulip[20];             \/* Useg given Group IP for Multicasting *\/$/;"	m	struct:P_id
-NUM_COLS	PmuGui.h	/^  NUM_COLS$/;"	e	enum:__anon2
-NUM_COLS	PmuGui_add.c	/^  NUM_COLS$/;"	e	enum:__anon1	file:
+MyKey	ShearedMemoryStructure.h	/^key_t MyKey;$/;"	v
+NUM_COLS	PmuGui.h	/^  NUM_COLS$/;"	e	enum:__anon1
 OBJECTS	Makefile	/^OBJECTS =  pmu.c PmuGui.o function.o ServerFunction.o CfgFunction.o CfgGuiFunctions.o $/;"	m
 PDC_Details	ServerFunction.h	/^struct PDC_Details {$/;"	s
 PDC_MATCH	ServerFunction.c	/^void PDC_MATCH(int proto, int newfd)$/;"	f
@@ -71,7 +69,7 @@ PhasorChWin	CfgGuiFunctions.h	/^GtkWidget *PhasorChWin;$/;"	v
 PhasorType	ServerFunction.c	/^int UDP_sockfd, TCP_sockfd, TCP_sin_size,  PhasorType[50];$/;"	v
 PhasorType	ServerFunction.c	/^int fsecNum = 0, PhasorType[50];$/;"	v
 Pmu_Help	PmuGui.c	/^void Pmu_Help (GtkWidget *but, gpointer udata)$/;"	f
-Pmu_Simulator	PmuGui.h	/^	GtkWidget *Pmu_Simulator;  $/;"	m	struct:_pmuStruct
+Pmu_Simulator	ShearedMemoryStructure.h	/^	GtkWidget *Pmu_Simulator;  $/;"	m	struct:_pmuStruct
 SEND_DATA	ServerFunction.c	/^void* SEND_DATA()$/;"	f
 SHELL	Makefile	/^SHELL = \/bin\/sh$/;"	m
 SIGUSR1_handler	ServerFunction.c	/^void  SIGUSR1_handler(int sig)$/;"	f
@@ -101,13 +99,13 @@ UDP_sockfd	ServerFunction.h	/^int UDP_sockfd,TCP_sockfd,MUL_sockfd; \/* socket d
 UDP_thread	ServerFunction.h	/^pthread_t UDP_thread,TCP_thread,MUL_thread,DATA_thread;$/;"	v
 UdpPort	ShearedMemoryStructure.h	/^	int UdpPort;			\/* User given UDP port number for server *\/$/;"	m	struct:P_id
 __SUPPORT_H__	PmuGui.h	31;"	d
-_pmuStruct	PmuGui.h	/^struct _pmuStruct$/;"	s
+_pmuStruct	ShearedMemoryStructure.h	/^struct _pmuStruct$/;"	s
 about_dialog	PmuGui.h	/^GtkWidget *about_dialog;$/;"	v
-about_menuitem	PmuGui.h	/^	GtkWidget *about_menuitem;$/;"	m	struct:_pmuStruct
+about_menuitem	ShearedMemoryStructure.h	/^	GtkWidget *about_menuitem;$/;"	m	struct:_pmuStruct
 about_pmu	PmuGui.c	/^void about_pmu (GtkButton *widget, gpointer udata)$/;"	f
 add_remove_choice	CfgFunction.h	/^	int  add_remove_choice; $/;"	m	struct:ConfigurationChange
 address_set	ServerFunction.h	/^	int  address_set;$/;"	m	struct:PDC_Details
-admin_label	PmuGui.h	/^	GtkWidget *admin_label;$/;"	m	struct:_pmuStruct
+admin_label	ShearedMemoryStructure.h	/^	GtkWidget *admin_label;$/;"	m	struct:_pmuStruct
 af	CfgFunction.c	/^int frmt, fdf, af, pf, pn, phnmr, annmr, dgnmr, num_pmu = 1; $/;"	v
 angtext	CfgGuiFunctions.h	/^GtkWidget *phtext, *angtext, *HdrFrm;$/;"	v
 annmr	CfgFunction.c	/^int frmt, fdf, af, pf, pn, phnmr, annmr, dgnmr, num_pmu = 1; $/;"	v
@@ -134,7 +132,7 @@ cfg_digital_channels	CfgFunction.h	/^	char *cfg_digital_channels; $/;"	m	struct:
 cfg_fdf	CfgFunction.h	/^	int  cfg_fdf; $/;"	m	struct:ConfigurationFrame
 cfg_fnom	CfgFunction.h	/^	int  cfg_fnom; $/;"	m	struct:ConfigurationFrame
 cfg_info	CfgFunction.h	/^struct ConfigurationFrame *cfg_info;$/;"	v	typeref:struct:ConfigurationFrame
-cfg_modification_button	PmuGui.h	/^	GtkWidget *cfg_modification_button;$/;"	m	struct:_pmuStruct
+cfg_modification_button	ShearedMemoryStructure.h	/^	GtkWidget *cfg_modification_button;$/;"	m	struct:_pmuStruct
 cfg_name	CfgGuiFunctions.h	/^GtkWidget *cfg_name;$/;"	v
 cfg_pf	CfgFunction.h	/^	int  cfg_pf; $/;"	m	struct:ConfigurationFrame
 cfg_phasor_channels	CfgFunction.h	/^	char *cfg_phasor_channels; $/;"	m	struct:ConfigurationFrame
@@ -159,11 +157,10 @@ cmd_received	ServerFunction.h	/^	int  cmd_received;  \/\/\/\/0 maens Not-receive
 compute_CRC	function.c	/^uint16_t compute_CRC(unsigned char *message,int length)$/;"	f
 count	ServerFunction.c	/^int count = 0, pmuse=0, sc1 = 0, tcp_port, udp_port, mul_port, tmp_wait = 1, df_fnom;$/;"	v
 create_cfg	CfgFunction.c	/^int create_cfg()$/;"	f
-create_cfg_button	PmuGui.h	/^	GtkWidget *create_cfg_button;$/;"	m	struct:_pmuStruct
+create_cfg_button	ShearedMemoryStructure.h	/^	GtkWidget *create_cfg_button;$/;"	m	struct:_pmuStruct
 create_pixbuf	PmuGui.c	/^GdkPixbuf *create_pixbuf(const gchar * filename)$/;"	f
-create_pmu_model	PmuGui.c	/^static GtkTreeModel* create_pmu_model (FILE *fp1)$/;"	f	file:
-create_pmu_model	PmuGui_add.c	/^static GtkTreeModel* create_pmu_model (FILE*)$/;"	f	file:
-create_pmu_view	PmuGui.c	/^static GtkWidget* create_pmu_view (FILE *fp1)$/;"	f	file:
+create_pmu_model	PmuGui.c	/^GtkTreeModel* create_pmu_model (FILE *fp1)$/;"	f
+create_pmu_view	PmuGui.c	/^GtkWidget* create_pmu_view (FILE *fp1)$/;"	f
 curnt_soc	ServerFunction.c	/^long int df_soc, fsec = 0, curnt_soc = 0, prev_soc = 0,soc1,soc2;$/;"	v
 dataFileVar	ServerFunction.h	/^int dataFileVar, cfg_crc_error; $/;"	v
 dataFileVar	ShearedMemoryStructure.h	/^	int dataFileVar;		\/* For data source options : 0-Auto & 1-File Measurements *\/$/;"	m	struct:P_id
@@ -195,7 +192,7 @@ display_time	PmuGui.c	/^void* display_time()$/;"	f
 enter_new_data_rate	CfgGuiFunctions.c	/^void enter_new_data_rate(GtkWidget *widget, gpointer udata)$/;"	f
 err	ServerFunction.c	/^int err, errno, udp_data_trans_off = 1, tcp_data_trans_off = 1, stat_flag = 0;$/;"	v
 errno	ServerFunction.c	/^int err, errno, udp_data_trans_off = 1, tcp_data_trans_off = 1, stat_flag = 0;$/;"	v
-exit_menuitem	PmuGui.h	/^	GtkWidget *exit_menuitem;$/;"	m	struct:_pmuStruct
+exit_menuitem	ShearedMemoryStructure.h	/^	GtkWidget *exit_menuitem;$/;"	m	struct:_pmuStruct
 f2c	function.c	/^void f2c (float f, unsigned char temp_1[])$/;"	f
 fdf	CfgFunction.c	/^int frmt, fdf, af, pf, pn, phnmr, annmr, dgnmr, num_pmu = 1; $/;"	v
 filePath	ShearedMemoryStructure.h	/^	char filePath[400];		\/* File path of user selected measurement file *\/$/;"	m	struct:P_id
@@ -219,7 +216,7 @@ hdr_frame_window	CfgGuiFunctions.h	/^GtkWidget *hdr_frame_window;$/;"	v
 hdr_size	ServerFunction.c	/^int df_data_frm_size = 0, old_data_rate = 0, cfg_size, hdr_size=0;$/;"	v
 hdrline	ServerFunction.h	/^unsigned char hdrline[MAX_STRING_SIZE];$/;"	v
 header	CfgFunction.c	/^unsigned char header[MAX_STRING_SIZE];$/;"	v
-header_frm_button	PmuGui.h	/^	GtkWidget *header_frm_button;$/;"	m	struct:_pmuStruct
+header_frm_button	ShearedMemoryStructure.h	/^	GtkWidget *header_frm_button;$/;"	m	struct:_pmuStruct
 header_frm_gen	CfgFunction.c	/^void header_frm_gen(int len)$/;"	f
 help_dialog	PmuGui.h	/^GtkWidget *help_dialog;$/;"	v
 i	CfgFunction.c	/^int i, j, n, pmu_id, indx = 0, global_data_frm_size=0, hdrFrmSize=0;$/;"	v
@@ -227,22 +224,23 @@ i2c	function.c	/^void i2c (int t, unsigned char temp[])$/;"	f
 includedir	Makefile	/^includedir = \/usr\/src\/include$/;"	m
 indx	CfgFunction.c	/^int i, j, n, pmu_id, indx = 0, global_data_frm_size=0, hdrFrmSize=0;$/;"	v
 ip	ServerFunction.h	/^	char ip[16];$/;"	m	struct:PDC_Details
+isNthBitSet	function.c	/^int isNthBitSet (unsigned char c, int n) {$/;"	f
 isNumber	PmuGui.c	/^int isNumber(char *s)$/;"	f
 j	CfgFunction.c	/^int i, j, n, pmu_id, indx = 0, global_data_frm_size=0, hdrFrmSize=0;$/;"	v
 li2c	function.c	/^void li2c (long int t1, unsigned char temp_1[])$/;"	f
 main	pmu.c	/^int main(int argc, char **argv)$/;"	f
-manage_data_source	PmuGui.h	/^	GtkWidget *manage_data_source;$/;"	m	struct:_pmuStruct
+manage_data_source	ShearedMemoryStructure.h	/^	GtkWidget *manage_data_source;$/;"	m	struct:_pmuStruct
 manage_data_sources	PmuGui.c	/^void manage_data_sources()$/;"	f
 markup	PmuGui.h	/^char *markup;$/;"	v
 markup1	CfgFunction.h	/^char *hdr_frame, *markup1, PMU_mulip[20];$/;"	v
 max_data_rate	CfgFunction.c	44;"	d	file:
 measurement_Return	function.c	/^char* measurement_Return ()$/;"	f
-menu_cfg_modify	PmuGui.h	/^	GtkWidget * menu_cfg_modify;$/;"	m	struct:_pmuStruct
-menu_data_source	PmuGui.h	/^	GtkWidget * menu_data_source;$/;"	m	struct:_pmuStruct
-menu_header_frm	PmuGui.h	/^	GtkWidget * menu_header_frm;$/;"	m	struct:_pmuStruct
-menu_setup_cfg	PmuGui.h	/^	GtkWidget * menu_setup_cfg;$/;"	m	struct:_pmuStruct
-menu_stat_modify	PmuGui.h	/^	GtkWidget * menu_stat_modify;$/;"	m	struct:_pmuStruct
-menuitem2	PmuGui.h	/^	GtkWidget * menuitem2;$/;"	m	struct:_pmuStruct
+menu_cfg_modify	ShearedMemoryStructure.h	/^	GtkWidget * menu_cfg_modify;$/;"	m	struct:_pmuStruct
+menu_data_source	ShearedMemoryStructure.h	/^	GtkWidget * menu_data_source;$/;"	m	struct:_pmuStruct
+menu_header_frm	ShearedMemoryStructure.h	/^	GtkWidget * menu_header_frm;$/;"	m	struct:_pmuStruct
+menu_setup_cfg	ShearedMemoryStructure.h	/^	GtkWidget * menu_setup_cfg;$/;"	m	struct:_pmuStruct
+menu_stat_modify	ShearedMemoryStructure.h	/^	GtkWidget * menu_stat_modify;$/;"	m	struct:_pmuStruct
+menuitem2	ShearedMemoryStructure.h	/^	GtkWidget * menuitem2;$/;"	m	struct:_pmuStruct
 mul_ip	PmuGui.h	/^GtkWidget *p_id, *p_udp, *p_tcp, *p_ip, *mul_ip;$/;"	v
 mul_ip	ServerFunction.c	/^char mul_ip[20];$/;"	v
 mul_pdc	ServerFunction.h	/^}*PDCfirst,*PDClast,*mul_pdc;$/;"	v	typeref:struct:PDC_Details
@@ -267,7 +265,7 @@ num_text	CfgGuiFunctions.h	/^GtkWidget *num_text[50], *num_text1[50];$/;"	v
 num_text1	CfgGuiFunctions.h	/^GtkWidget *num_text[50], *num_text1[50];$/;"	v
 numbytes	ServerFunction.h	/^int TCP_sin_size, numbytes;$/;"	v
 old_data_rate	ServerFunction.c	/^int df_data_frm_size = 0, old_data_rate = 0, cfg_size, hdr_size=0;$/;"	v
-open_cfg	PmuGui.h	/^	GtkWidget *open_cfg;$/;"	m	struct:_pmuStruct
+open_cfg	ShearedMemoryStructure.h	/^	GtkWidget *open_cfg;$/;"	m	struct:_pmuStruct
 p1	ShearedMemoryStructure.h	/^}p1, *ShmPTR;$/;"	v	typeref:struct:P_id
 p_af	CfgGuiFunctions.h	/^GtkWidget *p_af, *p_pf, *p_pn;$/;"	v
 p_anNumber	CfgGuiFunctions.h	/^GtkWidget *p_anNumber;$/;"	v
@@ -293,18 +291,19 @@ phunit	CfgFunction.c	/^long int phunit = 915527, anunit = 1, digunit = 0;$/;"	v
 phunit_final_val	CfgFunction.h	/^unsigned char phunit_final_val[500];$/;"	v
 pid	ShearedMemoryStructure.h	/^	pid_t pid;               	\/* Single pid *\/$/;"	m	struct:P_id
 pidLocal	PmuGui.h	/^pid_t  pidLocal;$/;"	v
+pidMain	ShearedMemoryStructure.h	/^    pid_t pidMain;$/;"	m	struct:P_id
 pmuFilePath	PmuGui.h	/^char pmuFilePath[200];$/;"	v
 pmuFilePath	ServerFunction.h	/^char pmuFilePath[200];$/;"	v
 pmuFolderPath	PmuGui.h	/^char pmuFolderPath[200];$/;"	v
 pmuFolderPath	ServerFunction.h	/^char pmuFolderPath[200];$/;"	v
-pmuStruct	PmuGui.h	/^typedef struct _pmuStruct pmuStruct;$/;"	t	typeref:struct:_pmuStruct
+pmuStruct	ShearedMemoryStructure.h	/^typedef struct _pmuStruct pmuStruct;$/;"	t	typeref:struct:_pmuStruct
 pmu_cfgsent	ServerFunction.h	/^	int  pmu_cfgsent;   \/\/0- not sent, 1- sent$/;"	m	struct:PDC_Details
 pmu_colors	PmuGui.c	/^void pmu_colors()$/;"	f
-pmu_data	PmuGui.h	/^pmuStruct *pmu_data;$/;"	v
-pmu_details_button	PmuGui.h	/^	GtkWidget *pmu_details_button;$/;"	m	struct:_pmuStruct
+pmu_data	ShearedMemoryStructure.h	/^pmuStruct *pmu_data;$/;"	v
+pmu_details_button	ShearedMemoryStructure.h	/^	GtkWidget *pmu_details_button;$/;"	m	struct:_pmuStruct
 pmu_id	CfgFunction.c	/^int i, j, n, pmu_id, indx = 0, global_data_frm_size=0, hdrFrmSize=0;$/;"	v
-pmu_menubar	PmuGui.h	/^	GtkWidget *pmu_menubar;$/;"	m	struct:_pmuStruct
-pmu_properties	PmuGui.h	/^	GtkWidget *pmu_properties;$/;"	m	struct:_pmuStruct
+pmu_menubar	ShearedMemoryStructure.h	/^	GtkWidget *pmu_menubar;$/;"	m	struct:_pmuStruct
+pmu_properties	ShearedMemoryStructure.h	/^	GtkWidget *pmu_properties;$/;"	m	struct:_pmuStruct
 pmu_server	PmuGui.c	/^void pmu_server ()$/;"	f
 pmu_server_window	PmuGui.h	/^GtkWidget *pmu_server_window;$/;"	v
 pmu_setup_file_selection	PmuGui.c	/^void pmu_setup_file_selection(GtkWidget *widget, gpointer udata)$/;"	f
@@ -321,9 +320,10 @@ reconfig_cfg_CC	CfgFunction.c	/^void reconfig_cfg_CC()$/;"	f
 remove_cfg_window	CfgGuiFunctions.h	/^GtkWidget *remove_cfg_window;$/;"	v
 remove_phasor_num	CfgGuiFunctions.c	/^void remove_phasor_num (GtkWidget *widget, gpointer udata)$/;"	f
 remove_tcp_node	ServerFunction.c	/^void remove_tcp_node(void * node)$/;"	f
-rights_lable	PmuGui.h	/^	GtkWidget *rights_lable;$/;"	m	struct:_pmuStruct
+rights_lable	ShearedMemoryStructure.h	/^	GtkWidget *rights_lable;$/;"	m	struct:_pmuStruct
 sa	ServerFunction.h	/^struct sigaction sa;$/;"	v	typeref:struct:sigaction
 sc1	ServerFunction.c	/^int count = 0, pmuse=0, sc1 = 0, tcp_port, udp_port, mul_port, tmp_wait = 1, df_fnom;$/;"	v
+sendTCPCFGFrame	ServerFunction.c	/^void sendTCPCFGFrame ()$/;"	f
 send_thrd_id	ServerFunction.c	/^long int send_thrd_id = 0;$/;"	v
 setup_close_button	CfgGuiFunctions.h	/^GtkWidget *setup_close_button;$/;"	v
 setup_display_window	PmuGui.h	/^GtkWidget *CCWin, *setup_display_window;	$/;"	v
@@ -334,11 +334,14 @@ soc1	ServerFunction.c	/^long int df_soc, fsec = 0, curnt_soc = 0, prev_soc = 0,s
 soc2	ServerFunction.c	/^long int df_soc, fsec = 0, curnt_soc = 0, prev_soc = 0,soc1,soc2;$/;"	v
 sockfd	ServerFunction.h	/^	int  sockfd;$/;"	m	struct:PDC_Details
 srvr_entry	PmuGui.h	/^int srvr_entry;$/;"	v
-start_server	PmuGui.h	/^	GtkWidget *start_server;$/;"	m	struct:_pmuStruct
 start_server	ServerFunction.c	/^void start_server()$/;"	f
+start_server	ShearedMemoryStructure.h	/^	GtkWidget *start_server;$/;"	m	struct:_pmuStruct
 stat_chng_options	CfgGuiFunctions.c	/^void stat_chng_options(GtkWidget *widget, gpointer udata)$/;"	f
 stat_flag	ServerFunction.c	/^int err, errno, udp_data_trans_off = 1, tcp_data_trans_off = 1, stat_flag = 0;$/;"	v
-stat_modification_button	PmuGui.h	/^	GtkWidget *stat_modification_button;$/;"	m	struct:_pmuStruct
+stat_modification_button	ShearedMemoryStructure.h	/^	GtkWidget *stat_modification_button;$/;"	m	struct:_pmuStruct
+statusMsg	ShearedMemoryStructure.h	/^    char statusMsg[200];$/;"	m	struct:P_id
+statusMsgSet	ShearedMemoryStructure.h	/^    int statusMsgSet;$/;"	m	struct:P_id
+statusbar	ShearedMemoryStructure.h	/^    GtkWidget *statusbar;$/;"	m	struct:_pmuStruct
 t1	CfgFunction.c	/^double t1;$/;"	v
 tcp_cfg_flag	ServerFunction.c	/^int udp_cfg_flag = 0, tcp_cfg_flag = 0, tcp_data_flag = 0, udp_data_flag = 0;$/;"	v
 tcp_data_flag	ServerFunction.c	/^int udp_cfg_flag = 0, tcp_cfg_flag = 0, tcp_data_flag = 0, udp_data_flag = 0;$/;"	v
@@ -354,11 +357,11 @@ temp_ANUNIT_val	ServerFunction.h	/^long int temp_PHUNIT_val[50], temp_ANUNIT_val
 temp_PHUNIT_val	ServerFunction.h	/^long int temp_PHUNIT_val[50], temp_ANUNIT_val[50];$/;"	v
 temp_analog_type	ServerFunction.h	/^int temp_pahsor_type[50], temp_analog_type[50];$/;"	v
 temp_pahsor_type	ServerFunction.h	/^int temp_pahsor_type[50], temp_analog_type[50];$/;"	v
-text_view	PmuGui.h	/^	GtkWidget *text_view;$/;"	m	struct:_pmuStruct
-text_view1	PmuGui.h	/^	GtkWidget *text_view1;$/;"	m	struct:_pmuStruct
+text_view	ShearedMemoryStructure.h	/^	GtkWidget *text_view;$/;"	m	struct:_pmuStruct
+text_view1	ShearedMemoryStructure.h	/^	GtkWidget *text_view1;$/;"	m	struct:_pmuStruct
 thread_id	ServerFunction.h	/^	pthread_t thread_id;$/;"	m	struct:PDC_Details
 tim	CfgFunction.c	/^struct timeval tim;$/;"	v	typeref:struct:timeval
-time_lable	PmuGui.h	/^	GtkWidget *time_lable;$/;"	m	struct:_pmuStruct
+time_lable	ShearedMemoryStructure.h	/^	GtkWidget *time_lable;$/;"	m	struct:_pmuStruct
 tmp_wait	ServerFunction.c	/^int count = 0, pmuse=0, sc1 = 0, tcp_port, udp_port, mul_port, tmp_wait = 1, df_fnom;$/;"	v
 udp_cfg_flag	ServerFunction.c	/^int udp_cfg_flag = 0, tcp_cfg_flag = 0, tcp_data_flag = 0, udp_data_flag = 0;$/;"	v
 udp_data_flag	ServerFunction.c	/^int udp_cfg_flag = 0, tcp_cfg_flag = 0, tcp_data_flag = 0, udp_data_flag = 0;$/;"	v

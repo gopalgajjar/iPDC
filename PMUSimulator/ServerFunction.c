@@ -1427,7 +1427,6 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 			c = tcp_command[1];
 			c <<= 1;
 			c >>= 5;
-
 			if(c  == 0x04) 		/* Check if it is a command frame from PDC */ 
 			{	
 				c = tcp_command[15];
@@ -1446,25 +1445,27 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 					else 
 					{ 
 						fclose(fp1);
+                        pthread_mutex_lock(&mutex_pdc_object);
+                        sendTCPCFGFrame(single_pdc_node);
+                        pthread_mutex_unlock(&mutex_pdc_object);     
+				//		/* Get the CFG size & store in global variable */
+				//		df_temp[0] = cline[ind++];
+				//		df_temp[1] = cline[ind];
+				//		cfg_size = c2i(df_temp);
 
-						/* Get the CFG size & store in global variable */
-						df_temp[0] = cline[ind++];
-						df_temp[1] = cline[ind];
-						cfg_size = c2i(df_temp);
+				//		/* Send Configuration frame to PDC Device */
+	            //             pthread_mutex_lock(&mutex_pdc_object);
 
-						/* Send Configuration frame to PDC Device */
-	                         pthread_mutex_lock(&mutex_pdc_object);
+				//          if (send(new_fd,cline, cfg_size, 0) == -1)
+				//          {
+				//	          perror("sendto");
+				//          }
+                //              single_pdc_node->STAT_change = 0;
+                //              single_pdc_node->pmu_cfgsent = 1;
 
-				          if (send(new_fd,cline, cfg_size, 0) == -1)
-				          {
-					          perror("sendto");
-				          }
-                              single_pdc_node->STAT_change = 0;
-                              single_pdc_node->pmu_cfgsent = 1;
+                //            	pthread_mutex_unlock(&mutex_pdc_object);     
 
-                            	pthread_mutex_unlock(&mutex_pdc_object);     
-
-				     	printf("\nPMU CFG-2 frame [of %d Bytes] is sent to PDC.\n", cfg_size);
+				//     	printf("\nPMU CFG-2 frame [of %d Bytes] is sent to PDC.\n", cfg_size);
 					} 
 				}
 				else if((c & 0x03) == 0x03)		/* Command frame for Header frame request from PDC */
@@ -1508,7 +1509,7 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 						printf("Data Transmission is already in OFF mode for PDC.\n");
 					else
 					{
-						printf("Turn ON Data Transmission for PDC.\n");
+						printf("Turn OFF Data Transmission for PDC.\n");
                              	single_pdc_node->data_transmission = 1;
 					}
                          pthread_mutex_unlock(&mutex_pdc_object);     
@@ -1531,7 +1532,14 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 							printf("Turn ON Data Transmission for PDC.\n");
 						}
 						else
-							printf("Data Transmission can't be turn on for PDC. As CMD frame has not received for CFG?\n");
+							printf("First send config file, as it seems this PDC don't have CFG. \n");
+                        sendTCPCFGFrame(single_pdc_node);
+						if(single_pdc_node->pmu_cfgsent == 1)
+						{
+                             		single_pdc_node->data_transmission = 0;
+							single_pdc_node->tcpup = 1;
+							printf("Turn ON Data Transmission for PDC.\n");
+						}
 					}
                          pthread_mutex_unlock(&mutex_pdc_object);     
 				} 
@@ -2096,5 +2104,29 @@ void  SIGUSR2_handler(int sig)
 	signal(sig, SIGUSR2_handler);
 }
 
+void sendTCPCFGFrame (struct PDC_Details *single_pdc_node)
+{
+    int ind;
+    ind = 2;
+	int new_fd = single_pdc_node->sockfd;
+    /* Get the CFG size & store in global variable */
+    df_temp[0] = cline[ind++];
+    df_temp[1] = cline[ind];
+    cfg_size = c2i(df_temp);
+
+    /* Send Configuration frame to PDC Device */
+    //pthread_mutex_lock(&mutex_pdc_object);
+
+    if (send(new_fd,cline, cfg_size, 0) == -1)
+    {
+        perror("sendto");
+    }
+    single_pdc_node->STAT_change = 0;
+    single_pdc_node->pmu_cfgsent = 1;
+
+    //pthread_mutex_unlock(&mutex_pdc_object);     
+
+    printf("\nPMU CFG-2 frame [of %d Bytes] is sent to PDC.\n", cfg_size);
+}
 /**************************************** End of File *******************************************************/
 
