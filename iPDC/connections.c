@@ -508,9 +508,22 @@ void* UL_tcp_connection(void * temp_pdc) {
 
 					} else {
 
-						printf("Data cannot be sent as CMD for CFG not received\n");
+                        //printf("Data cannot be sent as CMD for CFG not received\n");
+                        printf("First Send CFD then start data.\n");
+                        while(root_pmuid != NULL); // Wait till the staus chage list becomes empty
+                        numbytes = create_cfgframe();
+                        udetails->tcpup = 1;
 
-					}			
+                        if (send(UL_new_fd,cfgframe,numbytes, 0)== -1)
+                            perror("send");						
+                        if (numbytes !=0 ) free(cfgframe);
+
+                        udetails->UL_upper_pdc_cfgsent = 1;
+                        udetails->config_change = 0;
+                        if(udetails->UL_upper_pdc_cfgsent == 1) { // Only if cfg is sent send the data
+                            udetails->UL_data_transmission_off = 0;
+                        }
+                    }
 
 				} else if ((c & 0x01) == 0x01){ // Put the data transmission off
 
