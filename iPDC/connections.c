@@ -504,7 +504,9 @@ void* UL_tcp_connection(void * temp_pdc) {
 
 					if(udetails->UL_upper_pdc_cfgsent == 1) { // Only if cfg is sent send the data
 
+                        printf("Bingo start data stream.\n");
 						udetails->UL_data_transmission_off = 0;
+                        udetails->tcpup = 1;
 
 					} else {
 
@@ -519,6 +521,7 @@ void* UL_tcp_connection(void * temp_pdc) {
                         if (numbytes !=0 ) free(cfgframe);
 
                         udetails->UL_upper_pdc_cfgsent = 1;
+                        udetails->tcpup = 1;
                         udetails->config_change = 0;
                         if(udetails->UL_upper_pdc_cfgsent == 1) { // Only if cfg is sent send the data
                             udetails->UL_data_transmission_off = 0;

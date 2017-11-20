@@ -723,7 +723,6 @@ void dispatch(int index) {
     }
     // Now handle the upper level PDCs
 	while(temp_pdc != NULL ) {
-
 		if((temp_pdc->UL_upper_pdc_cfgsent == 1) && (temp_pdc->UL_data_transmission_off == 0)) {			
 
 			if(temp_pdc->config_change == 1) {
