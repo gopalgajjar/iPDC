@@ -34,6 +34,9 @@
 /* Function copies Bytes in a main array */ 
 void B_copy(unsigned char main[], unsigned char tmp[], int ind, int n);
 
+/* FUNCTION  copy_cbyc(): copies Bytes from a char pointer            */
+void copy_cbyc(unsigned char dst[],unsigned char *s,int size);
+
 /* Function to read the measurement file and return measurements for a singel timestamp */ 
 char* measurement_Return ();
 

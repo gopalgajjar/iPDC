@@ -723,7 +723,8 @@ void generate_data_frame()
 					indx = indx + 2;
 
 					d2 = strtok (NULL,",\""); 
-					phasorI = (((atof(d2)*M_PI)/180)*10000);
+					//phasorI = (((atof(d2)*M_PI)/180)*10000);
+					phasorI = ((atof(d2))*10000);
 					i2c(phasorI, df_temp);
 					B_copy(data_frm, df_temp, indx, 2);
 					indx = indx + 2;
@@ -846,13 +847,13 @@ void* SEND_DATA()
 	while(df_data_rate == 0) usleep(1000);
 
      /* Calculate the waiting time during sending data frames */
-	int data_waiting = 1e9/df_data_rate, i=0;
-     struct PDC_Details *temp_pdc;
-     send_thrd_id = pthread_self();
+    int data_waiting = 1e9/df_data_rate, i=0;
+    struct PDC_Details *temp_pdc;
+    send_thrd_id = pthread_self();
 
-     struct timespec *cal_timeSpec, *cal_timeSpec1;
-     cal_timeSpec = malloc(sizeof(struct timespec));
-     cal_timeSpec1 = malloc(sizeof(struct timespec));
+    struct timespec *cal_timeSpec, *cal_timeSpec1;
+    cal_timeSpec = malloc(sizeof(struct timespec));
+    cal_timeSpec1 = malloc(sizeof(struct timespec));
 
 	clock_gettime(CLOCK_REALTIME, cal_timeSpec);
 
@@ -1385,7 +1386,7 @@ void* MUL_PMU()
 void* TCP_CONNECTIONS(void * temp_pdc)
 {
 	/* local variables */
-	unsigned char c;
+	unsigned char c, soc[5];
 	int n,sin_size,ind;
 	char tcp_command[19], filename1[200];
 	FILE *fp1;
@@ -1429,9 +1430,11 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 			c >>= 5;
 			if(c  == 0x04) 		/* Check if it is a command frame from PDC */ 
 			{	
-				c = tcp_command[15];
+                copy_cbyc(soc, (unsigned char*) (&tcp_command[6]),4);
+                long int cmdSOC = c2li(soc);
+                c = tcp_command[15];
 
-				if((c & 0x05) == 0x05)		/* Command frame for Configuration Frame-2 request from PDC */
+				if((c ^ 0x05) == 0x0)		/* Command frame for Configuration Frame-2 request from PDC */
 				{ 
 					printf("\nCommand Frame for Configuration Frame-2 is received fron PDC.\n"); 
 					fp1 = fopen (filename1,"rb");
@@ -1448,27 +1451,9 @@ void* TCP_CONNECTIONS(void * temp_pdc)
                         pthread_mutex_lock(&mutex_pdc_object);
                         sendTCPCFGFrame(single_pdc_node);
                         pthread_mutex_unlock(&mutex_pdc_object);     
-				//		/* Get the CFG size & store in global variable */
-				//		df_temp[0] = cline[ind++];
-				//		df_temp[1] = cline[ind];
-				//		cfg_size = c2i(df_temp);
-
-				//		/* Send Configuration frame to PDC Device */
-	            //             pthread_mutex_lock(&mutex_pdc_object);
-
-				//          if (send(new_fd,cline, cfg_size, 0) == -1)
-				//          {
-				//	          perror("sendto");
-				//          }
-                //              single_pdc_node->STAT_change = 0;
-                //              single_pdc_node->pmu_cfgsent = 1;
-
-                //            	pthread_mutex_unlock(&mutex_pdc_object);     
-
-				//     	printf("\nPMU CFG-2 frame [of %d Bytes] is sent to PDC.\n", cfg_size);
 					} 
 				}
-				else if((c & 0x03) == 0x03)		/* Command frame for Header frame request from PDC */
+				else if((c ^ 0x03) == 0x0)		/* Command frame for Header frame request from PDC */
 				{
 					printf("\nCommand Frame for Header frame is received from PDC.\n"); 
 					fp1 = fopen(filename1,"rb");
@@ -1499,7 +1484,7 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 						}
 					} 
 				}
-				else if((c & 0x01) == 0x01)		/* Command frame for Turn off transmission request from PDC */
+				else if((c ^ 0x01) == 0x0)		/* Command frame for Turn off transmission request from PDC */
 				{
 					printf("\nCommand Frame for Turn OFF data received from PDC.\n");
 
@@ -1514,7 +1499,7 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 					}
                          pthread_mutex_unlock(&mutex_pdc_object);     
 				}
-				else if((c & 0x02) == 0x02)		/* Command frame for Turn ON transmission request from PDC */
+				else if((c ^ 0x02) == 0x0)		/* Command frame for Turn ON transmission request from PDC */
 				{ 				
 					printf("\nRequest received for data transmission ON.\n"); 
 
@@ -1524,26 +1509,46 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 					if(single_pdc_node->data_transmission == 0)
 						printf("Data Transmission is already in ON mode for PDC.\n");
 					else
-					{
-						if(single_pdc_node->pmu_cfgsent == 1)
-						{
-                             		single_pdc_node->data_transmission = 0;
-							single_pdc_node->tcpup = 1;
-							printf("Turn ON Data Transmission for PDC.\n");
-						}
-						else
-							printf("First send config file, as it seems this PDC don't have CFG. \n");
-                        sendTCPCFGFrame(single_pdc_node);
-						if(single_pdc_node->pmu_cfgsent == 1)
-						{
-                             		single_pdc_node->data_transmission = 0;
-							single_pdc_node->tcpup = 1;
-							printf("Turn ON Data Transmission for PDC.\n");
-						}
-					}
+                    {
+                        if(dataFileVar != 0)
+                        {
+                            printf("Reset data file to point to begning of file.\n");
+                            fseek(fp_DataFile, 0, SEEK_SET);	
+                        }
+                        if(single_pdc_node->pmu_cfgsent == 1)
+                        {
+                            /* This  part added on 20171029 to synchronize all PMUs getting command at same time*/
+                            struct timespec *cal_timeSpec;
+                            cal_timeSpec = malloc(sizeof(struct timespec));
+                            while(1) 
+                            {
+                                clock_gettime(CLOCK_REALTIME, cal_timeSpec);
+                                if ((cal_timeSpec->tv_sec - (time_t) (cmdSOC)) > 2)
+                                {
+                                    printf("Wait 2 sec.\n");
+                                    break;
+                                }
+                            }
+                            /*20171029*/
+                            single_pdc_node->data_transmission = 0;
+                            single_pdc_node->tcpup = 1;
+                            printf("Turn ON Data Transmission for PDC.\n");
+                        }
+                        else
+                        {
+                            printf("First send config file, as it seems this PDC don't have CFG. \n");
+                            sendTCPCFGFrame(single_pdc_node);
+                            if(single_pdc_node->pmu_cfgsent == 1)
+                            {
+                                single_pdc_node->data_transmission = 0;
+                                single_pdc_node->tcpup = 1;
+                                printf("Turn ON Data Transmission for PDC.\n");
+                            }
+                        }
+                    }
                          pthread_mutex_unlock(&mutex_pdc_object);     
 				} 
-				else if((c & 0x04) == 0x04)		/* Command frame for Configuration frame-1 request from PDC */
+				else if((c ^ 0x04) == 0x0)		/* Command frame for Configuration frame-1 request from PDC */
 				{
 					printf("\nCommand Frame for CFG Frame-1 is received fron PDC.\n");
 					fp1 = fopen (filename1,"rb");
@@ -1572,7 +1577,7 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 
 			else		/* If it is other than command frame */				
 			{ 
-				printf("\nReceived Frame is not a command frame!\n");						
+				printf("\nReceived Frame is not a valid command frame!\n");						
 				continue;				
 			}
 

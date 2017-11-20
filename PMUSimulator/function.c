@@ -73,6 +73,16 @@ void B_copy(unsigned char main[], unsigned char tmp[], int ind, int n)
 	}
 };
 
+/* ----------------------------------------------------------------------------	*/
+/* FUNCTION  copy_cbyc():                                	     		*/
+/* ----------------------------------------------------------------------------	*/
+
+void copy_cbyc(unsigned char dst[],unsigned char *s,int size) {
+
+	int i;
+	for(i = 0; i< size; i++)
+		dst[i] = *(s + i);	
+}
 
 /* ----------------------------------------------------------------------------	*/
 /* FUNCTION char* measurement_Return ():	               				*/
@@ -199,7 +209,6 @@ long int c2li (unsigned char temp_3[])
 	i |=a[3];
 	return(i);
 }
-
 
 /* ----------------------------------------------------------------------------	*/
 /* FUNCTION uint16_t compute_CRC(unsigned char *message,char length):		     */
