@@ -217,7 +217,8 @@ int validation_phasor_names(GtkWidget *widget, gpointer udata)
 	long int li;
 	char stn[16], c = ' ';
 	char *display_msg;
-	const char *aa[20];
+	//const char *aa[20];
+	const char *aa;
 	const char *text1;
 
 	/* First get how many Phasor channel we have? */
@@ -225,15 +226,14 @@ int validation_phasor_names(GtkWidget *widget, gpointer udata)
 	memset(stn, '\0', 16);	
 
 	/* Allocate the memory for Phasor channel names */
-	cfg_info->cfg_phasor_channels = (char *)malloc((vtr*16) * sizeof(char));
-	memset(cfg_info->cfg_phasor_channels, '\0', sizeof(cfg_info->cfg_phasor_channels));	
-
+	cfg_info->cfg_phasor_channels = malloc((vtr*16) * sizeof(char));
+	memset(cfg_info->cfg_phasor_channels, '\0', (vtr*16) * sizeof(char));	
 	for (ia=1; ia<vtr; ia++)
 	{	
 		/* Get the text entry value filled by user */
-		aa[ia] = gtk_entry_get_text(GTK_ENTRY(num_text[ia]));
+		aa = gtk_entry_get_text(GTK_ENTRY(num_text[ia]));
 
-		if(strlen(aa[ia]) == 0)
+		if(strlen(aa) == 0)
 		{
 			free (cfg_info->cfg_phasor_channels);
 			display_msg = " Please enter Phasor channel names! ";
@@ -243,7 +243,8 @@ int validation_phasor_names(GtkWidget *widget, gpointer udata)
 		else
 		{
 			memset(stn, '\0', 16);
-			strcpy(stn, aa[ia]);
+			strcpy(stn, aa);
+            stn[16] = '\0';
 			j = strlen(stn);
 			if(j < 17)
 			{
@@ -253,11 +254,11 @@ int validation_phasor_names(GtkWidget *widget, gpointer udata)
 				}
 			}
 		}
-
 		for (i=0; i< 16 && i< vtr*16; i++, ia1++) 
 		{
 			/* Copy all phasor name in an array */
 			cfg_info->cfg_phasor_channels[ia1] = stn[i]; 
+			cfg_info->cfg_phasor_channels[ia1+1] = '\0'; 
 		}		
 	}
 
@@ -349,7 +350,7 @@ int validation_analog_names(GtkWidget *widget, gpointer udata)
 	long int li;
 	char stn[16], c = ' ';
 	char *display_msg;
-	const char *aa[20], *text1;
+	const char *aa, *text1;
 
 	/* First get how many Analog channel we have? */
 	vtr = cfg_info->cfg_annmr_val+1;
@@ -362,9 +363,9 @@ int validation_analog_names(GtkWidget *widget, gpointer udata)
 	for (ia=1; ia<vtr; ia++)
 	{	
 		/* Get the text entry value filled by user */
-		aa[ia] = gtk_entry_get_text(GTK_ENTRY(num_text[ia]));
+		aa = gtk_entry_get_text(GTK_ENTRY(num_text[ia]));
 
-		if(strlen(aa[ia]) == 0)
+		if(strlen(aa) == 0)
 		{
 			free (cfg_info->cfg_analog_channels);
 			display_msg = " Please enter Analog channel names! ";
@@ -374,7 +375,7 @@ int validation_analog_names(GtkWidget *widget, gpointer udata)
 		else
 		{
 			memset(stn, '\0', 16);
-			strcpy(stn, aa[ia]);
+			strcpy(stn, aa);
 			j = strlen(stn);
 			if(j < 17)
 			{
