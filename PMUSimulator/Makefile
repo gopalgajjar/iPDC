@@ -91,11 +91,12 @@ install: $(PROGRAM)
 	cp -f images/$(FILE6) $(DESKTOP_DIR)/$(FILE6)
 	cp $(PROGRAM) $(INSTALL_PREFIX)/bin/$(PROGRAM)
 	cp $(FILE7) $(INSTALL_PREFIX)/bin/$(FILE7)
-	mkdir -p $(HOME)/iPDC/DataDir
-	mkdir -p $(HOME)/iPDC/DataDir/50Hz_measurement_files
-	mkdir -p $(HOME)/iPDC/DataDir/60Hz_measurement_files
-	cp -f -r ./DataDir/50Hz_measurement_files/* $(HOME)/iPDC/DataDir/50Hz_measurement_files	#-i -n for Debian based Linux 
-	cp -f -r ./DataDir/60Hz_measurement_files/* $(HOME)/iPDC/DataDir/60Hz_measurement_files
+	mkdir -p $(INSTALL_PREFIX)/DataDir
+#	mkdir -p $(HOME)/iPDC/DataDir/50Hz_measurement_files
+#	mkdir -p $(HOME)/iPDC/DataDir/60Hz_measurement_files
+	cp -f -r ./DataDir/50Hz_measurement_files $(INSTALL_PREFIX)/DataDir/50Hz_measurement_files	#-i -n for Debian based Linux 
+	cp -f -r ./DataDir/60Hz_measurement_files $(INSTALL_PREFIX)/DataDir/60Hz_measurement_files
+	cp -f -r ./DataDir/PMUfiles* $(INSTALL_PREFIX)/DataDir/
 #	chmod 777 $(HOME)/iPDC/DataDir
 #	rm -f $(CLEAN_OBJECTS) $(PROGRAM)
 

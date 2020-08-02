@@ -1029,7 +1029,16 @@ int dataparser(unsigned char data[]) {
                         if(temp_cfg->pmu[j]->fmt->polar == 1) { // POLAR
 
                             fp_real = *temp_cfg->pmu[j]->phunit[i] *f_r;
-                            fp_imaginary = f_i*1e-4; // Angle is in 10^4 radians
+                            // Added by Gopal on 1st Aug 2020
+                            if (f_i > pow(2,15))
+                            {
+                                fp_imaginary = (f_i - pow(2,16))*1e-4;
+                            }
+                            else
+                            {
+                                fp_imaginary = f_i*1e-4; // Angle is in 10^4 radians
+                            }
+                            // Addition of 1st Aug 2020 ends
                         }
                         else // RACTANGULAR
                         {

@@ -323,7 +323,7 @@ remove_tcp_node	ServerFunction.c	/^void remove_tcp_node(void * node)$/;"	f
 rights_lable	ShearedMemoryStructure.h	/^	GtkWidget *rights_lable;$/;"	m	struct:_pmuStruct
 sa	ServerFunction.h	/^struct sigaction sa;$/;"	v	typeref:struct:sigaction
 sc1	ServerFunction.c	/^int count = 0, pmuse=0, sc1 = 0, tcp_port, udp_port, mul_port, tmp_wait = 1, df_fnom;$/;"	v
-sendTCPCFGFrame	ServerFunction.c	/^void sendTCPCFGFrame ()$/;"	f
+sendTCPCFGFrame	ServerFunction.c	/^void sendTCPCFGFrame (struct PDC_Details *single_pdc_node)$/;"	f
 send_thrd_id	ServerFunction.c	/^long int send_thrd_id = 0;$/;"	v
 setup_close_button	CfgGuiFunctions.h	/^GtkWidget *setup_close_button;$/;"	v
 setup_display_window	PmuGui.h	/^GtkWidget *CCWin, *setup_display_window;	$/;"	v
@@ -368,6 +368,7 @@ udp_data_flag	ServerFunction.c	/^int udp_cfg_flag = 0, tcp_cfg_flag = 0, tcp_dat
 udp_data_trans_off	ServerFunction.c	/^int err, errno, udp_data_trans_off = 1, tcp_data_trans_off = 1, stat_flag = 0;$/;"	v
 udp_port	PmuGui.h	/^GtkWidget *udp_port, *tcp_port, *mul_port;$/;"	v
 udp_port	ServerFunction.c	/^int count = 0, pmuse=0, sc1 = 0, tcp_port, udp_port, mul_port, tmp_wait = 1, df_fnom;$/;"	v
+updateFile	DataDir/PMUfiles_4machine_case2c/updateFile.m	/^function [] = updateFile (input1)$/;"	f
 validate_func	CfgGuiFunctions.c	/^int validate_func(GtkWidget *widget, gpointer udata)$/;"	f
 validation_analog_names	CfgGuiFunctions.c	/^int validation_analog_names(GtkWidget *widget, gpointer udata)$/;"	f
 validation_cfg_create	CfgGuiFunctions.c	/^int validation_cfg_create ()$/;"	f

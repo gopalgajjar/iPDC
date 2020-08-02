@@ -547,7 +547,7 @@ void generate_data_frame()
 						ka = 1;
 					}
 
-					angle = ((angle*3.1415)/180)*100000;
+					angle = ((angle*3.1415)/180)*10000;
 					temp_i = phasor*100000;
 					i2c(temp_i, df_temp);
 					B_copy(data_frm, df_temp, indx, 2);
