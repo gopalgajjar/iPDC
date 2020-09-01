@@ -1098,7 +1098,7 @@ void PDC_MATCH(int proto, int newfd)
 void* UDP_PMU()
 {
 	/* local variables */
-    unsigned char c;
+    unsigned char c[2];
     int n, ind;
     char udp_command[18],filename1[200];
     FILE *fp1;
@@ -1135,15 +1135,16 @@ void* UDP_PMU()
 		else		/* New datagram has been received */
 		{
             PDC_MATCH(0, 0);
-			c = udp_command[1];
-			c <<= 1;
-			c >>= 5;
+			c[0] = udp_command[1];
+			c[0] <<= 1;
+			c[0] >>= 5;
 
-			if(c  == 0x04) 		/* Check if it is a command frame from PDC */ 
+			if(c[0]  == 0x04) 		/* Check if it is a command frame from PDC */ 
 			{	
-				c = udp_command[15];
+				c[0] = udp_command[14];
+				c[1] = udp_command[15];
 
-				if((c & 0x05) == 0x05)		/* Command frame for Configuration Frame from PDC */
+				if((c[1] & 0x05) == 0x05 && (c[0] & 0x00) == 0x00)		/* Command frame for Configuration Frame from PDC */
 				{ 				
 					printf("\nCommand Frame for Configuration Frame-2 is received from PDC.\n"); 
 					fp1 = fopen (filename1,"rb");
@@ -1188,7 +1189,7 @@ void* UDP_PMU()
                               }
 					} 
 				}
-				else if((c & 0x03) == 0x03)		/* Command frame for Header frame request from PDC */
+				else if((c[1] & 0x03) == 0x03 && (c[0] & 0x00) == 0x00)		/* Command frame for Header frame request from PDC */
 				{ 				
 					printf("\nCommand Frame for Header frame is received from PDC.\n"); 
 					fp1 = fopen (filename1,"rb");
@@ -1233,7 +1234,7 @@ void* UDP_PMU()
 						}
 					} 
 				}
-				else if((c & 0x01) == 0x01)		/* Command frame for Turn off transmission request from PDC */
+				else if((c[1] & 0x01) == 0x01 && (c[0] & 0x00) == 0x00)		/* Command frame for Turn off transmission request from PDC */
 				{ 
 					printf("\nCommand Frame for Turn OFF data received from PDC.\n");
 
@@ -1260,7 +1261,7 @@ void* UDP_PMU()
                               temp_pdc = temp_pdc->next;
                          }
 				}
-				else if((c & 0x02) == 0x02)		/* Command frame for Turn ON transmission request from PDC */
+				else if((c[1] & 0x02) == 0x02 && (c[0] & 0x00) == 0x00)		/* Command frame for Turn ON transmission request from PDC */
 				{ 				
 					printf("\nCommand Frame for Turn ON data received from PDC.\n");
 
@@ -1291,46 +1292,51 @@ void* UDP_PMU()
                               temp_pdc = temp_pdc->next;
                          }
                     } 
-				else if((c & 0x04) == 0x04)		 /* Command frame for Configuration frame-1 request from PDC */
-				{
-					printf("\nCommand Frame for CFG Frame-1 is received fron PDC.\n"); 
-					fp1 = fopen (filename1,"rb");
+                else if((c[1] & 0x04) == 0x04 && (c[0] & 0x00) == 0x00)		 /* Command frame for Configuration frame-1 request from PDC */
+                {
+                    printf("\nCommand Frame for CFG Frame-1 is received fron PDC.\n"); 
+                    fp1 = fopen (filename1,"rb");
 
-					if (fp1 == NULL)
-					{
-						printf("\nConfiguration Frame-1 is not present in PMU Setup File.\n");
-					}
-					else 
-					{ 
-						fclose(fp1);
-
-						/* Get the CFG size & store in global variable */
-						df_temp[0] = cline[ind++];
-						df_temp[1] = cline[ind++];
-						cfg_size = c2i(df_temp);
-						cline[cfg_size] = '\0';
-
-                              temp_pdc = PDCfirst;
-
-                              while(temp_pdc != NULL ) 
-                              {
-                                   if(temp_pdc->cmd_received == 1)
-                                   {
-                                        pthread_mutex_lock(&mutex_pdc_object);
-
-                                        if (sendto(temp_pdc->sockfd,cline, cfg_size, 0,(struct sockaddr *)&temp_pdc->pdc_addr,sizeof(temp_pdc->pdc_addr)) == -1) {
-							          perror("sendto");
-						          }
-
-                                        temp_pdc->cmd_received = 0;
-                                      	pthread_mutex_unlock(&mutex_pdc_object);
-                                        printf("\nPMU CFG-1 frame [of %d Bytes] is sent to the PDC.\n", cfg_size);
-		     					break;
-                                   }
-                                   temp_pdc = temp_pdc->next;
-                              }
-                         }
+                    if (fp1 == NULL)
+                    {
+                        printf("\nConfiguration Frame-1 is not present in PMU Setup File.\n");
                     }
+                    else 
+                    { 
+                        fclose(fp1);
+
+                        /* Get the CFG size & store in global variable */
+                        df_temp[0] = cline[ind++];
+                        df_temp[1] = cline[ind++];
+                        cfg_size = c2i(df_temp);
+                        cline[cfg_size] = '\0';
+
+                        temp_pdc = PDCfirst;
+
+                        while(temp_pdc != NULL ) 
+                        {
+                            if(temp_pdc->cmd_received == 1)
+                            {
+                                pthread_mutex_lock(&mutex_pdc_object);
+
+                                if (sendto(temp_pdc->sockfd,cline, cfg_size, 0,(struct sockaddr *)&temp_pdc->pdc_addr,sizeof(temp_pdc->pdc_addr)) == -1) {
+                                    perror("sendto");
+                                }
+
+                                temp_pdc->cmd_received = 0;
+                                pthread_mutex_unlock(&mutex_pdc_object);
+                                printf("\nPMU CFG-1 frame [of %d Bytes] is sent to the PDC.\n", cfg_size);
+                                break;
+                            }
+                            temp_pdc = temp_pdc->next;
+                        }
+                    }
+                }
+                else if((c[1] & 0x00) == 0x00 && (c[0] & 0x01) == 0x01)		 /* Command frame for Instantaneous Values request from PDC */
+                {
+                    printf("\nCommand Frame for Instantaneous Values request is received from PDC.\n"); 
+                    printf("\nSancho : add your program here : ServerFunction.c Line 1338\n");
+                }
 
 			} /* end of processing with received Command frame */
 
@@ -1386,7 +1392,7 @@ void* MUL_PMU()
 void* TCP_CONNECTIONS(void * temp_pdc)
 {
 	/* local variables */
-	unsigned char c, soc[5];
+	unsigned char c[2], soc[5];
 	int n,sin_size,ind;
 	char tcp_command[19], filename1[200];
 	FILE *fp1;
@@ -1425,16 +1431,17 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 		} 
           else		/* New dat has been received */
 		{
-			c = tcp_command[1];
-			c <<= 1;
-			c >>= 5;
-			if(c  == 0x04) 		/* Check if it is a command frame from PDC */ 
+			c[0] = tcp_command[1];
+			c[0] <<= 1;
+			c[0] >>= 5;
+			if(c[0]  == 0x04) 		/* Check if it is a command frame from PDC */ 
 			{	
                 copy_cbyc(soc, (unsigned char*) (&tcp_command[6]),4);
                 long int cmdSOC = c2li(soc);
-                c = tcp_command[15];
+                c[0] = tcp_command[14];
+                c[1] = tcp_command[15];
 
-				if((c ^ 0x05) == 0x0)		/* Command frame for Configuration Frame-2 request from PDC */
+				if((c[1] & 0x05) == 0x05 && (c[0] & 0x00) == 0x00)		/* Command frame for Configuration Frame from PDC */
 				{ 
 					printf("\nCommand Frame for Configuration Frame-2 is received fron PDC.\n"); 
 					fp1 = fopen (filename1,"rb");
@@ -1453,7 +1460,7 @@ void* TCP_CONNECTIONS(void * temp_pdc)
                         pthread_mutex_unlock(&mutex_pdc_object);     
 					} 
 				}
-				else if((c ^ 0x03) == 0x0)		/* Command frame for Header frame request from PDC */
+				else if((c[1] & 0x03) == 0x03 && (c[0] & 0x00) == 0x00)		/* Command frame for Header frame request from PDC */
 				{
 					printf("\nCommand Frame for Header frame is received from PDC.\n"); 
 					fp1 = fopen(filename1,"rb");
@@ -1484,7 +1491,7 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 						}
 					} 
 				}
-				else if((c ^ 0x01) == 0x0)		/* Command frame for Turn off transmission request from PDC */
+				else if((c[1] & 0x01) == 0x01 && (c[0] & 0x00) == 0x00)		/* Command frame for Turn off transmission request from PDC */
 				{
 					printf("\nCommand Frame for Turn OFF data received from PDC.\n");
 
@@ -1499,7 +1506,7 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 					}
                          pthread_mutex_unlock(&mutex_pdc_object);     
 				}
-				else if((c ^ 0x02) == 0x0)		/* Command frame for Turn ON transmission request from PDC */
+				else if((c[1] & 0x02) == 0x02 && (c[0] & 0x00) == 0x00)		/* Command frame for Turn ON transmission request from PDC */
 				{ 				
 					printf("\nRequest received for data transmission ON.\n"); 
 
@@ -1548,7 +1555,7 @@ void* TCP_CONNECTIONS(void * temp_pdc)
                     }
                          pthread_mutex_unlock(&mutex_pdc_object);     
 				} 
-				else if((c ^ 0x04) == 0x0)		/* Command frame for Configuration frame-1 request from PDC */
+				else if((c[1] & 0x04) == 0x04 && (c[0] & 0x00) == 0x00)		/* Command frame for Configuration frame-1 request from PDC */
 				{
 					printf("\nCommand Frame for CFG Frame-1 is received fron PDC.\n");
 					fp1 = fopen (filename1,"rb");
@@ -1573,6 +1580,11 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 						printf("\nPMU CFG-1 frame [of %d Bytes] is sent to PDC.\n", cfg_size);
 					} 
 				}
+				else if((c[1] & 0x00) == 0x00 && (c[0] & 0x01) == 0x01)		/* Command frame for Instantaneous Values request from PDC */
+                {
+                    printf("\nCommand Frame for Instantaneous Values request is received from PDC.\n"); 
+                    printf("\nSancho : add your program here : ServerFunction.c Line 1586\n");
+                }
 			} /* end of processing with received Command frame */
 
 			else		/* If it is other than command frame */				

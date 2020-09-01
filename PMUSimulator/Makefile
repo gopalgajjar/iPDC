@@ -41,7 +41,7 @@ DESKTOP_DIR = ${HOME}/.local/share/applications
 #DESKTOP_DIR = $(INSTALL_PREFIX)/desktop
 ICON_DIR = ${HOME}/.local/share/icons
 
-FILE1 = pmu.xml
+#FILE1 = pmu.xml
 FILE2 = PmuLogo.png
 FILE3 = PSLab.PNG
 FILE4 = PmuLogo1.png
@@ -79,10 +79,9 @@ $(PROGRAM): $(OBJECTS)
 	$(COMPILE) $(CFLAGS) -c -g $<
 
 install: $(PROGRAM)
-	#gtk-builder-convert pmu.glade pmu.xml$
-	cp -f pmu.glade pmu.xml$
+	#gtk-builder-convert pmu.glade pmu.xml
 	mkdir -p $(CREATE_DIR)PMU/$
-	cp -f $(FILE1) $(CREATE_DIR)PMU/$(FILE1)
+	#cp -f $(FILE1) $(CREATE_DIR)PMU/$(FILE1)
 	cp -f images/$(FILE2) $(CREATE_DIR)PMU/$(FILE2)
 	cp -f images/$(FILE3) $(CREATE_DIR)PMU/$(FILE3)
 	cp -f images/$(FILE4) $(CREATE_DIR)PMU/$(FILE4)
