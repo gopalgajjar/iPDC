@@ -57,6 +57,7 @@ struct _ChData
 	GtkWidget *cmd_data_off_button;
 	GtkWidget *cmd_data_on_button;
 	GtkWidget *cmd_cfg_button;
+	GtkWidget *cmd_inst_button;
 	GtkWidget *add_pdc_button;
 	GtkWidget *remove_pdc_button;
 	GtkWidget *display_conn_table_button;
@@ -76,6 +77,7 @@ struct _ChData
 	GtkWidget *menu_data_off;
 	GtkWidget *menu_data_on;
 	GtkWidget *menu_request_cfg;
+	GtkWidget *menu_request_inst;
 	GtkWidget *menu_add_destination;
 	GtkWidget *menu_remove_destination;
 	GtkWidget *menu_conn_table;

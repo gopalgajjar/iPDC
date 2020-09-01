@@ -89,6 +89,11 @@ void recreate_cfg_objects(){
 	CMDDATAOFF[0] = 0x00;
 	CMDDATAOFF[1] = 0x01;
 	CMDDATAOFF[2] = '\0'; 
+	
+    CMDINSTSEND[0] = 0x01;
+	CMDINSTSEND[1] = 0x00;
+	CMDINSTSEND[2] = '\0'; 
+
 
 	DATASYNC[0] = 0xaa;
 	DATASYNC[1] = 0x01;

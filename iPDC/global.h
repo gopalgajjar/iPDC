@@ -75,7 +75,9 @@ char dbserver_ip[20];
 
 int old_fsize;
 
-unsigned char DATASYNC[3],CFGSYNC[3],CMDSYNC[3],CMDDATASEND[3],CMDDATAOFF[3],CMDCFGSEND[3];
+unsigned char DATASYNC[3],CFGSYNC[3],CMDSYNC[3];
+unsigned char CMDDATASEND[3],CMDDATAOFF[3],CMDCFGSEND[3];
+unsigned char CMDINSTSEND[3];
 
 // Kedar 22-09-2013
 char *logTimeBuff;

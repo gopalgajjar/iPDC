@@ -1325,6 +1325,164 @@ void* data_on_llnode(void* temp) {
 }
 
 /* ----------------------------------------------------------------------------	*/
+/* FUNCTION  instantaneous_request():		              	     	*/
+/* ----------------------------------------------------------------------------	*/
+
+int instantaneous_request(char pmuid[], char protocol[]) {
+
+	int flag = 0,err;
+
+	// A new thread is created for each TCP connection in 'detached' mode. Thus allowing any number of threads to be created. 
+	pthread_attr_t attr;
+	pthread_attr_init(&attr);
+
+	/* In  the detached state, the thread resources are immediately freed when it terminates, but
+	   pthread_join(3) cannot be used to synchronize on the thread termination. */
+	if((err = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED))) {
+
+		perror(strerror(err));
+		exit(1);
+
+	}								
+
+	/* Shed policy = SCHED_FIFO (realtime, first-in first-out) */
+	if((err = pthread_attr_setschedpolicy(&attr,SCHED_FIFO))) {
+
+		perror(strerror(err));		     
+		exit(1);
+	}  
+
+	pthread_mutex_lock(&mutex_Lower_Layer_Details);
+
+	if(LLfirst == NULL) {
+
+		printf("No PMU Present?\n");
+		return 1;
+
+	} else {
+
+		flag = 1;
+	}
+
+	pthread_mutex_unlock(&mutex_Lower_Layer_Details);
+
+	if(flag) {
+
+		int match = 0;
+		struct Lower_Layer_Details *temp_pmu = LLfirst;
+
+		while(temp_pmu != NULL) {
+
+			if(set_all == 1) {
+
+				match = 1;	
+				break;			
+
+			} else {
+
+				if((temp_pmu->pmuid == atoi(pmuid)) && (!strncasecmp(temp_pmu->protocol,protocol,3))) {	
+
+					match = 1;	
+					break;			
+
+				} else {
+
+					temp_pmu = temp_pmu->next; 
+				}	
+			}
+		}
+
+		if(match) {
+
+			if(set_all == 1) {
+
+				temp_pmu = LLfirst;
+
+				while(temp_pmu != NULL) {
+
+					pthread_t t;
+					//temp_pmu->data_transmission_off = 0;
+
+					if((err = pthread_create(&t,&attr,inst_request,(void *)temp_pmu))) {
+
+						perror(strerror(err));		     
+						exit(1);
+					}
+					temp_pmu = temp_pmu->next; 
+				}
+
+			} else {
+
+				pthread_t t;
+				//temp_pmu->data_transmission_off = 0;
+
+				if((err = pthread_create(&t,&attr,inst_request,(void *)temp_pmu))) {
+
+					perror(strerror(err));		     
+					exit(1);
+				}
+			}
+
+			return 0;
+
+		} else {
+
+			printf("No match for entered PMU\n");
+			return 1;
+		} 
+	}
+
+	return 1;
+}
+
+
+/* ----------------------------------------------------------------------------	*/
+/* FUNCTION  inst_request():		              	     			*/
+/* ----------------------------------------------------------------------------	*/
+
+void* inst_request(void* temp) {
+
+	char *cmdframe = malloc(19);
+	struct Lower_Layer_Details *temp_pmu = (struct Lower_Layer_Details *) temp;
+
+	create_command_frame(4,temp_pmu->pmuid,cmdframe);
+	cmdframe[18] = '\0';
+
+	if(!strncasecmp(temp_pmu->protocol,"UDP",3)) {
+
+		int n;
+
+		if ((n = sendto(temp_pmu->sockfd,cmdframe, 18, 0,(struct sockaddr *)&temp_pmu->llpmu_addr,sizeof(temp_pmu->llpmu_addr)) == -1)) {
+
+			perror("sendto"); 
+
+		} else {
+
+			printf("Sent CMD to send Instantaneous values.\n");
+		}
+
+	} else if(!strncasecmp(temp_pmu->protocol,"TCP",3)){
+
+		int n;
+
+		if(temp_pmu->up == 1) {
+
+			if ((n = send(temp_pmu->sockfd,cmdframe, 18,0) == -1)) {
+
+				perror("send"); 
+
+			} else {
+
+                printf("Sent CMD to send Instantaneous values.\n");
+			}
+		}
+	}
+
+	free(cmdframe);			
+	pthread_exit(NULL);
+}
+
+/* ----------------------------------------------------------------------------	*/
 /* FUNCTION  configuration_request():		              	     		*/
 /* ----------------------------------------------------------------------------	*/
 
@@ -1822,6 +1980,23 @@ void create_command_frame(int type,int pmu_id,char cmdframe[]) {
 	byte_by_byte_copy((unsigned char *)cmdframe,fracsec,index,4);
 	index += 4;
 	byte_by_byte_copy((unsigned char *)cmdframe,CMDDATAOFF,index,2);
+	index += 2;
+	chk = compute_CRC((unsigned char *)cmdframe,index);
+	cmdframe[index++] = (chk >> 8) & ~(~0<<8);  	/* CHKSUM high byte; */
+	cmdframe[index] = (chk ) & ~(~0<<8);     	/* CHKSUM low byte;  */
+	break;
+
+	case 4 : byte_by_byte_copy((unsigned char *)cmdframe,CMDSYNC,index,2);  // PUT OFF DATA TRANSMISSION
+	index += 2;
+	byte_by_byte_copy((unsigned char *)cmdframe,fsize,index,2);
+	index += 2;
+	byte_by_byte_copy((unsigned char *)cmdframe,pmuid,index,2);
+	index += 2;
+	byte_by_byte_copy((unsigned char *)cmdframe,soc,index,4);
+	index += 4;
+	byte_by_byte_copy((unsigned char *)cmdframe,fracsec,index,4);
+	index += 4;
+	byte_by_byte_copy((unsigned char *)cmdframe,CMDINSTSEND,index,2);
 	index += 2;
 	chk = compute_CRC((unsigned char *)cmdframe,index);
 	cmdframe[index++] = (chk >> 8) & ~(~0<<8);  	/* CHKSUM high byte; */

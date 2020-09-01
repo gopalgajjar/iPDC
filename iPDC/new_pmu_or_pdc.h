@@ -55,6 +55,10 @@ int put_data_transmission_on(char pmuid[], char protocol[]);
 
 void* data_on_llnode(void* temp);
 
+int instantaneous_request(char pmuid[], char protocol[]);
+
+void* inst_request(void* temp);
+
 int configuration_request(char pmuid[], char protocol[]);
 
 void* config_request(void* temp);

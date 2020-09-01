@@ -651,6 +651,7 @@ void final_pdc_setup_call()
 	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_data_off_button), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_data_on_button), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_cfg_button), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_inst_button), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(data->add_pdc_button), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(data->remove_pdc_button), TRUE);
 	gtk_widget_set_sensitive(GTK_WIDGET(data->display_conn_table_button), TRUE);
@@ -828,6 +829,27 @@ int cmd_or_remove_pmu_validation (GtkButton *but, gpointer udata)
 				gtk_widget_destroy (new_window);			
 
 				errmsg1 = " Configuration Frame request sent to given device ";
+				validation_result (errmsg1);
+				return 1;
+			}
+			else
+			{
+				errmsg1 = " Entered Source device not found! Try again ";
+				validation_result (errmsg1);
+				return 0;
+			}
+		}
+		else if(!strcmp(find_butn, "5"))	/* If function called by Instantaneous value request */
+		{
+			/* call instantaneous_request() to send Instantaneous value request */ 
+			ret = instantaneous_request(NULL, NULL);
+
+			if (ret == 0)
+			{
+				/* Close/destroy the Send command frame window */
+				gtk_widget_destroy (new_window);			
+
+				errmsg1 = " Instantaneous value Frame request sent to given device ";
 				validation_result (errmsg1);
 				return 1;
 			}
@@ -1105,6 +1127,7 @@ void fill_pdc_details (char *filePath)
 		     	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_data_off_button), TRUE);
 		     	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_data_on_button), TRUE);
 		     	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_cfg_button), TRUE);
+		     	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_inst_button), TRUE);
 		     	gtk_widget_set_sensitive(GTK_WIDGET(data->add_pdc_button), TRUE);
 		     	gtk_widget_set_sensitive(GTK_WIDGET(data->remove_pdc_button), TRUE);
 		     	gtk_widget_set_sensitive(GTK_WIDGET(data->display_conn_table_button), TRUE);
@@ -1397,9 +1420,13 @@ void cmd_or_remove_pmu (GtkButton *but, gpointer udata)
 	{
 		gtk_window_set_title (GTK_WINDOW (new_window), "Turn ON Data Transmission");
 	}
-	else
+	else if(!strcmp(find_butn, "4"))
 	{
 		gtk_window_set_title (GTK_WINDOW (new_window), "Configuration Frame Request");
+	}
+	else
+	{
+		gtk_window_set_title (GTK_WINDOW (new_window), "Instantaneous Values Request");
 	}
 	gtk_container_set_border_width (GTK_CONTAINER (new_window), 10);
 
@@ -1419,7 +1446,7 @@ void cmd_or_remove_pmu (GtkButton *but, gpointer udata)
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(new_window)->vbox), hbox1, FALSE, TRUE, 0);
 	gtk_widget_show (hbox1);
 
-    	window2 = gtk_alignment_new (0,0,0,0);
+    window2 = gtk_alignment_new (0,0,0,0);
 	gtk_box_pack_start (GTK_BOX (hbox1), window2, FALSE, TRUE, 0);
 	gtk_widget_show (window2);
 
@@ -1453,6 +1480,10 @@ void cmd_or_remove_pmu (GtkButton *but, gpointer udata)
                 /* Check wether fired signal from remove source or send CFG request */
                 /* Add the button with title according to fired signal */
 
+                if(!strcmp(find_butn, "5"))
+                {
+                    valdbutton = gtk_button_new_with_label ("Send");
+                }
                 if(!strcmp(find_butn, "4"))
                 {
                     valdbutton = gtk_button_new_with_label ("Send");
@@ -1477,7 +1508,7 @@ void cmd_or_remove_pmu (GtkButton *but, gpointer udata)
 
 		while(t != NULL)
 		{
-			if((!strcmp(find_butn, "1")) || (!strcmp(find_butn, "4")) || (!strcmp(find_butn, "2") && (t->data_transmission_off == 0)) || (!strcmp(find_butn, "3") &&  (t->data_transmission_off == 1)))
+			if((!strcmp(find_butn, "1")) || (!strcmp(find_butn, "4")) || (!strcmp(find_butn, "2") && (t->data_transmission_off == 0)) || (!strcmp(find_butn, "3") &&  (t->data_transmission_off == 1)) || (!strcmp(find_butn, "5") &&  (t->data_transmission_off == 0)))
 				{
 					/* Concate all the data into a big buffer */
 					memset(tmp_str,'\0',sizeof(tmp_str));
@@ -1600,7 +1631,7 @@ void cmd_or_remove_pmu (GtkButton *but, gpointer udata)
 		/* Signal handling for buttons on Window */
 		g_signal_connect_swapped (valdbutton, "clicked", G_CALLBACK (cmd_or_remove_pmu_validation), valdbutton);
 		g_signal_connect_swapped (help_button, "clicked", G_CALLBACK (ipdc_help), NULL);
-    		g_signal_connect (chkBtn, "toggled", G_CALLBACK (select_function), NULL);
+        g_signal_connect (chkBtn, "toggled", G_CALLBACK (select_function), NULL);
 
 		/* This makes it so the button is the default. */
 		gtk_widget_set_can_default (valdbutton, TRUE);

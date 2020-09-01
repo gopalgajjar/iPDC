@@ -95,7 +95,7 @@ Supportive IEEE C37.118 Synchrophasor std.</property>
           <object class="GtkButton" id="add_pmu_button">
             <property name="label" translatable="yes">Add a Source Device</property>
             <property name="width_request">240</property>
-            <property name="height_request">35</property>
+            <property name="height_request">25</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -112,7 +112,7 @@ and data frames would be received.</property>
           <object class="GtkButton" id="remove_pmu_button">
             <property name="label" translatable="yes">Remove a Source Device</property>
             <property name="width_request">240</property>
-            <property name="height_request">35</property>
+            <property name="height_request">25</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -122,14 +122,14 @@ data frames are being received.</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">225</property>
+            <property name="y">210</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="cmd_data_off_button">
             <property name="label" translatable="yes">Turn OFF Data Transmission</property>
             <property name="width_request">240</property>
-            <property name="height_request">35</property>
+            <property name="height_request">25</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -139,14 +139,14 @@ which data frames are being received.</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">270</property>
+            <property name="y">240</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="cmd_data_on_button">
             <property name="label" translatable="yes">Turn ON Data Transmission</property>
             <property name="width_request">240</property>
-            <property name="height_request">35</property>
+            <property name="height_request">25</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -156,31 +156,47 @@ data transmission is put OFF.</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">315</property>
+            <property name="y">270</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="cmd_cfg_button">
             <property name="label" translatable="yes">Request Configuration Frame</property>
             <property name="width_request">240</property>
-            <property name="height_request">35</property>
+            <property name="height_request">25</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Send Command frame to PMU/PDC device
-to get configuration frame.</property>
+            <property name="tooltip_text" translatable="yes">Send Command frame
+            to PMU/PDC device to get configuration frame.</property>
             <property name="xalign">0</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">360</property>
+            <property name="y">300</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="cmd_inst_button">
+            <property name="label" translatable="yes">Request Instantaneous Values</property>
+            <property name="width_request">240</property>
+            <property name="height_request">25</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Send Command frame to PMU to get instantaneous values as comtrade frame.</property>
+            <property name="xalign">0</property>
+          </object>
+          <packing>
+            <property name="x">20</property>
+            <property name="y">330</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="add_pdc_button">
             <property name="label" translatable="yes">Add a Destination Device</property>
             <property name="width_request">240</property>
-            <property name="height_request">35</property>
+            <property name="height_request">25</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -190,14 +206,14 @@ configuration and data frames.</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">405</property>
+            <property name="y">360</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="remove_pdc_button">
             <property name="label" translatable="yes">Remove a Destination Device</property>
             <property name="width_request">240</property>
-            <property name="height_request">35</property>
+            <property name="height_request">25</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -207,14 +223,14 @@ sends data frames.</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">449</property>
+            <property name="y">390</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="display_conn_table_button">
             <property name="label" translatable="yes">iPDC Connection Table</property>
             <property name="width_request">240</property>
-            <property name="height_request">35</property>
+            <property name="height_request">25</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -223,7 +239,7 @@ sends data frames.</property>
           </object>
           <packing>
             <property name="x">20</property>
-            <property name="y">495</property>
+            <property name="y">420</property>
           </packing>
         </child>
         <child>
@@ -382,6 +398,16 @@ to get configuration frame.</property>
                         <property name="always_show_image">True</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="menu_request_inst">
+                        <property name="label" translatable="yes">Request Instantaneous Values</property>
+                        <property name="visible">True</property>
+                        <property name="tooltip_text" translatable="yes">Send Command frame to PMU to get instantaneous values in
+comtrade frame.</property>
+                        <property name="use_stock">True</property>
+                        <property name="always_show_image">True</property>
+                      </object>
+                    </child> 
                     <child>
                       <object class="GtkImageMenuItem" id="menu_add_destination">
                         <property name="label" translatable="yes">Add Destination</property>

@@ -39,7 +39,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <pthread.h>
-#include  <errno.h>
+#include <errno.h>
 #include <gtk/gtk.h>
 #include "connections.h"
 #include "parser.h"
@@ -97,6 +97,7 @@ int main(int argc, char **argv)
 		GW(cmd_data_off_button);
 		GW(cmd_data_on_button);
 		GW(cmd_cfg_button);
+		GW(cmd_inst_button);
 		GW(add_pdc_button);
 		GW(remove_pdc_button);
 		GW(display_conn_table_button);
@@ -146,6 +147,7 @@ int main(int argc, char **argv)
 	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_data_off_button), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_data_on_button), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_cfg_button), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(data->cmd_inst_button), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(data->add_pdc_button), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(data->remove_pdc_button), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(data->display_conn_table_button), FALSE);
@@ -272,6 +274,9 @@ int main(int argc, char **argv)
 
 	g_signal_connect (data->cmd_cfg_button, "clicked", G_CALLBACK(cmd_or_remove_pmu), (gpointer) "4");
 	g_signal_connect (data->menu_request_cfg, "activate", G_CALLBACK(cmd_or_remove_pmu), (gpointer) "4");
+
+	g_signal_connect (data->cmd_inst_button, "clicked", G_CALLBACK(cmd_or_remove_pmu), (gpointer) "5");
+	g_signal_connect (data->menu_request_inst, "activate", G_CALLBACK(cmd_or_remove_pmu), (gpointer) "5");
 
 	g_signal_connect (data->add_pdc_button, "clicked", G_CALLBACK(add_new_pdc), NULL);
 	g_signal_connect (data->menu_add_destination, "activate", G_CALLBACK(add_new_pdc), NULL);
