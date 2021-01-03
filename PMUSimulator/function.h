@@ -67,4 +67,13 @@ void sigchld_handler(int s);
 /* Function to check if nth bit is set in input char */
 int isNthBitSet (unsigned char c, int n);
 
+unsigned int to_intconvertor(unsigned char array[]);
+void long_int_to_ascii_convertor(unsigned long int n,unsigned char hex[]);
+void int_to_ascii_convertor(unsigned int n,unsigned char hex[]) ;
+
+int ncmp_cbyc(unsigned char dst[],unsigned char src[],int size) ;
+void byte_by_byte_copy(unsigned char dst[],unsigned char src[],int index,int n);
+unsigned long int to_long_int_convertor(unsigned char array[]) ;
+
+unsigned int to_long_int_convertor1(unsigned char array[]);
 /**************************************** End of File *******************************************************/

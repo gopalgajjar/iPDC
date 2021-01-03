@@ -48,6 +48,7 @@ FILE4 = PmuLogo1.png
 FILE5 = logo.png
 FILE6 = PMU.desktop
 FILE7 = runPMU
+FILE8 = data.csv
 
 CC = gcc
 LIBS = -lpthread -lm -lrt
@@ -89,6 +90,9 @@ install: $(PROGRAM)
 	cp -f images/$(FILE5) $(ICON_DIR)/$(FILE5)
 	cp -f images/$(FILE6) $(DESKTOP_DIR)/$(FILE6)
 	cp $(PROGRAM) $(INSTALL_PREFIX)/bin/$(PROGRAM)
+	
+	cp -f $(FILE8) $(INSTALL_PREFIX)/DataDir/$(FILE8)
+	
 	cp $(FILE7) $(INSTALL_PREFIX)/bin/$(FILE7)
 	mkdir -p $(INSTALL_PREFIX)/DataDir
 #	mkdir -p $(HOME)/iPDC/DataDir/50Hz_measurement_files
@@ -102,6 +106,7 @@ install: $(PROGRAM)
 uninstall:
 	rm -f $(INSTALL_PREFIX)bin/$(PROGRAM)
 	rm -f $(INSTALL_PREFIX)bin/$(FILE7)
+	rm -f $(INSTALL_PREFIX)DataDir/$(FILE8)
 	rm -rf $(CREATE_DIR)PMU$
 	rm -rf $(ICON_DIR)/$(FILE5)
 	rm -rf $(DESKTOP_DIR)/$(FILE6)

@@ -104,7 +104,7 @@ void* DB_udp();
 
 void PMU_process_UDP(unsigned char *,struct sockaddr_in,int sockfd);
 
-void PMU_process_TCP(unsigned char tcp_buffer[],int sockfd);
+void PMU_process_TCP(unsigned char tcp_buffer[],int sockfd,int pmuid);
 
 void PMU_process_Mul(unsigned char *,int sockfd);
 

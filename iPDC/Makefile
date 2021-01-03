@@ -81,6 +81,7 @@ $(PROGRAM): $(OBJECTS)
 
 install: $(PROGRAM)
 	gtk-builder-convert iPDC.glade iPDC.xml
+	mkdir -p $(INSTALL_PREFIX)/iPDC/temp
 	mkdir -p $(CREATE_DIR)iPDC/
 	cp -f $(FILE1) $(CREATE_DIR)iPDC/$(FILE1)
 	cp -f images/$(FILE2) $(CREATE_DIR)iPDC/$(FILE2)

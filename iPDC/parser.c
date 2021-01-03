@@ -47,6 +47,8 @@
 /*	14.uint16_t compute_CRC(unsigned char *message,int length)				*/
 
 /* ------------------------------------------------------------------------------------ */
+int sec_30_flag=0;
+
 
 
 #include  <stdio.h>
@@ -55,13 +57,19 @@
 #include  <pthread.h>
 #include  <stdint.h>
 #include  <sys/time.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/signal.h>
 #include  "parser.h"
 #include  "global.h" 
 #include  "dallocate.h" 
 #include  "connections.h"
 #include  "recreate.h"
 #include  "align_sort.h"
-
+#include  "ipdcGui.h"
+#include  "new_pmu_or_pdc.h"
 
 /* ----------------------------------------------------------------------------	*/
 /* FUNCTION  cfgparser():                                	     		*/
@@ -1055,6 +1063,16 @@ int dataparser(unsigned char data[]) {
 
 			// Check Stat Word for each data block 
 			stat_status = check_statword(stat);
+			if((stat_status == 11) && (sec_30_flag==0))                  //qwerty
+			{
+               // chocho
+			sec_30_flag=1;
+            set_all = 1;
+			//printf("\n\n\n\nDR Bit Set !!!!! \n\n\n");
+            pthread_create(&sec_30, NULL, wait_30_sec,NULL); 
+			instantaneous_request(NULL,NULL);
+			set_all = 0;
+			}
 
 			if((stat_status == 14)||(stat_status == 10)) {
 
@@ -1254,7 +1272,12 @@ int dataparser(unsigned char data[]) {
 
 	return stat_status;
 } 
-
+void *wait_30_sec()
+{    
+		    sleep(30);    //make 30
+			sec_30_flag=0;
+            pthread_exit(NULL);
+};
 /* ----------------------------------------------------------------------------	*/
 /* FUNCTION  check_statword():                                	     		*/
 /* Check the STAT word of the data frames for any change in the data block.	*/
@@ -1325,7 +1348,7 @@ int check_statword(unsigned char stat[]) {
 		ret = 12;
 		return ret;
 
-	} else if ((stat[0] & 0x08) == 0x08) {	// Bit-11
+	} else if ((stat[0] & 0x08) == 0x08 && ((stat[1] & 0x09) == 0x09)) {	// Bit-11
 
 //		printf("PMU Trigger detected!\n");
 		ret = 11;

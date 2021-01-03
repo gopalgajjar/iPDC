@@ -47,6 +47,7 @@
 #include "function.h"
 #include "ServerFunction.h"
 #include "ShearedMemoryStructure.h"
+#include "CfgFunction.h"
 
 
 /* -------------------------------------------------------------------------------------- */
@@ -74,7 +75,16 @@
 /* ---------------------------------------------------------------- */
 /*                         global variables                         */
 /* ---------------------------------------------------------------- */
+    long int cmd_frscsec_to_send,cmd_soc_to_send;
 
+          pthread_t thread_id_xyz;
+		  pthread_t one_sec_wait;
+          pthread_attr_t tattr;
+          struct sched_param param;
+	//struct PDC_Details *single_pdc_node_for_thread;
+
+	int second_1_flag=0;
+                    
 int df_pmu_id, df_fdf, df_af, df_pf, df_pn, df_phnmr, df_annmr, df_dgnmr;
 int df_data_frm_size = 0, old_data_rate = 0, cfg_size, hdr_size=0;
 int count = 0, pmuse=0, sc1 = 0, tcp_port, udp_port, mul_port, tmp_wait = 1, df_fnom;
@@ -92,6 +102,11 @@ long int send_thrd_id = 0;
 
 /* Initialize the pthread_mutex for PDC Objects */
 pthread_mutex_t mutex_pdc_object = PTHREAD_MUTEX_INITIALIZER;
+
+
+//Delete this
+int *index1;
+char *filename1_delete;
 
 /* ----------------------------------------------------------------------------	*/
 /* FUNCTION  get_header_frame():							               */
@@ -404,7 +419,7 @@ void frame_size()
 /* attributes.                          					               */
 /* ----------------------------------------------------------------------------	*/
 
-void generate_data_frame()
+void generate_data_frame(struct PDC_Details *temp_pdca)
 {
 	/* local variables */
 	int freqI, phasorI, analogI;
@@ -478,6 +493,16 @@ void generate_data_frame()
 		/* If not insert default STAT Word: 0000 */
 		data_frm[indx++] = 0x00;
 		data_frm[indx++] = 0x00;
+	
+
+      if(second_1_flag==1) 
+	{   //data_frm[14] = (data_frm[14])^0x08;
+		data_frm[indx-2] = 0x08;	
+        data_frm[indx-1] = 0x09;
+		//if(second_1_flag==0) pthread_create(&one_sec_wait, NULL, reset_dr_flag,(struct PDC_Details *)temp_pdca);
+		
+	}  
+
 	}
 
 	prev_soc = curnt_soc;
@@ -832,7 +857,13 @@ void generate_data_frame()
 	}
 
 } /* end of function generate_data_frame() */
-
+void *reset_dr_flag(struct PDC_Details *temp_pdc)
+{   sleep(1);
+     temp_pdc->STAT_change=0;
+    second_1_flag=0;
+    pthread_exit(NULL);
+	ShmPTR->cfg_bit_change_info =0;
+};
 
 /* ----------------------------------------------------------------------------	*/
 /* FUNCTION  void* SEND_DATA       	               					*/
@@ -887,7 +918,7 @@ void* SEND_DATA()
         	}
 
 		/* Call the function generate_data_frame() to create a fresh new Data Frame */
-		generate_data_frame();
+		generate_data_frame(PDCfirst);
 
 		clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, cal_timeSpec, cal_timeSpec1);
 
@@ -1100,6 +1131,7 @@ void* UDP_PMU()
 	/* local variables */
     unsigned char c[2];
     int n, ind;
+	index1=&ind;
     char udp_command[18],filename1[200];
     FILE *fp1;
     struct PDC_Details *temp_pdc;
@@ -1234,7 +1266,7 @@ void* UDP_PMU()
 						}
 					} 
 				}
-				else if((c[1] & 0x01) == 0x01 && (c[0] & 0x00) == 0x00)		/* Command frame for Turn off transmission request from PDC */
+				else if((c[1] & 0x01) == 0x01 && (c[0] & 0x00) == 0x00)			/* Command frame for Turn off transmission request from PDC */
 				{ 
 					printf("\nCommand Frame for Turn OFF data received from PDC.\n");
 
@@ -1292,7 +1324,7 @@ void* UDP_PMU()
                               temp_pdc = temp_pdc->next;
                          }
                     } 
-                else if((c[1] & 0x04) == 0x04 && (c[0] & 0x00) == 0x00)		 /* Command frame for Configuration frame-1 request from PDC */
+                  else if((c[1] & 0x04) == 0x04 && (c[0] & 0x00) == 0x00)		 /* Command frame for Configuration frame-1 request from PDC */
                 {
                     printf("\nCommand Frame for CFG Frame-1 is received fron PDC.\n"); 
                     fp1 = fopen (filename1,"rb");
@@ -1332,10 +1364,11 @@ void* UDP_PMU()
                         }
                     }
                 }
-                else if((c[1] & 0x00) == 0x00 && (c[0] & 0x01) == 0x01)		 /* Command frame for Instantaneous Values request from PDC */
+                else if((c[1] & 0x00) == 0x00 && (c[0] & 0x01) == 0x01)	 /* Command frame for Instantaneous Values request from PDC */
                 {
                     printf("\nCommand Frame for Instantaneous Values request is received from PDC.\n"); 
-                    printf("\nSancho : add your program here : ServerFunction.c Line 1338\n");
+                    //create_fifo_buffer();
+                    //udp_send_dr_data(temp_pdc);
                 }
 
 			} /* end of processing with received Command frame */
@@ -1392,12 +1425,13 @@ void* MUL_PMU()
 void* TCP_CONNECTIONS(void * temp_pdc)
 {
 	/* local variables */
-	unsigned char c[2], soc[5];
+	unsigned char c[2], soc[5],fracsec[5];
 	int n,sin_size,ind;
 	char tcp_command[19], filename1[200];
 	FILE *fp1;
 
 	struct PDC_Details *single_pdc_node = (struct PDC_Details *) temp_pdc;
+	//single_pdc_node_for_thread= (struct PDC_Details *) temp_pdc;
 	int new_fd = single_pdc_node->sockfd;
 	single_pdc_node->thread_id = pthread_self();
 
@@ -1438,6 +1472,27 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 			{	
                 copy_cbyc(soc, (unsigned char*) (&tcp_command[6]),4);
                 long int cmdSOC = c2li(soc);
+                cmd_soc_to_send=cmdSOC;
+				copy_cbyc(fracsec, (unsigned char*) (&tcp_command[10]),4);  //Added by sancho
+                long int cmdfracsec = c2li(soc);                         
+                cmd_frscsec_to_send=cmdfracsec;
+                //printf("\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");   
+				//printf("\t SOC %d Fracsec %d \n",cmdSOC,cmdfracsec);
+                //printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+
+				/*cmd_soc_to_send[0]=soc[0];
+				cmd_soc_to_send[1]=soc[1];
+				cmd_soc_to_send[2]=soc[2];
+				cmd_soc_to_send[3]=soc[3];
+				cmd_soc_to_send[4]=0;
+                
+				cmd_frscsec_to_send[0]=fracsec[0]; //So send soc and fracsec n DR Frames
+				cmd_frscsec_to_send[1]=fracsec[1];
+				cmd_frscsec_to_send[2]=fracsec[2];
+				cmd_frscsec_to_send[3]=fracsec[3];
+				cmd_frscsec_to_send[4]=0; */
+				
+
                 c[0] = tcp_command[14];
                 c[1] = tcp_command[15];
 
@@ -1457,7 +1512,9 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 						fclose(fp1);
                         pthread_mutex_lock(&mutex_pdc_object);
                         sendTCPCFGFrame(single_pdc_node);
-                        pthread_mutex_unlock(&mutex_pdc_object);     
+                        pthread_mutex_unlock(&mutex_pdc_object); 
+						
+						    
 					} 
 				}
 				else if((c[1] & 0x03) == 0x03 && (c[0] & 0x00) == 0x00)		/* Command frame for Header frame request from PDC */
@@ -1491,10 +1548,10 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 						}
 					} 
 				}
-				else if((c[1] & 0x01) == 0x01 && (c[0] & 0x00) == 0x00)		/* Command frame for Turn off transmission request from PDC */
+				else if((c[1] & 0x01) == 0x01 && (c[0] & 0x00) == 0x00)			/* Command frame for Turn off transmission request from PDC */
 				{
 					printf("\nCommand Frame for Turn OFF data received from PDC.\n");
-
+ 
                          pthread_mutex_lock(&mutex_pdc_object);     
 
 					if(single_pdc_node->data_transmission == 1)
@@ -1580,10 +1637,18 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 						printf("\nPMU CFG-1 frame [of %d Bytes] is sent to PDC.\n", cfg_size);
 					} 
 				}
-				else if((c[1] & 0x00) == 0x00 && (c[0] & 0x01) == 0x01)		/* Command frame for Instantaneous Values request from PDC */
+				else if((c[1] & 0x00) == 0x00 && (c[0] & 0x01) == 0x01)	/* Command frame for Instantaneous Values request from PDC */
                 {
                     printf("\nCommand Frame for Instantaneous Values request is received from PDC.\n"); 
-                    printf("\nSancho : add your program here : ServerFunction.c Line 1586\n");
+                    //create_fifo_buffer();
+					//pthread_mutex_lock(&mutex_pdc_object);
+                    //tcp_send_dr_data(single_pdc_node);
+                    filename1_delete=filename1;
+
+                    pthread_create(&thread_id_xyz, NULL, send_dr_frame,(struct PDC_Details *)single_pdc_node); 
+
+                    
+                    //pthread_mutex_unlock(&mutex_pdc_object); 
                 }
 			} /* end of processing with received Command frame */
 
@@ -1601,7 +1666,12 @@ void* TCP_CONNECTIONS(void * temp_pdc)
 	pthread_exit(NULL);
 }
 
-
+void *send_dr_frame(struct PDC_Details *single_pdc_node_for_thread)
+{    
+		    create_fifo_buffer();
+                    tcp_send_dr_data(single_pdc_node_for_thread);
+                    pthread_exit(NULL);;
+};
 /* ----------------------------------------------------------------------------	*/
 /* FUNCTION  remove_tcp_node(void * node);	     		                    */
 /* This function will remove the connection nodes from PDC linked list,         */
@@ -2086,9 +2156,11 @@ void  SIGUSR2_handler(int sig)
                 printf("STAT - Data Sorting!\n");
             }
             else if(ShmPTR->cfg_bit_change_info == 5)	/* for PMU trigger bit */
-            {
+            {   second_1_flag=1;
                 temp_pdc->STAT_change = 5;
+				pthread_create(&one_sec_wait, NULL, reset_dr_flag,(struct PDC_Details *)temp_pdc);
                 printf("STAT - PMU Trigger!\n");
+				
             }
 
             temp_pdc = temp_pdc->next;
@@ -2135,6 +2207,7 @@ void sendTCPCFGFrame (struct PDC_Details *single_pdc_node)
     //pthread_mutex_lock(&mutex_pdc_object);
 
     if (send(new_fd,cline, cfg_size, 0) == -1)
+	
     {
         perror("sendto");
     }
@@ -2146,4 +2219,276 @@ void sendTCPCFGFrame (struct PDC_Details *single_pdc_node)
     printf("\nPMU CFG-2 frame [of %d Bytes] is sent to PDC.\n", cfg_size);
 }
 /**************************************** End of File *******************************************************/
+void tcp_send_dr_data(struct PDC_Details *single_pdc_node)
+{   
+	////////////////////////////////////////////////////	
+    FILE *cfg_filea;
+
+		char pmuFilePath3[200];
+        char buff3[50];
+		memset(pmuFilePath3, '\0', 200);
+		strcpy(pmuFilePath3,"..");
+		strcat(pmuFilePath3, "/share/");
+		strcat(pmuFilePath3, "pmu_");
+		sprintf(buff3, "%d", df_pmu_id);
+		strcat(pmuFilePath3, buff3);
+		strcat(pmuFilePath3, ".cfg");
+		pmuFilePath3[strlen(pmuFilePath3)] = '\0';
+
+
+    cfg_filea = fopen(pmuFilePath3,"r");
+    fseek(cfg_filea, 0, SEEK_END);
+    long fsizea = ftell(cfg_filea );
+    fseek(cfg_filea, 0, SEEK_SET);  // same as rewind(f); 
+    char *string_cfg_filea = malloc(fsizea + 1);
+    fread(string_cfg_filea, 1, fsizea,cfg_filea);
+    string_cfg_filea[fsizea] = 0;
+    fclose(cfg_filea);
+
+
+    long int sec,frac = 0;
+    unsigned char fsizea_char[2],fcounta_char[2],pmuid[2],soc[4],fracsec[4];
+    uint16_t chk;
+    char *drframe_cfg = malloc(fsizea + 17);
+    memset(drframe_cfg,'\0',fsizea+17);
+    memset(fsizea_char,'\0',2);
+    int_to_ascii_convertor(fsizea+16,fsizea_char);
+    int_to_ascii_convertor(df_pmu_id,pmuid);
+
+    //memset(soc,'\0',4);
+    //memset(fracsec,'\0',4);   //Requireddddddddddddddddd ? 
+	
+    sec = (long int)time (NULL); 
+    long_int_to_ascii_convertor(cmd_frscsec_to_send,soc);
+    long_int_to_ascii_convertor(cmd_soc_to_send,fracsec);       
+
+
+    DRSYNC_cfg[0] = 0xaa;
+    DRSYNC_cfg[1] = 0x61;
+    DRSYNC_cfg[2] = '\0';
+
+    int indexa = 0;
+    unsigned char * ptr_temp=drframe_cfg;
+    byte_by_byte_copy(ptr_temp,DRSYNC_cfg,indexa,2); // SEND CFG
+    indexa += 2;
+    byte_by_byte_copy(ptr_temp,fsizea_char,indexa,2);
+    indexa += 2;
+    byte_by_byte_copy(ptr_temp,pmuid,indexa,2);
+    indexa += 2;
+    byte_by_byte_copy(ptr_temp,soc,indexa,4);
+    indexa += 4;
+    byte_by_byte_copy(ptr_temp,fracsec,indexa,4);       
+    indexa += 4;
+    byte_by_byte_copy(ptr_temp,string_cfg_filea,indexa,fsizea);
+    indexa =indexa+fsizea;
+    chk = compute_CRC(ptr_temp,fsizea+14);
+    drframe_cfg[indexa++] = (chk >> 8) & ~(~0<<8);  	// CHKSUM high byte; 
+    drframe_cfg[indexa++] = (chk ) & ~(~0<<8);     	// CHKSUM low byte;  
+   // drframe_cfg[index]='\0';  //Deleteddddddddddd
+
+    //printf("\n AAAAAAAAAAAA %ld AAAAAAAAAAAAA\n%s & %s \n",chk,drframe_cfg,string_cfg_filea);
+    int new_fd1 = single_pdc_node->sockfd;
+
+    //pthread_mutex_lock(&mutex_pdc_object);                  // Reqd ?
+    //ssize_t check=send(new_fd,ptr_temp,fsizea+16,0);
+  if (send(new_fd1,ptr_temp,fsizea+16,0) == -1)
+ {
+     perror("sendto");
+ }
+	//pthread_mutex_unlock(&mutex_pdc_object);
+	printf("\nFsize+16 :  %ld \n",fsizea+16);  
+    
+
+    printf("\nPMU DR frame [of %d Bytes] is sent to PDC.\n",fsizea+16);
+
+    free(string_cfg_filea);
+    free(drframe_cfg);
+
+///////////////////////////////////////////////////////////
+
+
+     long filecount=0,diff,diff64=64000-18;
+	 FILE *dat_filea;
+
+	 		char pmuFilePath4[200];
+        char buff4[50];
+		memset(pmuFilePath4, '\0', 200);
+		strcpy(pmuFilePath4,"..");
+		strcat(pmuFilePath4, "/share/");
+		strcat(pmuFilePath4, "pmu_");
+		sprintf(buff4, "%d", df_pmu_id);
+		strcat(pmuFilePath4, buff4);
+		strcat(pmuFilePath4, ".dat");
+		pmuFilePath4[strlen(pmuFilePath4)] = '\0';
+
+    dat_filea = fopen(pmuFilePath4,"r");
+    fseek(dat_filea, 0, SEEK_END);
+    fsizea = ftell(dat_filea );
+    fseek(dat_filea, 0, SEEK_SET);  // same as rewind(f); 
+    char *string_dat_filea = malloc(fsizea + 1);
+    fread(string_dat_filea, 1, fsizea,dat_filea);
+    string_dat_filea[fsizea] = 0;
+    fclose(dat_filea);
+    
+	//buffer_delete[64000];
+	
+
+    
+	DRSYNC_dat[0] = 0xaa;
+    DRSYNC_dat[1] = 0x71;
+    DRSYNC_dat[2] = '\0';
+
+ printf("\n New Fsize+18 :  %ld \n",fsizea+18);  
+
+ diff=fsizea-diff64*filecount;
+ //if(diff>=0)                         //Assuming min file size is 64kb .Else will need to modify code
+while(1)
+			{  filecount++;
+				if(diff<=0) break; 
+			   else if(diff<diff64)
+			   {
+                char *drframe_dat = malloc(diff+18+1);     // /change to Diff64
+                memset(drframe_dat,'\0',diff+18+1); //18 or 19 ?;
+
+                memset(fsizea_char,'\0',2);
+                int_to_ascii_convertor(diff+18,fsizea_char); //or diff64
+        
+                memset(fcounta_char,'\0',2);
+                int_to_ascii_convertor(65535,fcounta_char); 
+    	
+
+
+                int indexa = 0;
+                unsigned char * ptr_temp=drframe_dat;
+                byte_by_byte_copy(ptr_temp,DRSYNC_dat,indexa,2); // SEND dat
+                indexa += 2;
+                byte_by_byte_copy(ptr_temp,fsizea_char,indexa,2);
+                indexa += 2;
+                byte_by_byte_copy(ptr_temp,pmuid,indexa,2);
+                indexa += 2;
+                byte_by_byte_copy(ptr_temp,soc,indexa,4);
+                indexa += 4;
+                byte_by_byte_copy(ptr_temp,fracsec,indexa,4);       //Reallyyy ??????????//
+                indexa += 4;
+                byte_by_byte_copy(ptr_temp,fcounta_char,indexa,2);
+                indexa += 2;
+                //byte_by_byte_copy(ptr_temp,string_dat_filea,indexa,fsizea);
+
+                for(int i1 = 0;i1<diff; i1++)       //change to diff64
+                ptr_temp[indexa+ i1] = string_dat_filea[i1+diff64*(filecount-1)];	
+
+
+                indexa =indexa+diff;    //change to diff64
+                chk = compute_CRC(ptr_temp,diff+16);//change to diff64    //Also 18-2=14
+                drframe_dat[indexa++] = (chk >> 8) & ~(~0<<8);  	// CHKSUM high byte; 
+                drframe_dat[indexa++] = (chk ) & ~(~0<<8);     	// CHKSUM low byte;  
+                // drframe_dat[index]='\0';  //Deleteddddddddddd
+
+                if (send(new_fd1,ptr_temp,diff+18,0) == -1)
+                                {
+                                perror("sendto");
+                                }
+                printf("\nPMU DR frame %d [of %d Bytes] is sent to PDC.\n",filecount,diff+18);
+				
+                free(drframe_dat);
+                
+                
+
+				   break;
+			   } 
+			   else
+			   {
+                char *drframe_dat = malloc(diff64+19);     // /change to Diff64
+                memset(drframe_dat,'\0',diff64+18+1); //18 or 19 ?;
+
+                memset(fsizea_char,'\0',2);
+                int_to_ascii_convertor(diff64+18,fsizea_char); //or diff64
+        
+                memset(fcounta_char,'\0',2);
+                int_to_ascii_convertor(filecount,fcounta_char); 
+    	
+
+
+                int indexa = 0;
+                unsigned char * ptr_temp=drframe_dat;
+                byte_by_byte_copy(ptr_temp,DRSYNC_dat,indexa,2); // SEND dat
+                indexa += 2;
+                byte_by_byte_copy(ptr_temp,fsizea_char,indexa,2);
+                indexa += 2;
+                byte_by_byte_copy(ptr_temp,pmuid,indexa,2);
+                indexa += 2;
+                byte_by_byte_copy(ptr_temp,soc,indexa,4);
+                indexa += 4;
+                byte_by_byte_copy(ptr_temp,fracsec,indexa,4);       //Reallyyy ??????????//
+                indexa += 4;
+                byte_by_byte_copy(ptr_temp,fcounta_char,indexa,2);
+                indexa += 2;
+                //byte_by_byte_copy(ptr_temp,string_dat_filea,indexa,fsizea);
+
+                for(int i1 = 0;i1<diff64; i1++)       //change to diff64
+                ptr_temp[indexa+ i1] = string_dat_filea[i1+diff64*(filecount-1)];	
+
+
+                indexa =indexa+diff64;    //change to diff64
+                chk = compute_CRC(ptr_temp,diff64+16);//change to diff64    //Also 18-2=14
+                drframe_dat[indexa++] = (chk >> 8) & ~(~0<<8);  	// CHKSUM high byte; 
+                drframe_dat[indexa++] = (chk ) & ~(~0<<8);     	// CHKSUM low byte;  
+                // drframe_dat[index]='\0';  //Deleteddddddddddd
+
+                if (send(new_fd1,ptr_temp,diff64+18,0) == -1)
+                                {
+                                perror("sendto");
+                                }
+                printf("\nPMU DR frame %d [of %d Bytes] is sent to PDC.\n",filecount,diff64+18);
+
+                free(drframe_dat);
+			   } 
+				diff=fsizea-diff64*filecount;
+			}	
+
+	
+
+free(string_dat_filea);
+
+}
+
+
+
+
+
+
+
+
+
+void udp_send_dr_data(struct PDC_Details *temp_pdc)
+{ /*
+FILE *cfg_file;
+cfg_file = fopen("../share/pmu.cfg","r");
+fseek(cfg_file, 0, SEEK_END);
+long fsize = ftell(cfg_file );
+fseek(cfg_file, 0, SEEK_SET);  // same as rewind(f); 
+
+char *string_cfg_file = malloc(fsize + 1);
+fread(string_cfg_file, 1, fsize,cfg_file);
+string_cfg_file[fsize] = 0;
+fclose(cfg_file);
+
+pthread_mutex_lock(&mutex_pdc_object);
+
+// Send Configuration frame to PDC Device 
+if (sendto(UDP_sockfd,cline,fsize, 0,(struct sockaddr *)&UDP_addr, (socklen_t *)&UDP_addr_len) == -1)
+	{perror("sendto"); }
+	
+	temp_pdc->cmd_received = 0;	
+pthread_mutex_unlock(&mutex_pdc_object);
+	printf("\nPMU DR cfg file [of %ld Bytes] is sent to the PDC.\n", fsize);
+free(string_cfg_file);
+
+
+//FILE *dat_file;
+//cfg_file = fopen("../share/data.dat","r");
+*/
+return(0);
+}
+
 

@@ -38,7 +38,7 @@
 /* ---------------------------------------------------------------- */
 /*             	     Configuartion Frame Data Structure	            */
 /* ---------------------------------------------------------------- */
-
+pthread_t sec_30;
 struct  cfg_frame {
 
 	unsigned char *framesize;
@@ -174,3 +174,5 @@ void* dataWriteInFile();
 void writeTimeToLog(int index,unsigned int IDcode, char frameType, unsigned long int l_soc,unsigned long int l_fracsec);
 
 /**************************************** End of File *******************************************************/
+
+void *wait_30_sec();

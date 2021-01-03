@@ -30,6 +30,7 @@
 #include  <stdio.h>
 #include  <pthread.h>
 #include  <netinet/in.h>
+#include  <string.h>
 
 #define BACKLOG 10            /* How many pending connections queue will hold */
 #define MAX_STRING_SIZE 5000
@@ -41,6 +42,13 @@
 int dataFileVar, cfg_crc_error; 
 int temp_pahsor_type[50], temp_analog_type[50];
 long int temp_PHUNIT_val[50], temp_ANUNIT_val[50];
+
+unsigned char DRSYNC_cfg[3];
+
+unsigned char DRSYNC_dat[3];
+
+//unsigned char drframe_cfg[1024];
+//unsigned char drframe_dat[2000000];
 
 char pmuFolderPath[200];
 char pmuFilePath[200];
@@ -92,7 +100,8 @@ struct PDC_Details {
 
 void  frame_size();
 
-void generate_data_frame();
+//void generate_data_frame();
+void generate_data_frame(struct PDC_Details *temp_pdc);
 
 void* SEND_DATA();
 
@@ -114,5 +123,13 @@ void  SIGUSR1_handler(int);   /* Signal handler */
 
 void  SIGUSR2_handler(int);   /* Signal handler */
 
+void tcp_send_dr_data(struct PDC_Details *temp_pdc);
+
+void *send_dr_frame();
+
 void sendTCPCFGFrame (struct PDC_Details *single_pdc_node);
 /**************************************** End of File *******************************************************/
+
+void udp_send_dr_data(struct PDC_Details *temp_pdc);
+
+void *reset_dr_flag(struct PDC_Details *temp_pdc);

@@ -28,7 +28,7 @@
 
 
 #include<gtk/gtk.h>
-
+ #include <stdbool.h>
 /* ---------------------------------------------------------------- */
 /*                         global variables                         */
 /* ---------------------------------------------------------------- */
@@ -87,5 +87,18 @@ void reconfig_cfg_CC();
 void show_pmu_details (GtkWidget *widget, gpointer udata);
 
 int  create_cfg();
+
+
+int create_fifo_buffer();
+bool is_empty();
+void delete_one();
+void delete_all();
+void insert_element(char dat[]);
+void print_buffer(); 
+void read_config();
+void make_config();
+void write_data();
+void write_data_helper(char* data,long int i,FILE* dat_file);
+
 
 /**************************************** End of File *******************************************************/
